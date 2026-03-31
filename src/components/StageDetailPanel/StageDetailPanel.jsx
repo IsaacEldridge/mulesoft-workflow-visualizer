@@ -1,5 +1,7 @@
 import { useWorkflow } from '../../context/WorkflowContext';
 import { WORKFLOW_STAGES } from '../../data/workflowData';
+import ContentInputPanel from '../ContentInputPanel/ContentInputPanel';
+import ContentOutputPanel from '../ContentOutputPanel/ContentOutputPanel';
 import SampleDataViewer from './SampleDataViewer';
 import styles from './StageDetailPanel.module.css';
 
@@ -19,6 +21,57 @@ export default function StageDetailPanel() {
       handleClose();
     }
   };
+
+  // Show custom panels for Authoring and Distribution stages
+  if (stage.id === 'content-authoring') {
+    return (
+      <>
+        <div className={styles.overlay} onClick={handleClose} />
+        <div className={styles.panel} onKeyDown={handleKeyDown}>
+          <div className={styles.header} style={{ '--stage-color': stage.color }}>
+            <div className={styles.headerContent}>
+              <h2 className={styles.title}>{stage.title}</h2>
+            </div>
+            <button
+              className={styles.closeButton}
+              onClick={handleClose}
+              aria-label="Close panel"
+            >
+              ✕
+            </button>
+          </div>
+          <div className={styles.content}>
+            <ContentInputPanel />
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (stage.id === 'distribution') {
+    return (
+      <>
+        <div className={styles.overlay} onClick={handleClose} />
+        <div className={styles.panel} onKeyDown={handleKeyDown}>
+          <div className={styles.header} style={{ '--stage-color': stage.color }}>
+            <div className={styles.headerContent}>
+              <h2 className={styles.title}>{stage.title}</h2>
+            </div>
+            <button
+              className={styles.closeButton}
+              onClick={handleClose}
+              aria-label="Close panel"
+            >
+              ✕
+            </button>
+          </div>
+          <div className={styles.content}>
+            <ContentOutputPanel />
+          </div>
+        </div>
+      </>
+    );
+  }
 
   // Parse GTM collateral from sample data if this is the Distribution stage
   let gtmCollateral = null;

@@ -9,6 +9,15 @@ export function WorkflowProvider({ children }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
 
+  // Content generation state
+  const [sourceContent, setSourceContent] = useState('');
+  const [audience, setAudience] = useState('');
+  const [generatedOutputs, setGeneratedOutputs] = useState({
+    blogPost: null,
+    trailheadUnit: null
+  });
+  const [isGenerating, setIsGenerating] = useState(false);
+
   const selectStage = (stageId) => {
     setSelectedStage(stageId);
   };
@@ -50,6 +59,15 @@ export function WorkflowProvider({ children }) {
     startPlaythrough,
     pausePlaythrough,
     resetWorkflow,
+    // Content generation
+    sourceContent,
+    setSourceContent,
+    audience,
+    setAudience,
+    generatedOutputs,
+    setGeneratedOutputs,
+    isGenerating,
+    setIsGenerating,
   };
 
   return (

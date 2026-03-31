@@ -17,3 +17,7 @@ npm-debug.log*
 # Environment
 .env
 .env.local
+
+# Certificates
+internal.pem
+*.pem

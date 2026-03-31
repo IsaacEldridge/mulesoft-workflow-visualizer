@@ -1,19 +1,26 @@
 {
   "name": "mulesoft-workflow-visualizer",
-  "version": "1.0.0",
-  "description": "Interactive visualization of MuleSoft content workflow from AsciiDoc to SSOT distribution",
+  "version": "2.0.0",
+  "description": "AI-powered content generation tool for transforming source content into MuleSoft blog posts and Salesforce Trailhead units",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "server": "node server.js",
+    "dev:all": "concurrently \"npm run server\" \"npm run dev\"",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.0",
+    "concurrently": "^9.1.2",
     "vite": "^5.0.0"
   }
 }

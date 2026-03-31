@@ -91,6 +91,19 @@
   z-index: calc(var(--z-nodes) + 2);
 }
 
+.stageNode.inactive {
+  opacity: 0.3;
+  filter: grayscale(1);
+  pointer-events: none;
+  cursor: default;
+}
+
+.stageNode.inactive:hover {
+  transform: translate(-50%, -50%) scale(1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border-width: 3px;
+}
+
 .iconContainer {
   display: flex;
   align-items: center;

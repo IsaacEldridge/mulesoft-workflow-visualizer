@@ -13,15 +13,18 @@ export default function StageNode({ stage }) {
   const isActive = currentStage === stage.id;
   const isCompleted = completedStages.includes(stage.id);
   const isSelected = selectedStage === stage.id;
+  const isInactive = stage.active === false;
 
   const Icon = Icons[stage.icon];
 
   const handleClick = () => {
-    selectStage(stage.id);
+    if (!isInactive) {
+      selectStage(stage.id);
+    }
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
+    if (!isInactive && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
       selectStage(stage.id);
     }
@@ -32,6 +35,7 @@ export default function StageNode({ stage }) {
     isActive && styles.active,
     isCompleted && styles.completed,
     isSelected && styles.selected,
+    isInactive && styles.inactive,
   ]
     .filter(Boolean)
     .join(' ');

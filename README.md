@@ -1,26 +1,26 @@
-# MuleSoft Content Workflow Visualizer
+# MuleSoft Content Workflow
 
-An interactive single-page web application that visualizes the MuleSoft content workflow from AsciiDoc authoring to SSOT (Single Source of Truth) distribution and maintenance.
+An interactive web application that transforms various sources of content (PRDs, CX technical documentation drafts, etc.) into specific content types while creating a single source of truth.
+
+## Overview
+
+This tool enables content creators to:
+- Paste source content in markdown or plain text format
+- Select an optional target audience (admin, developer, beginner)
+- Generate multiple output types from the same source material
+- View and copy generated content in markdown format
+
+**Key principle:** All outputs are generated using ONLY the information from the source content. The system never invents features, claims, timelines, or product behavior.
 
 ## Features
 
-- **Clear Workflow Visualization**: 6 stages arranged in a logical flow pattern
-- **Interactive Stages**: Click any stage to view detailed information
-- **Automated Playthrough**: Step through the workflow automatically with speed controls
-- **Animated Connections**: Visual arrows showing content flow between stages
-- **Feedback Loops**: Visualization of maintenance feedback back to authoring
-- **Side Outputs**: RSS Feed and MCP AI Server integration points
-- **Professional Design**: Dark theme optimized for presentations
-- **🎙️ Audio Script Included**: Professional recording script for voiceover narration
-
-## Workflow Stages
-
-1. **Content Authoring** - Writers create and update docs using Git/Perforce
-2. **Validation & QA** - CI/CD pipeline validates content with AI assistance
-3. **Content Event Service** - Generates structured events for distribution
-4. **Distribution** - Multi-channel distribution (RSS, Slack, MCP, Marketing)
-5. **Docs Publishing** - Builds and deploys to docs.mulesoft.com
-6. **Content Maintenance** - Analytics and feedback for continuous improvement
+- **Content Authoring**: Paste source content with optional audience targeting
+- **AI-Powered Generation**: Create tailored content using Claude API
+- **Multiple Output Types**:
+  - MuleSoft Blog Post (thought leadership tone, external publishing)
+  - Salesforce Trailhead Unit (educational, step-by-step with quiz)
+- **Single Source of Truth**: Generate multiple outputs from one source
+- **Interactive Workflow**: Visual workflow showing content transformation
 
 ## Installation
 
@@ -30,15 +30,38 @@ cd mulesoft-workflow-visualizer
 
 # Install dependencies
 npm install
+
+# Set up environment variables (optional, for AI generation)
+cp .env.example .env
+# Edit .env and add your Anthropic API key
 ```
+
+## Configuration
+
+### API Key Setup (Optional)
+
+To enable AI-powered content generation:
+
+1. Get an API key from [Anthropic Console](https://console.anthropic.com/)
+2. Create a `.env` file in the project root
+3. Add your API key:
+   ```
+   VITE_ANTHROPIC_API_KEY=your_api_key_here
+   ```
+
+**Note:** Without an API key, the tool will generate demo content showing where your real outputs would appear.
+
+**Security:** In production, API calls should go through a backend server to protect your API key.
 
 ## Usage
 
 ### Development Mode
 
 ```bash
-# Start development server (opens at http://localhost:3000)
+# Start development server
 npm run dev
+
+# Open http://localhost:5173 in your browser
 ```
 
 ### Production Build
@@ -51,174 +74,89 @@ npm run build
 npm run preview
 ```
 
-## Controls
+## How to Use
 
-### Demo Controls
-- **▶ Play Demo**: Start automatic workflow playthrough
-- **⏸ Pause**: Pause the playthrough
-- **↻ Reset**: Clear all state and start over
-- **Speed Selector**: Choose demo speed (Slow, Normal, Fast, Very Fast)
+1. **Open the Application**: Start the dev server and open in browser
+2. **Click Authoring Stage**: Click the "Authoring" stage node on the left
+3. **Paste Source Content**: Enter your source material (markdown or plain text)
+4. **Select Audience** (optional): Choose admin, developer, beginner, or leave default
+5. **Generate Content**: Click one or both output type buttons:
+   - "MuleSoft Blog Post"
+   - "Salesforce Trailhead Unit"
+6. **View Output**: The Distribution stage automatically opens showing generated content
+7. **Copy Content**: Use the "Copy Markdown" button to copy to clipboard
+8. **Generate More**: Return to Authoring to generate the other output type
 
-### Interactive Exploration
-- **Click any stage**: Open detail panel with full information
-- **Press Escape**: Close detail panel
-- **Copy button**: Copy sample JSON data to clipboard
+## Output Types
 
-## Adding Audio Narration
+### MuleSoft Blog Post
 
-### Professional Recording Script
+**Purpose:** External thought leadership content for blogs.mulesoft.com
 
-We've included a complete **professional audio recording script** in:
-```
-AUDIO_RECORDING_SCRIPT.md
-```
+**Format:**
+- Engaging title (under 60 characters)
+- Clear structure: intro, problem, solution, benefits, conclusion
+- Thought leadership tone (authoritative but approachable)
+- Professional and engaging writing style
 
-This script includes:
-- ✅ Full narration text (~2 minutes)
-- ✅ Timing cues synchronized with demo
-- ✅ Recording instructions and equipment recommendations
-- ✅ Pronunciation guide for technical terms
-- ✅ Professional delivery tips
-- ✅ Post-production guidance
+**Use Cases:**
+- Product announcements
+- Feature deep-dives
+- Best practices and patterns
+- Technical thought leadership
 
-### Demo Timing (for audio sync)
+### Salesforce Trailhead Unit
 
-At **1x (Normal) speed**:
-- Introduction: 20 seconds
-- Each stage: 5 seconds
-- Total: ~50 seconds
+**Purpose:** Educational content for Salesforce Trailhead platform
 
-Adjust playback speed to match your audio recording pace.
+**Format:**
+- Learning objectives (3-5 specific outcomes)
+- Step-by-step instructional content
+- Short, digestible sections
+- Beginner-friendly language
+- Two-question multiple choice quiz
 
-### Recording Your Narration
+**Use Cases:**
+- Product tutorials
+- Feature education
+- Getting started guides
+- Best practices training
 
-1. **Read the script:** `AUDIO_RECORDING_SCRIPT.md`
-2. **Record audio** using provided instructions
-3. **Export as MP3** (192 kbps or higher)
-4. **Play audio** alongside demo:
-   - Start audio 2 seconds after demo loads
-   - Click "Play Demo" at 22-second mark in audio
-   - Audio will sync with visual stage transitions
+## Content Rules
 
-### Video Production (Optional)
+The system follows strict rules for all generated content:
 
-To create a complete presentation video:
+✅ **Do:**
+- Use only information from the source content
+- State clearly when information is missing
+- Tailor output to selected format requirements
+- Apply audience-appropriate complexity
 
-1. **Screen record** the demo (OBS, Camtasia, QuickTime)
-2. **Import** screen recording into video editor
-3. **Add** your audio narration track
-4. **Sync** timing (adjust demo speed if needed)
-5. **Export** as MP4
-
-## Presentation Tips
-
-### For Leadership Demos
-
-1. **Full Screen**: Press F11 (or Cmd+Shift+F on Mac)
-2. **Start Demo**: Click "Play Demo" button
-3. **Narrate**: Use the audio script or play your recording
-4. **Pause for Questions**: Pause at any stage to discuss details
-5. **Interactive Deep-Dive**: Click stages to show detail panels
-6. **Reset**: Use Reset button to run demo multiple times
-
-### Recommended Flow
-
-**Quick Demo (1 minute):**
-- Brief introduction (15s)
-- Play demo at Normal or Fast speed
-- Highlight key points during playthrough
-- Q&A (remaining time)
-
-**Detailed Demo (3-5 minutes):**
-- Detailed introduction (30s)
-- Play demo at Slow or Normal speed
-- Pause after Stage 3 to discuss SSOT
-- Click 2-3 stages to show detail panels
-- Discuss feedback loops and side outputs
-- Q&A (remaining time)
-
-### Speed Guide
-
-- **Slow (0.5x):** ~100 seconds - detailed presentations
-- **Normal (1x):** ~50 seconds - recommended for most demos
-- **Fast (1.5x):** ~33 seconds - quick overviews
-- **Very Fast (2x):** ~25 seconds - rapid demonstration
-
-## Customization
-
-### Modifying Stage Content
-
-Edit `src/data/workflowData.js`:
-
-```javascript
-export const WORKFLOW_STAGES = [
-  {
-    id: 'new-stage',
-    order: 7,
-    title: 'NEW STAGE',
-    shortTitle: 'New',
-    participants: ['Team A', 'Team B'],
-    tools: ['Tool 1', 'Tool 2'],
-    owner: 'Owner Team',
-    location: 'Location',
-    description: 'Description text...',
-    sampleData: { /* ... */ },
-    position: { x: 50, y: 70 },
-    icon: 'EditIcon',
-    color: '#FF5733'
-  }
-];
-```
-
-### Adjusting Playthrough Speed
-
-Modify `src/hooks/usePlaythrough.js`:
-
-```javascript
-const baseDelay = 5000; // milliseconds per stage
-```
-
-### Changing Colors
-
-Edit `src/index.css`:
-
-```css
-:root {
-  --color-authoring: #4A90E2;
-  --color-validation: #7CB342;
-  /* ... */
-}
-```
+❌ **Don't:**
+- Invent features, claims, or timelines
+- Guess product behavior
+- Add speculative content
+- Assume information not in source
 
 ## Project Structure
 
 ```
 src/
 ├── components/
-│   ├── Header/              # Title and subtitle
-│   ├── ControlPanel/        # Playthrough controls
-│   ├── WorkflowCanvas/      # Main visualization area
-│   │   ├── StageNode        # Individual stage component
-│   │   ├── ConnectionArrow  # Animated arrows
-│   │   └── SideOutput       # RSS/MCP nodes
-│   ├── StageDetailPanel/    # Detailed stage information
-│   ├── Legend/              # Connection type legend
-│   └── icons/               # SVG icon components
+│   ├── ContentInputPanel/    # Source content input and generation controls
+│   ├── ContentOutputPanel/   # Generated content display
+│   ├── WorkflowCanvas/       # Visual workflow stage nodes
+│   ├── StageDetailPanel/     # Stage detail container
+│   └── Header/               # Application header
 ├── context/
-│   └── WorkflowContext      # Global state management
-├── hooks/
-│   └── usePlaythrough       # Playthrough automation
+│   └── WorkflowContext.jsx   # State management for content workflow
+├── services/
+│   ├── contentGenerator.js   # Claude API integration
+│   └── promptTemplates.js    # Output type prompt templates
 ├── data/
-│   └── workflowData         # All workflow content
-└── main.jsx                 # Application entry point
+│   └── workflowData.js       # Workflow stage definitions
+└── main.jsx                  # Application entry point
 ```
-
-## Documentation
-
-- **README.md** - Setup and usage (this file)
-- **AUDIO_RECORDING_SCRIPT.md** - Professional narration script for recording
-- **DEMO_TIMING_GUIDE.md** - Detailed timing and synchronization guide
-- **WHATS_NEW.md** - Recent updates and improvements
 
 ## Browser Compatibility
 
@@ -227,38 +165,44 @@ src/
 - Safari 14+ ✅
 - Edge 90+ ✅
 
-## Performance
-
-- Bundle size: < 250KB gzipped
-- First load: < 2 seconds
-- Animations: 60 FPS
-- No external API dependencies
-
 ## Troubleshooting
 
-### Demo Not Advancing
+### No content is generated
 
-- Check if playthrough is paused
-- Verify speed selector is not at slowest setting
-- Try clicking Reset and starting over
+- Check that you've pasted source content in the textarea
+- Verify your API key is set correctly in `.env`
+- Check browser console for error messages
+- Without an API key, you'll see demo content
 
-### Stage Not Clickable
+### Generated content is incomplete
 
-- Ensure playthrough is paused first
-- Click directly on the stage node (not arrows)
-- Try refreshing the page
+- Ensure source content has sufficient detail
+- Try breaking very long content into sections
+- Check that source content is in a readable format
 
-### Detail Panel Not Opening
+### API errors
 
-- Click the stage node (colored circle/square)
-- Check browser console for errors
-- Refresh page if needed
+- Verify API key is valid and has credits
+- Check network connectivity
+- Ensure API key has proper permissions
 
-### Animation Performance
+## Development
 
-- Close other browser tabs
-- Ensure hardware acceleration is enabled
-- Try a different browser
+### Adding New Output Types
+
+1. Add new prompt template in `src/services/promptTemplates.js`
+2. Add new output type constant to `OUTPUT_TYPES`
+3. Update `OUTPUT_TYPE_LABELS` with display name
+4. Add new button in `ContentInputPanel.jsx`
+5. Update state management in `WorkflowContext.jsx`
+
+### Customizing Prompts
+
+Edit the prompt templates in `src/services/promptTemplates.js`:
+- Modify format requirements
+- Add new sections or structure
+- Adjust tone and style guidelines
+- Update rules and constraints
 
 ## License
 
@@ -270,53 +214,26 @@ For issues or questions, contact the CX Engineering team.
 
 ---
 
-## Quick Start Guide
+## Quick Start
 
 ```bash
-# 1. Install dependencies
+# Install
 npm install
 
-# 2. Start development server
+# Add API key (optional)
+cp .env.example .env
+# Edit .env with your key
+
+# Run
 npm run dev
 
-# 3. Open http://localhost:3000 in your browser
-
-# 4. Read the audio recording script
-cat AUDIO_RECORDING_SCRIPT.md
-
-# 5. Click "Play Demo" and enjoy!
+# Use
+1. Click "Authoring" stage
+2. Paste source content
+3. Click generation button
+4. View output in "Distribution" stage
 ```
 
 ---
 
-**💡 Tip:** For the best presentation, record professional narration using the provided script (`AUDIO_RECORDING_SCRIPT.md`), then play it alongside the visual demo. The timing is perfectly synchronized!
-
----
-
-## What Makes This Workflow Special?
-
-### The Problem
-Traditional approach: Multiple teams create content separately
-- Documentation team writes docs
-- Marketing team writes blogs
-- Training team creates courses
-- Result: Inconsistent messaging, duplicate effort, slow time-to-market
-
-### The Solution
-MuleSoft Content Workflow: One source of truth powers everything
-- ✅ Single canonical source (AsciiDoc)
-- ✅ Automated validation and quality checks
-- ✅ Multi-channel distribution (docs, RSS, AI, marketing)
-- ✅ Continuous improvement through feedback loops
-- ✅ 85-95% faster than traditional approach
-
-### The Impact
-- **Consistency:** Same source → same message everywhere
-- **Speed:** Hours instead of weeks
-- **Quality:** Automated validation catches issues early
-- **Traceability:** Every output links back to source
-- **Scalability:** One workflow serves all channels
-
----
-
-This demo visualizes that transformation and makes it tangible for stakeholders! 🚀
+**Made with Claude Code** 🚀
