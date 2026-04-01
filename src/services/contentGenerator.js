@@ -7,17 +7,18 @@ const API_BASE_URL = 'http://localhost:3001/api';
  * @param {string} outputType - Type of content to generate (blogPost or trailheadUnit)
  * @param {string} sourceContent - Source markdown content
  * @param {string} audience - Target audience (admin, developer, beginner, or empty)
+ * @param {string} customPrompt - Additional custom instructions for generation
  * @returns {Promise<string>} Generated content in markdown format
  */
-export async function generateContent(outputType, sourceContent, audience) {
+export async function generateContent(outputType, sourceContent, audience, customPrompt = '') {
   if (!sourceContent.trim()) {
     throw new Error('Source content is required');
   }
 
   // Get the appropriate prompt template
   const prompt = outputType === OUTPUT_TYPES.BLOG_POST
-    ? getBlogPostPrompt(sourceContent, audience)
-    : getTrailheadUnitPrompt(sourceContent, audience);
+    ? getBlogPostPrompt(sourceContent, audience, customPrompt)
+    : getTrailheadUnitPrompt(sourceContent, audience, customPrompt);
 
   try {
     const response = await fetch(`${API_BASE_URL}/generate`, {

@@ -2,6 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import Anthropic from '@anthropic-ai/sdk';
 import dotenv from 'dotenv';
+import * as cheerio from 'cheerio';
+import multer from 'multer';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const pdfParse = require('pdf-parse');
 
 dotenv.config();
 
@@ -24,12 +30,314 @@ const anthropic = new Anthropic(anthropicConfig);
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
+// Configure multer for file uploads (memory storage)
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    // Accept markdown and PDF files
+    const allowedTypes = [
+      'text/markdown',
+      'text/x-markdown',
+      'text/plain',
+      'application/pdf'
+    ];
+    const allowedExtensions = ['.md', '.markdown', '.pdf', '.txt'];
+
+    const hasAllowedType = allowedTypes.includes(file.mimetype);
+    const hasAllowedExtension = allowedExtensions.some(ext =>
+      file.originalname.toLowerCase().endsWith(ext)
+    );
+
+    if (hasAllowedType || hasAllowedExtension) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only markdown (.md) and PDF (.pdf) files are allowed'));
+    }
+  }
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     hasApiKey: !!process.env.ANTHROPIC_API_KEY
   });
+});
+
+// File upload endpoint
+app.post('/api/upload-file', upload.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const file = req.file;
+    console.log(`\n📄 Processing uploaded file: ${file.originalname} (${file.mimetype})`);
+
+    let content = '';
+    const fileExtension = file.originalname.toLowerCase().split('.').pop();
+
+    // Handle PDF files
+    if (file.mimetype === 'application/pdf' || fileExtension === 'pdf') {
+      try {
+        console.log('  Extracting text from PDF...');
+        console.log(`  File size: ${file.buffer.length} bytes`);
+
+        // Parse PDF with options for better compatibility
+        const pdfData = await pdfParse(file.buffer, {
+          // Don't use native rendering (more compatible)
+          max: 0,
+          version: 'v1.10.100'
+        });
+
+        content = pdfData.text;
+
+        // Additional metadata for debugging
+        console.log(`  PDF Info: ${pdfData.numpages} pages, ${pdfData.info?.Title || 'No title'}`);
+        console.log(`  ✓ Extracted ${content.length} characters from PDF`);
+
+        if (!content || content.trim().length === 0) {
+          console.warn('  ⚠️  PDF parsed but no text content found (might be image-based or encrypted)');
+          return res.status(400).json({
+            error: 'PDF appears to be empty or image-based',
+            details: 'The PDF was parsed successfully but contains no extractable text. This can happen with scanned PDFs or image-based PDFs. Try using a text-based PDF or convert the content to markdown.'
+          });
+        }
+      } catch (error) {
+        console.error('  ❌ Error parsing PDF:', error);
+        console.error('  Error stack:', error.stack);
+        return res.status(400).json({
+          error: 'Failed to parse PDF file',
+          details: error.message || 'Unknown error occurred while parsing PDF. The file might be corrupted, encrypted, or in an unsupported format.'
+        });
+      }
+    }
+    // Handle markdown/text files
+    else {
+      content = file.buffer.toString('utf-8');
+      console.log(`  ✓ Read ${content.length} characters from text file`);
+    }
+
+    // Clean up the content
+    content = content.trim();
+
+    if (!content || content.length === 0) {
+      return res.status(400).json({
+        error: 'No content could be extracted from the file'
+      });
+    }
+
+    res.json({
+      success: true,
+      filename: file.originalname,
+      content,
+      length: content.length,
+      type: fileExtension === 'pdf' ? 'pdf' : 'markdown'
+    });
+  } catch (error) {
+    console.error('File upload error:', error);
+    res.status(500).json({
+      error: error.message || 'Failed to process file'
+    });
+  }
+});
+
+// Helper function to extract and normalize MuleSoft documentation links
+function extractDocLinks($, baseUrl) {
+  const links = new Set();
+
+  $('a[href]').each((_, element) => {
+    const href = $(element).attr('href');
+    if (!href) return;
+
+    try {
+      // Resolve relative URLs
+      const absoluteUrl = new URL(href, baseUrl).href;
+
+      // Only include docs.mulesoft.com links
+      if (absoluteUrl.includes('docs.mulesoft.com')) {
+        // Remove fragments and query params for cleaner URLs
+        const url = new URL(absoluteUrl);
+        const cleanUrl = `${url.origin}${url.pathname}`;
+        links.add(cleanUrl);
+      }
+    } catch (e) {
+      // Invalid URL, skip it
+    }
+  });
+
+  return Array.from(links);
+}
+
+// Helper function to fetch a single document
+async function fetchSingleDoc(url) {
+  try {
+    console.log(`  Fetching: ${url}`);
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      console.error(`  Failed to fetch ${url}: ${response.status}`);
+      return {
+        url,
+        success: false,
+        error: `HTTP ${response.status}: ${response.statusText}`
+      };
+    }
+
+    const html = await response.text();
+    const $ = cheerio.load(html);
+
+    // Extract links before removing navigation
+    const linkedDocs = extractDocLinks($, url);
+
+    // Remove script tags, style tags, and navigation elements
+    $('script, style, nav, header, footer, .navigation, .sidebar').remove();
+
+    // Try to find the main content area
+    let content = '';
+
+    // Try various common content selectors
+    const contentSelectors = [
+      'article',
+      '.content',
+      '.main-content',
+      'main',
+      '.documentation-content',
+      '.doc-content',
+      '#content',
+      '.markdown-body'
+    ];
+
+    for (const selector of contentSelectors) {
+      const element = $(selector);
+      if (element.length > 0) {
+        content = element.text();
+        break;
+      }
+    }
+
+    // Fallback to body if no specific content area found
+    if (!content || content.trim().length === 0) {
+      content = $('body').text();
+    }
+
+    // Clean up the text
+    content = content
+      .replace(/\s+/g, ' ')  // Replace multiple spaces with single space
+      .replace(/\n\s*\n/g, '\n\n')  // Clean up multiple newlines
+      .trim();
+
+    if (content.length > 0) {
+      console.log(`  ✓ Fetched ${content.length} characters from ${url}`);
+      return {
+        url,
+        success: true,
+        content,
+        length: content.length,
+        linkedDocs
+      };
+    } else {
+      console.error(`  No content extracted from ${url}`);
+      return {
+        url,
+        success: false,
+        error: 'No content could be extracted from the page'
+      };
+    }
+  } catch (error) {
+    console.error(`  Error fetching ${url}:`, error.message);
+    return {
+      url,
+      success: false,
+      error: error.message
+    };
+  }
+}
+
+// Fetch documentation content from URLs
+app.post('/api/fetch-docs', async (req, res) => {
+  try {
+    const { urls } = req.body;
+
+    if (!urls || !Array.isArray(urls) || urls.length === 0) {
+      return res.status(400).json({ error: 'URLs array is required' });
+    }
+
+    console.log(`\n🔍 Fetching documentation from ${urls.length} URL(s)...`);
+
+    const fetchedDocs = [];
+    const processedUrls = new Set();
+    const discoveredLinks = new Set();
+
+    // Phase 1: Fetch original URLs
+    for (const url of urls) {
+      if (processedUrls.has(url)) continue;
+
+      const doc = await fetchSingleDoc(url);
+      doc.sourceType = 'original';
+      fetchedDocs.push(doc);
+      processedUrls.add(url);
+
+      // Collect linked docs
+      if (doc.success && doc.linkedDocs && doc.linkedDocs.length > 0) {
+        console.log(`  📎 Found ${doc.linkedDocs.length} linked documentation pages`);
+        doc.linkedDocs.forEach(link => {
+          if (!processedUrls.has(link) && link !== url) {
+            discoveredLinks.add(link);
+          }
+        });
+      }
+    }
+
+    // Phase 2: Fetch discovered linked documentation
+    if (discoveredLinks.size > 0) {
+      console.log(`\n📚 Fetching ${discoveredLinks.size} linked documentation pages...`);
+
+      for (const linkedUrl of discoveredLinks) {
+        if (processedUrls.has(linkedUrl)) continue;
+
+        const doc = await fetchSingleDoc(linkedUrl);
+        doc.sourceType = 'linked';
+        fetchedDocs.push(doc);
+        processedUrls.add(linkedUrl);
+
+        // Limit to prevent infinite fetching
+        if (processedUrls.size >= 50) {
+          console.log(`  ⚠️  Reached limit of 50 documents, stopping discovery`);
+          break;
+        }
+      }
+    }
+
+    const originalCount = fetchedDocs.filter(doc => doc.sourceType === 'original' && doc.success).length;
+    const linkedCount = fetchedDocs.filter(doc => doc.sourceType === 'linked' && doc.success).length;
+    const totalSuccess = originalCount + linkedCount;
+
+    console.log(`\n✅ Fetching complete:`);
+    console.log(`   • Original URLs: ${originalCount}/${urls.length} successful`);
+    console.log(`   • Linked docs: ${linkedCount}/${discoveredLinks.size} successful`);
+    console.log(`   • Total: ${totalSuccess} documents fetched\n`);
+
+    res.json({
+      documents: fetchedDocs,
+      stats: {
+        originalCount,
+        linkedCount,
+        totalCount: totalSuccess,
+        totalRequested: urls.length,
+        totalDiscovered: discoveredLinks.size
+      }
+    });
+  } catch (error) {
+    console.error('Documentation fetch error:', error);
+    res.status(500).json({
+      error: error.message || 'Failed to fetch documentation'
+    });
+  }
 });
 
 // Content generation endpoint

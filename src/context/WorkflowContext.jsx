@@ -12,6 +12,10 @@ export function WorkflowProvider({ children }) {
   // Content generation state
   const [sourceContent, setSourceContent] = useState('');
   const [audience, setAudience] = useState('');
+  const [customPrompt, setCustomPrompt] = useState('');
+  const [docUrls, setDocUrls] = useState([]);
+  const [fetchedDocsContent, setFetchedDocsContent] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const [generatedOutputs, setGeneratedOutputs] = useState({
     blogPost: null,
     trailheadUnit: null
@@ -64,6 +68,14 @@ export function WorkflowProvider({ children }) {
     setSourceContent,
     audience,
     setAudience,
+    customPrompt,
+    setCustomPrompt,
+    docUrls,
+    setDocUrls,
+    fetchedDocsContent,
+    setFetchedDocsContent,
+    uploadedFiles,
+    setUploadedFiles,
     generatedOutputs,
     setGeneratedOutputs,
     isGenerating,

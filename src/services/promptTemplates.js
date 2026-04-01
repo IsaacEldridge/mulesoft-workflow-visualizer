@@ -1,8 +1,12 @@
 // Prompt templates for different content output types
 
-export function getBlogPostPrompt(sourceContent, audience) {
+export function getBlogPostPrompt(sourceContent, audience, customPrompt = '') {
   const audienceContext = audience
     ? `\n\nTarget audience: ${audience} (adjust complexity and depth accordingly)`
+    : '';
+
+  const customInstructions = customPrompt?.trim()
+    ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}\n(Incorporate these instructions into your content generation while maintaining the format requirements below)`
     : '';
 
   return `You are a MuleSoft content strategist creating a blog post for blogs.mulesoft.com.
@@ -14,7 +18,7 @@ CRITICAL RULES:
 - Do NOT add speculative content or assumptions
 
 SOURCE CONTENT:
-${sourceContent}${audienceContext}
+${sourceContent}${audienceContext}${customInstructions}
 
 Generate a MuleSoft blog post with these requirements:
 
@@ -36,10 +40,14 @@ STRUCTURE:
 Output the blog post in markdown format. Use appropriate headings, bullet points, and formatting.`;
 }
 
-export function getTrailheadUnitPrompt(sourceContent, audience) {
+export function getTrailheadUnitPrompt(sourceContent, audience, customPrompt = '') {
   const audienceContext = audience
     ? `\n\nTarget audience: ${audience} (adjust complexity and prerequisites accordingly)`
     : '\n\nDefault target audience: beginner (assume minimal prior knowledge)';
+
+  const customInstructions = customPrompt?.trim()
+    ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}\n(Incorporate these instructions into your content generation while maintaining the format requirements below)`
+    : '';
 
   return `You are a Salesforce Trailhead content author creating an educational unit for Trailhead.
 
@@ -51,7 +59,7 @@ CRITICAL RULES:
 - Follow Salesforce Trailhead authoring guidelines
 
 SOURCE CONTENT:
-${sourceContent}${audienceContext}
+${sourceContent}${audienceContext}${customInstructions}
 
 Generate a Salesforce Trailhead Unit with these requirements:
 
