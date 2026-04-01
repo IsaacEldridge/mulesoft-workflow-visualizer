@@ -1,42 +1,51 @@
 .contentOutputPanel {
-  padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  height: 100%;
 }
 
 .header {
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--color-distribution, #E91E63);
-  padding-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .header h2 {
   margin: 0 0 0.5rem 0;
-  color: var(--color-distribution, #E91E63);
-  font-size: 1.8rem;
+  color: #111827;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .header p {
   margin: 0;
-  color: #888;
-  font-size: 0.95rem;
+  color: #6b7280;
+  font-size: 1rem;
 }
 
+/* Empty State */
 .emptyState {
   text-align: center;
   padding: 4rem 2rem;
-  color: #888;
+  background: white;
+  border-radius: 12px;
+  border: 2px dashed #d1d5db;
 }
 
 .emptyState h2 {
-  color: #ddd;
-  margin-bottom: 1rem;
+  color: #111827;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.emptyState p {
+  color: #6b7280;
+  font-size: 1rem;
+  margin-bottom: 2rem;
 }
 
 .instructionList {
   margin-top: 2rem;
-  max-width: 400px;
+  max-width: 420px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -44,26 +53,30 @@
 .instructionList ol {
   text-align: left;
   line-height: 2;
+  color: #4b5563;
+  font-size: 0.9375rem;
 }
 
 .instructionList strong {
-  color: var(--color-authoring, #4A90E2);
+  color: #00A1E0;
+  font-weight: 600;
 }
 
+/* Tabs */
 .tabs {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid #e5e7eb;
 }
 
 .tab {
-  padding: 0.75rem 1.5rem;
+  padding: 0.875rem 1.5rem;
   background: transparent;
   border: none;
   border-bottom: 3px solid transparent;
-  color: #888;
-  font-size: 0.95rem;
+  color: #6b7280;
+  font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -75,24 +88,29 @@
 }
 
 .tab:hover {
-  color: #ddd;
+  color: #111827;
+  background: white;
 }
 
 .activeTab {
-  color: var(--color-distribution, #E91E63);
-  border-bottom-color: var(--color-distribution, #E91E63);
+  color: #00A1E0;
+  border-bottom-color: #00A1E0;
+  background: white;
 }
 
 .badge {
-  font-size: 0.85rem;
-  color: #4ade80;
+  font-size: 0.875rem;
+  color: #10b981;
+  font-weight: 600;
 }
 
+/* Content Area */
 .content {
-  background: #1a1a1a;
-  border: 2px solid #333;
-  border-radius: 8px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .toolbar {
@@ -100,30 +118,32 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  background: #222;
-  border-bottom: 1px solid #333;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .outputLabel {
   font-weight: 600;
-  color: #ddd;
-  font-size: 0.95rem;
+  color: #374151;
+  font-size: 0.9375rem;
 }
 
 .copyButton {
-  padding: 0.5rem 1rem;
-  background: #333;
-  border: 1px solid #444;
-  border-radius: 6px;
-  color: #ddd;
-  font-size: 0.9rem;
+  padding: 0.625rem 1.25rem;
+  background: white;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
 }
 
 .copyButton:hover {
-  background: #3a3a3a;
-  border-color: #555;
+  background: #f9fafb;
+  border-color: #00A1E0;
+  color: #00A1E0;
 }
 
 .copyButton:active {
@@ -134,16 +154,20 @@
   max-height: 600px;
   overflow-y: auto;
   padding: 1.5rem;
+  background: #ffffff !important;
 }
 
 .pre {
   margin: 0;
   font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   line-height: 1.6;
-  color: #eee;
+  color: #111827 !important;
+  background: #ffffff !important;
   white-space: pre-wrap;
   word-wrap: break-word;
+  padding: 0 !important;
+  border-radius: 0 !important;
 }
 
 .pre code {
@@ -153,31 +177,33 @@
 .tabEmptyState {
   padding: 4rem 2rem;
   text-align: center;
-  color: #888;
 }
 
 .tabEmptyState p {
   margin: 0.5rem 0;
+  color: #6b7280;
+  font-size: 0.9375rem;
 }
 
-/* Custom scrollbar for markdown output */
+/* Custom scrollbar */
 .markdownOutput::-webkit-scrollbar {
   width: 10px;
 }
 
 .markdownOutput::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: #f9fafb;
 }
 
 .markdownOutput::-webkit-scrollbar-thumb {
-  background: #444;
+  background: #d1d5db;
   border-radius: 5px;
 }
 
 .markdownOutput::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #9ca3af;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .contentOutputPanel {
     padding: 1rem;

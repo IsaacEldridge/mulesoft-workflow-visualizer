@@ -3,6 +3,9 @@ import { createContext, useContext, useState } from 'react';
 const WorkflowContext = createContext(null);
 
 export function WorkflowProvider({ children }) {
+  // Navigation state
+  const [currentView, setCurrentView] = useState('authoring');
+
   const [currentStage, setCurrentStage] = useState(null);
   const [completedStages, setCompletedStages] = useState([]);
   const [selectedStage, setSelectedStage] = useState(null);
@@ -50,6 +53,10 @@ export function WorkflowProvider({ children }) {
   };
 
   const value = {
+    // Navigation
+    currentView,
+    setCurrentView,
+    // Workflow state
     currentStage,
     setCurrentStage,
     completedStages,

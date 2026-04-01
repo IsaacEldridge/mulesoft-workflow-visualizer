@@ -22,7 +22,7 @@ export default function ContentInputPanel() {
     setGeneratedOutputs,
     isGenerating,
     setIsGenerating,
-    selectStage
+    setCurrentView
   } = useWorkflow();
 
   const [error, setError] = useState(null);
@@ -34,15 +34,60 @@ export default function ContentInputPanel() {
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [fileUploadError, setFileUploadError] = useState(null);
 
-  const handleAddUrl = () => {
+  const handleAddUrl = async () => {
     const trimmedUrl = urlInput.trim();
     if (!trimmedUrl) return;
 
-    // Basic URL validation
+    // Check if URL contains wildcard
+    const hasWildcard = trimmedUrl.includes('*');
+
+    // Check if this is a wildcard pattern or a request to discover nested pages
+    if (hasWildcard || trimmedUrl.endsWith('/')) {
+      // Expand wildcard pattern or discover nested pages
+      setIsFetchingDocs(true);
+      setFetchError(hasWildcard ? 'Expanding wildcard pattern...' : 'Discovering nested pages...');
+
+      try {
+        const response = await fetch('http://localhost:3001/api/expand-wildcard', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ pattern: trimmedUrl })
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Failed to discover pages');
+        }
+
+        const data = await response.json();
+
+        if (data.urls.length === 0) {
+          setFetchError(`No URLs found for: ${trimmedUrl}`);
+          setIsFetchingDocs(false);
+          return;
+        }
+
+        // Add all discovered URLs (excluding duplicates)
+        const newUrls = data.urls.filter(url => !docUrls.includes(url));
+        setDocUrls([...docUrls, ...newUrls]);
+        setUrlInput('');
+        const method = data.method === 'sitemap' ? 'from sitemap' : 'from page';
+        setFetchError(`✓ Found ${data.urls.length} URLs ${method} (${newUrls.length} new)`);
+      } catch (err) {
+        setFetchError(err.message);
+      } finally {
+        setIsFetchingDocs(false);
+      }
+      return;
+    }
+
+    // Single URL - basic validation
     try {
       new URL(trimmedUrl);
     } catch (e) {
-      setFetchError('Please enter a valid URL');
+      setFetchError('Please enter a valid URL (e.g., https://docs.mulesoft.com/path/ to get all nested pages)');
       return;
     }
 
@@ -246,8 +291,8 @@ export default function ContentInputPanel() {
         [outputType]: content
       }));
 
-      // Automatically switch to distribution stage to show output
-      selectStage('distribution');
+      // Automatically switch to distribution view to show output
+      setCurrentView('distribution');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -260,13 +305,22 @@ export default function ContentInputPanel() {
     <div className={styles.contentInputPanel}>
       <div className={styles.header}>
         <h2>Content Authoring</h2>
-        <p>Add documentation URLs or paste your source content</p>
+        <p>Create AI-generated blog posts and Trailhead units from your source content</p>
       </div>
 
-      <div className={styles.formSection}>
+      {/* Source Input Card */}
+      <div className={styles.card}>
+        <div className={styles.cardHeader}>
+          <h3 className={styles.cardTitle}>Source Input</h3>
+          <p className={styles.cardDescription}>
+            Add documentation URLs, upload files, or paste source content
+          </p>
+        </div>
+
+        <div className={styles.formSection}>
         <label htmlFor="docUrls" className={styles.label}>
           MuleSoft Documentation URLs <span className={styles.optional}>(optional)</span>
-          <span className={styles.hint}>(e.g., https://docs.mulesoft.com/...)</span>
+          <span className={styles.hint}>(add a folder URL to get all nested pages, or use * for wildcards)</span>
         </label>
         <div className={styles.urlInputGroup}>
           <input
@@ -281,7 +335,7 @@ export default function ContentInputPanel() {
                 handleAddUrl();
               }
             }}
-            placeholder="https://docs.mulesoft.com/..."
+            placeholder="https://docs.mulesoft.com/anypoint-code-builder/ (gets all nested pages)"
             disabled={isGenerating || isFetchingDocs}
           />
           <button
@@ -454,11 +508,21 @@ export default function ContentInputPanel() {
           {sourceContent.length} characters
         </div>
       </div>
+      </div>
 
-      <div className={styles.formSection}>
-        <label htmlFor="audience" className={styles.label}>
-          Target Audience <span className={styles.optional}>(optional)</span>
-        </label>
+      {/* Configuration Card */}
+      <div className={styles.card}>
+        <div className={styles.cardHeader}>
+          <h3 className={styles.cardTitle}>Configuration</h3>
+          <p className={styles.cardDescription}>
+            Customize the target audience and generation instructions
+          </p>
+        </div>
+
+        <div className={styles.formSection}>
+          <label htmlFor="audience" className={styles.label}>
+            Target Audience <span className={styles.optional}>(optional)</span>
+          </label>
         <select
           id="audience"
           className={styles.select}
@@ -497,7 +561,9 @@ export default function ContentInputPanel() {
           <strong>Error:</strong> {error}
         </div>
       )}
+      </div>
 
+      {/* Action Footer */}
       <div className={styles.buttonSection}>
         <h3>Generate Output</h3>
         <div className={styles.buttonGroup}>

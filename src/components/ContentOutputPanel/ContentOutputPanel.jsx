@@ -26,14 +26,18 @@ export default function ContentOutputPanel() {
   if (!hasOutputs) {
     return (
       <div className={styles.contentOutputPanel}>
+        <div className={styles.header}>
+          <h2>Distribution</h2>
+          <p>View and manage your generated content</p>
+        </div>
         <div className={styles.emptyState}>
           <h2>No Content Generated Yet</h2>
-          <p>Generate content from the Authoring stage to see outputs here.</p>
+          <p>Generate content from the Authoring view to see your outputs here.</p>
           <div className={styles.instructionList}>
             <ol>
-              <li>Click the <strong>Authoring</strong> stage</li>
-              <li>Paste your source content</li>
-              <li>Optionally select an audience</li>
+              <li>Navigate to <strong>Authoring</strong></li>
+              <li>Add source content (URLs, files, or text)</li>
+              <li>Configure audience and instructions (optional)</li>
               <li>Click a generation button</li>
             </ol>
           </div>
@@ -45,8 +49,8 @@ export default function ContentOutputPanel() {
   return (
     <div className={styles.contentOutputPanel}>
       <div className={styles.header}>
-        <h2>Distribution - Generated Content</h2>
-        <p>View and copy generated outputs</p>
+        <h2>Distribution</h2>
+        <p>View, copy, and manage your generated content</p>
       </div>
 
       <div className={styles.tabs}>

@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import * as cheerio from 'cheerio';
 import multer from 'multer';
 import { createRequire } from 'module';
+import { XMLParser } from 'fast-xml-parser';
 
 const require = createRequire(import.meta.url);
 const pdfParse = require('pdf-parse');
@@ -145,6 +146,101 @@ app.post('/api/upload-file', upload.single('file'), async (req, res) => {
   }
 });
 
+// Helper function to fetch and parse sitemap
+async function fetchSitemapUrls(domain) {
+  const sitemapUrls = [
+    `${domain}/sitemap.xml`,
+    `${domain}/sitemap_index.xml`,
+    `${domain}/sitemap-index.xml`
+  ];
+
+  const parser = new XMLParser();
+
+  for (const sitemapUrl of sitemapUrls) {
+    try {
+      console.log(`  Trying sitemap: ${sitemapUrl}`);
+      const response = await fetch(sitemapUrl);
+
+      if (response.ok) {
+        const xml = await response.text();
+        const result = parser.parse(xml);
+
+        let urls = [];
+
+        // Handle sitemap index (contains multiple sitemaps)
+        if (result.sitemapindex && result.sitemapindex.sitemap) {
+          const sitemaps = Array.isArray(result.sitemapindex.sitemap)
+            ? result.sitemapindex.sitemap
+            : [result.sitemapindex.sitemap];
+
+          console.log(`  Found sitemap index with ${sitemaps.length} sitemaps`);
+
+          // Fetch all sub-sitemaps
+          for (const sitemap of sitemaps) {
+            const subSitemapUrl = sitemap.loc;
+            try {
+              const subResponse = await fetch(subSitemapUrl);
+              if (subResponse.ok) {
+                const subXml = await subResponse.text();
+                const subResult = parser.parse(subXml);
+
+                if (subResult.urlset && subResult.urlset.url) {
+                  const subUrls = Array.isArray(subResult.urlset.url)
+                    ? subResult.urlset.url
+                    : [subResult.urlset.url];
+
+                  urls = urls.concat(subUrls.map(u => u.loc));
+                }
+              }
+            } catch (e) {
+              console.log(`  Could not fetch sub-sitemap: ${subSitemapUrl}`);
+            }
+          }
+        }
+        // Handle regular sitemap (contains URLs)
+        else if (result.urlset && result.urlset.url) {
+          const urlEntries = Array.isArray(result.urlset.url)
+            ? result.urlset.url
+            : [result.urlset.url];
+
+          urls = urlEntries.map(u => u.loc);
+        }
+
+        if (urls.length > 0) {
+          console.log(`  ✓ Found ${urls.length} URLs in sitemap`);
+          return urls;
+        }
+      }
+    } catch (e) {
+      // Try next sitemap URL
+      continue;
+    }
+  }
+
+  return null; // No sitemap found
+}
+
+// Helper function to expand wildcard URL patterns
+function expandWildcardPattern(pattern, links) {
+  // Normalize pattern - remove trailing slash if present
+  const normalizedPattern = pattern.endsWith('/') ? pattern.slice(0, -1) : pattern;
+
+  // Convert wildcard pattern to regex
+  const regexPattern = normalizedPattern
+    .replace(/[.+?^${}()|[\]\\]/g, '\\$&') // Escape special chars except *
+    .replace(/\*/g, '.*'); // Replace * with .*
+
+  const regex = new RegExp(`^${regexPattern}$`);
+
+  console.log(`  Regex pattern: ^${regexPattern}$`);
+
+  return links.filter(link => {
+    // Normalize link - remove trailing slash if present
+    const normalizedLink = link.endsWith('/') ? link.slice(0, -1) : link;
+    return regex.test(normalizedLink);
+  });
+}
+
 // Helper function to extract and normalize MuleSoft documentation links
 function extractDocLinks($, baseUrl) {
   const links = new Set();
@@ -257,6 +353,132 @@ async function fetchSingleDoc(url) {
     };
   }
 }
+
+// Expand wildcard URL patterns or discover nested pages
+app.post('/api/expand-wildcard', async (req, res) => {
+  try {
+    const { pattern } = req.body;
+
+    if (!pattern || typeof pattern !== 'string') {
+      return res.status(400).json({ error: 'Pattern is required' });
+    }
+
+    const hasWildcard = pattern.includes('*');
+
+    console.log(`\n🔍 ${hasWildcard ? 'Expanding wildcard pattern' : 'Discovering nested pages'}: ${pattern}`);
+
+    // Extract domain and base path
+    const urlObj = new URL(pattern);
+    const domain = `${urlObj.protocol}//${urlObj.hostname}`;
+
+    console.log(`  Domain: ${domain}`);
+
+    // Try to fetch sitemap first
+    const sitemapUrls = await fetchSitemapUrls(domain);
+
+    let matchingUrls = [];
+
+    if (sitemapUrls && sitemapUrls.length > 0) {
+      console.log(`  Using sitemap with ${sitemapUrls.length} total URLs`);
+
+      if (hasWildcard) {
+        // Filter by wildcard pattern
+        matchingUrls = expandWildcardPattern(pattern, sitemapUrls);
+      } else {
+        // No wildcard - find all URLs that start with this path (nested pages)
+        const basePath = pattern.endsWith('/') ? pattern.slice(0, -1) : pattern;
+        matchingUrls = sitemapUrls.filter(url => {
+          const normalizedUrl = url.endsWith('/') ? url.slice(0, -1) : url;
+          return normalizedUrl.startsWith(basePath) && normalizedUrl !== basePath;
+        });
+        console.log(`  Looking for pages under: ${basePath}`);
+      }
+    } else {
+      // Fallback to HTML parsing if no sitemap
+      console.log(`  No sitemap found, trying HTML parsing...`);
+
+      const wildcardIndex = pattern.indexOf('*');
+      const lastSlashBeforeWildcard = hasWildcard
+        ? pattern.lastIndexOf('/', wildcardIndex)
+        : pattern.length;
+      const baseUrl = pattern.substring(0, lastSlashBeforeWildcard + 1);
+
+      console.log(`  Base URL: ${baseUrl}`);
+
+      const response = await fetch(baseUrl);
+
+      if (!response.ok) {
+        console.error(`  Failed to fetch base URL: ${response.status}`);
+        return res.status(400).json({
+          error: `Failed to fetch base URL: ${response.status} ${response.statusText}`
+        });
+      }
+
+      const html = await response.text();
+      const $ = cheerio.load(html);
+
+      // Extract all links from the page
+      const allLinks = new Set();
+      $('a[href]').each((_, element) => {
+        const href = $(element).attr('href');
+        if (!href) return;
+
+        try {
+          const absoluteUrl = new URL(href, baseUrl).href;
+          const baseUrlObj = new URL(baseUrl);
+          const linkUrlObj = new URL(absoluteUrl);
+
+          if (linkUrlObj.hostname === baseUrlObj.hostname) {
+            const cleanUrl = `${linkUrlObj.origin}${linkUrlObj.pathname}`;
+            const normalizedUrl = cleanUrl.endsWith('/') && cleanUrl.length > baseUrlObj.origin.length + 1
+              ? cleanUrl.slice(0, -1)
+              : cleanUrl;
+            allLinks.add(normalizedUrl);
+          }
+        } catch (e) {
+          // Invalid URL, skip
+        }
+      });
+
+      console.log(`  Found ${allLinks.size} total links on the page`);
+
+      const linkArray = Array.from(allLinks);
+
+      if (hasWildcard) {
+        matchingUrls = expandWildcardPattern(pattern, linkArray);
+      } else {
+        const basePath = pattern.endsWith('/') ? pattern.slice(0, -1) : pattern;
+        matchingUrls = linkArray.filter(url => {
+          const normalizedUrl = url.endsWith('/') ? url.slice(0, -1) : url;
+          return normalizedUrl.startsWith(basePath) && normalizedUrl !== basePath;
+        });
+      }
+    }
+
+    console.log(`  ✓ Found ${matchingUrls.length} matching URLs`);
+
+    if (matchingUrls.length === 0) {
+      console.warn(`  ⚠️  No URLs found`);
+    } else {
+      console.log(`  Matching URLs (first 10):`);
+      matchingUrls.slice(0, 10).forEach(url => console.log(`    ✓ ${url}`));
+      if (matchingUrls.length > 10) {
+        console.log(`    ... and ${matchingUrls.length - 10} more`);
+      }
+    }
+
+    res.json({
+      urls: matchingUrls,
+      total: matchingUrls.length,
+      method: sitemapUrls ? 'sitemap' : 'html-parsing'
+    });
+  } catch (error) {
+    console.error('URL expansion error:', error);
+    res.status(500).json({
+      error: error.message || 'Failed to expand pattern'
+    });
+  }
+});
 
 // Fetch documentation content from URLs
 app.post('/api/fetch-docs', async (req, res) => {

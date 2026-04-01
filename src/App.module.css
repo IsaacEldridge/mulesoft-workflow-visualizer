@@ -2,13 +2,44 @@
   width: 100%;
   height: 100vh;
   display: flex;
+  overflow: hidden;
+  background: #f4f7f9;
+}
+
+.mainContainer {
+  flex: 1;
+  margin-left: 260px;
+  display: flex;
   flex-direction: column;
   overflow: hidden;
 }
 
+.breadcrumb {
+  padding: 1rem 2rem;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.breadcrumbItem {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.breadcrumbItem:last-child {
+  color: #111827;
+  font-weight: 600;
+}
+
+.breadcrumbSeparator {
+  color: #d1d5db;
+}
+
 .main {
   flex: 1;
-  position: relative;
-  margin-top: 80px;
-  overflow: hidden;
+  overflow-y: auto;
+  padding: 2rem;
 }
