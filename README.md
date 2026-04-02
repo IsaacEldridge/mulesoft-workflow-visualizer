@@ -1,239 +1,319 @@
-# MuleSoft Content Workflow
+# CX AI Content Workbench
 
-An interactive web application that transforms various sources of content (PRDs, CX technical documentation drafts, etc.) into specific content types while creating a single source of truth.
+An enterprise-grade AI-powered content generation tool that transforms MuleSoft documentation, PRDs, and other sources into polished blog posts and Trailhead units.
 
-## Overview
+## 🎯 Overview
 
-This tool enables content creators to:
-- Paste source content in markdown or plain text format
-- Select an optional target audience (admin, developer, beginner)
-- Generate multiple output types from the same source material
-- View and copy generated content in markdown format
+The CX AI Content Workbench helps Salesforce/MuleSoft content creators generate high-quality content from multiple sources:
+- **Documentation URLs** (supports wildcards and sitemap-based discovery)
+- **File uploads** (PDF and Markdown files)
+- **Direct text input**
+- **Custom generation instructions**
 
-**Key principle:** All outputs are generated using ONLY the information from the source content. The system never invents features, claims, timelines, or product behavior.
+**Output Types:**
+- 📝 MuleSoft Blog Posts (thought leadership, external publishing)
+- 🎓 Salesforce Trailhead Units (educational, with quizzes)
 
-## Features
+---
 
-- **Content Authoring**: Paste source content with optional audience targeting
-- **AI-Powered Generation**: Create tailored content using Claude API
-- **Multiple Output Types**:
-  - MuleSoft Blog Post (thought leadership tone, external publishing)
-  - Salesforce Trailhead Unit (educational, step-by-step with quiz)
-- **Single Source of Truth**: Generate multiple outputs from one source
-- **Interactive Workflow**: Visual workflow showing content transformation
+## 🚀 Quick Start for Salesforce Team Members
 
-## Installation
+### Prerequisites
 
-```bash
-# Navigate to project directory
-cd mulesoft-workflow-visualizer
+- **Node.js 18+** (check with `node --version`)
+- **npm 8+** (check with `npm --version`)
+- **Salesforce API credentials** for the Bedrock endpoint
 
-# Install dependencies
-npm install
+### Installation
 
-# Set up environment variables (optional, for AI generation)
-cp .env.example .env
-# Edit .env and add your Anthropic API key
-```
-
-## Configuration
-
-### API Key Setup (Optional)
-
-To enable AI-powered content generation:
-
-1. Get an API key from [Anthropic Console](https://console.anthropic.com/)
-2. Create a `.env` file in the project root
-3. Add your API key:
-   ```
-   VITE_ANTHROPIC_API_KEY=your_api_key_here
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/IsaacEldridge/mulesoft-workflow-visualizer.git
+   cd mulesoft-workflow-visualizer
    ```
 
-**Note:** Without an API key, the tool will generate demo content showing where your real outputs would appear.
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-**Security:** In production, API calls should go through a backend server to protect your API key.
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   ```
 
-## Usage
+4. **Edit `.env` file** with your credentials
+   ```env
+   # Salesforce Bedrock Proxy (internal)
+   ANTHROPIC_BEDROCK_BASE_URL=https://eng-ai-model-gateway.sfproxy.devx-preprod.aws-esvc1-useast2.aws.sfdc.cl/bedrock
 
-### Development Mode
+   # Your Salesforce API key/token
+   ANTHROPIC_API_KEY=your_api_key_here
+   ```
 
+   > **Note:** Get your API credentials from your Salesforce team lead or internal docs.
+
+5. **Start the application**
+   ```bash
+   npm run dev:all
+   ```
+
+   This command starts both:
+   - 🖥️ **Frontend** (Vite/React): `http://localhost:3000/mulesoft-workflow-visualizer/`
+   - ⚙️ **Backend** (Express/Node): `http://localhost:3001`
+
+6. **Open your browser**
+
+   Navigate to: `http://localhost:3000/mulesoft-workflow-visualizer/`
+
+---
+
+## ✨ Features
+
+### 📥 Multiple Source Types
+
+**1. Documentation URLs**
+- Add MuleSoft documentation URLs directly
+- Use **wildcards** to fetch multiple pages: `https://docs.mulesoft.com/anypoint-code-builder/af-*`
+- **Sitemap-based discovery**: Automatically finds all pages under a section
+- **Linked documentation**: Automatically discovers and fetches referenced pages
+
+**2. File Uploads**
+- Upload **PDF files** (text extraction included)
+- Upload **Markdown files** (.md, .txt)
+- Maximum file size: 10MB
+
+**3. Manual Text Input**
+- Paste source content directly
+- Supports Markdown formatting
+- Combine with URLs and files
+
+**4. Custom Instructions**
+- Add specific generation instructions
+- Examples: "Focus on security features", "Include code examples"
+
+### 🎨 Enterprise UI
+
+- **Fixed Sidebar Navigation**
+  - Authoring (content creation)
+  - Distribution (view generated content)
+  - Governance (coming soon)
+  - Observability (coming soon)
+
+- **Card-Based Forms**
+  - Professional design with MuleSoft/Salesforce styling
+  - Clean, intuitive layout
+  - Responsive design
+
+- **Target Audience Options**
+  - Admin
+  - Developer
+  - Beginner
+  - Default (general audience)
+
+---
+
+## 📖 How to Use
+
+### Creating Content
+
+1. **Navigate to Authoring** (click in sidebar)
+
+2. **Add Source Content** (choose one or combine):
+
+   **Option A: Documentation URLs**
+   ```
+   https://docs.mulesoft.com/anypoint-code-builder/af-*
+   ```
+   - Click "Add URL"
+   - For multiple pages, the app discovers them automatically
+   - Click "Fetch Content" to retrieve documentation
+
+   **Option B: Upload Files**
+   - Click "Choose File"
+   - Select PDF or Markdown files
+   - Files are processed automatically
+
+   **Option C: Paste Text**
+   - Paste content in "Additional Source Content" area
+   - Supports Markdown formatting
+
+3. **Configure** (optional):
+   - Select target audience
+   - Add custom instructions
+
+4. **Generate Content**:
+   - Click "MuleSoft Blog Post" or "Salesforce Trailhead Unit"
+   - Wait for generation (usually 10-30 seconds)
+   - App automatically switches to Distribution view
+
+5. **View & Copy**:
+   - Review generated content in Distribution view
+   - Click "Copy Markdown" to copy to clipboard
+   - Switch between tabs to view different outputs
+
+---
+
+## 🛠️ Commands
+
+| Command | Description |
+|---------|-------------|
+| `npm install` | Install dependencies |
+| `npm run dev:all` | Run frontend + backend together |
+| `npm run dev` | Run frontend only (Vite) |
+| `npm run server` | Run backend only (Express) |
+| `npm run build` | Build for production |
+
+---
+
+## 🔧 Troubleshooting
+
+### ❌ "Failed to generate content"
+
+**Check:**
+- ✅ Is your API key set correctly in `.env`?
+- ✅ Is the backend server running? (check terminal for port 3001)
+- ✅ Do you have source content added?
+
+**Solution:** Restart the app with `npm run dev:all`
+
+---
+
+### ❌ "Cannot GET /api/..."
+
+**Issue:** Backend server not running
+
+**Solution:** Make sure you use `npm run dev:all` (not just `npm run dev`)
+
+---
+
+### ❌ "Failed to parse PDF file"
+
+**Common causes:**
+- PDF is image-based (scanned document without text layer)
+- PDF is encrypted/password protected
+- PDF file is corrupted
+
+**Solution:** Convert to Markdown or use a text-based PDF
+
+---
+
+### ❌ "No URLs found matching pattern"
+
+**Issue:** Wildcard pattern might not match any pages
+
+**Solution:**
+- Check the pattern: `https://docs.mulesoft.com/path/prefix-*`
+- Try adding a folder URL instead: `https://docs.mulesoft.com/path/`
+- Check backend logs for discovered URLs
+
+---
+
+### ❌ Backend won't start (port 3001 in use)
+
+**Solution:**
 ```bash
-# Start development server
-npm run dev
+# Kill process on port 3001
+lsof -ti:3001 | xargs kill -9
 
-# Open http://localhost:5173 in your browser
+# Or use a different port
+PORT=3002 npm run server
 ```
 
-### Production Build
+---
 
+### ❌ Frontend won't start (port 3000 in use)
+
+**Solution:**
 ```bash
-# Create optimized production build
-npm run build
-
-# Preview production build
-npm run preview
+# Kill process on port 3000
+lsof -ti:3000 | xargs kill -9
 ```
 
-## How to Use
+---
 
-1. **Open the Application**: Start the dev server and open in browser
-2. **Click Authoring Stage**: Click the "Authoring" stage node on the left
-3. **Paste Source Content**: Enter your source material (markdown or plain text)
-4. **Select Audience** (optional): Choose admin, developer, beginner, or leave default
-5. **Generate Content**: Click one or both output type buttons:
-   - "MuleSoft Blog Post"
-   - "Salesforce Trailhead Unit"
-6. **View Output**: The Distribution stage automatically opens showing generated content
-7. **Copy Content**: Use the "Copy Markdown" button to copy to clipboard
-8. **Generate More**: Return to Authoring to generate the other output type
+## 📂 Project Structure
 
-## Output Types
+```
+mulesoft-workflow-visualizer/
+├── src/
+│   ├── components/
+│   │   ├── Sidebar/              # Navigation sidebar
+│   │   ├── ContentInputPanel/    # Source input & generation
+│   │   ├── ContentOutputPanel/   # Generated content display
+│   │   └── ...
+│   ├── context/
+│   │   └── WorkflowContext.jsx   # State management
+│   ├── services/
+│   │   ├── contentGenerator.js   # API integration
+│   │   └── promptTemplates.js    # Generation prompts
+│   └── App.jsx                   # Main application
+├── server.js                     # Express backend
+├── package.json                  # Dependencies & scripts
+└── .env                          # Environment variables (not in repo)
+```
 
-### MuleSoft Blog Post
+---
 
-**Purpose:** External thought leadership content for blogs.mulesoft.com
+## 🔐 Security Notes
 
-**Format:**
-- Engaging title (under 60 characters)
-- Clear structure: intro, problem, solution, benefits, conclusion
-- Thought leadership tone (authoritative but approachable)
-- Professional and engaging writing style
+- **Never commit `.env` files** - they contain credentials
+- **API keys are server-side only** - frontend doesn't see them
+- **File uploads are processed in memory** - not stored on disk
+- **10MB file size limit** - prevents memory issues
 
-**Use Cases:**
-- Product announcements
-- Feature deep-dives
-- Best practices and patterns
-- Technical thought leadership
+---
 
-### Salesforce Trailhead Unit
+## 🎓 Content Generation Rules
 
-**Purpose:** Educational content for Salesforce Trailhead platform
+The AI follows strict rules:
 
-**Format:**
-- Learning objectives (3-5 specific outcomes)
-- Step-by-step instructional content
-- Short, digestible sections
-- Beginner-friendly language
-- Two-question multiple choice quiz
-
-**Use Cases:**
-- Product tutorials
-- Feature education
-- Getting started guides
-- Best practices training
-
-## Content Rules
-
-The system follows strict rules for all generated content:
-
-✅ **Do:**
-- Use only information from the source content
+✅ **DO:**
+- Use ONLY information from source content
 - State clearly when information is missing
-- Tailor output to selected format requirements
+- Tailor output to format requirements
 - Apply audience-appropriate complexity
 
-❌ **Don't:**
+❌ **DON'T:**
 - Invent features, claims, or timelines
 - Guess product behavior
 - Add speculative content
 - Assume information not in source
 
-## Project Structure
+---
 
-```
-src/
-├── components/
-│   ├── ContentInputPanel/    # Source content input and generation controls
-│   ├── ContentOutputPanel/   # Generated content display
-│   ├── WorkflowCanvas/       # Visual workflow stage nodes
-│   ├── StageDetailPanel/     # Stage detail container
-│   └── Header/               # Application header
-├── context/
-│   └── WorkflowContext.jsx   # State management for content workflow
-├── services/
-│   ├── contentGenerator.js   # Claude API integration
-│   └── promptTemplates.js    # Output type prompt templates
-├── data/
-│   └── workflowData.js       # Workflow stage definitions
-└── main.jsx                  # Application entry point
-```
+## 🌐 Browser Compatibility
 
-## Browser Compatibility
-
-- Chrome 90+ ✅
-- Firefox 88+ ✅
-- Safari 14+ ✅
-- Edge 90+ ✅
-
-## Troubleshooting
-
-### No content is generated
-
-- Check that you've pasted source content in the textarea
-- Verify your API key is set correctly in `.env`
-- Check browser console for error messages
-- Without an API key, you'll see demo content
-
-### Generated content is incomplete
-
-- Ensure source content has sufficient detail
-- Try breaking very long content into sections
-- Check that source content is in a readable format
-
-### API errors
-
-- Verify API key is valid and has credits
-- Check network connectivity
-- Ensure API key has proper permissions
-
-## Development
-
-### Adding New Output Types
-
-1. Add new prompt template in `src/services/promptTemplates.js`
-2. Add new output type constant to `OUTPUT_TYPES`
-3. Update `OUTPUT_TYPE_LABELS` with display name
-4. Add new button in `ContentInputPanel.jsx`
-5. Update state management in `WorkflowContext.jsx`
-
-### Customizing Prompts
-
-Edit the prompt templates in `src/services/promptTemplates.js`:
-- Modify format requirements
-- Add new sections or structure
-- Adjust tone and style guidelines
-- Update rules and constraints
-
-## License
-
-Copyright © 2026 MuleSoft. All rights reserved.
-
-## Support
-
-For issues or questions, contact the CX Engineering team.
+- ✅ Chrome 90+
+- ✅ Firefox 88+
+- ✅ Safari 14+
+- ✅ Edge 90+
 
 ---
 
-## Quick Start
+## 🤝 Support
 
-```bash
-# Install
-npm install
-
-# Add API key (optional)
-cp .env.example .env
-# Edit .env with your key
-
-# Run
-npm run dev
-
-# Use
-1. Click "Authoring" stage
-2. Paste source content
-3. Click generation button
-4. View output in "Distribution" stage
-```
+For issues or questions:
+- Contact the CX Engineering team
+- Create an issue in the GitHub repository
+- Check the troubleshooting section above
 
 ---
 
-**Made with Claude Code** 🚀
+## 📜 License
+
+Copyright © 2026 Salesforce/MuleSoft. All rights reserved.
+
+---
+
+## 🚀 Built With
+
+- **Frontend:** React 18 + Vite
+- **Backend:** Express + Node.js
+- **AI:** Claude (via AWS Bedrock)
+- **Styling:** CSS Modules
+- **Parsing:** Cheerio, pdf-parse, fast-xml-parser
+
+---
+
+**Made with Claude Code** 🤖
