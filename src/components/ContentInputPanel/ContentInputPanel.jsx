@@ -291,7 +291,7 @@ export default function ContentInputPanel() {
         [outputType]: content
       }));
 
-      // Automatically switch to distribution view to show output
+      // Automatically switch to Retrieve Content view to show output
       setCurrentView('distribution');
     } catch (err) {
       setError(err.message);
@@ -304,7 +304,7 @@ export default function ContentInputPanel() {
   return (
     <div className={styles.contentInputPanel}>
       <div className={styles.header}>
-        <h2>Content Authoring</h2>
+        <h2>Add Sources</h2>
         <p>Create AI-generated blog posts and Trailhead units from your source content</p>
       </div>
 
@@ -614,7 +614,7 @@ export default function ContentInputPanel() {
 
       {(generatedOutputs.blogPost || generatedOutputs.trailheadUnit) && (
         <div className={styles.successMessage}>
-          Generated content is available in the Distribution stage.
+          Generated content is available in Retrieve Content.
         </div>
       )}
     </div>
