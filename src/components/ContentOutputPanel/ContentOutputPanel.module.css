@@ -128,6 +128,34 @@
   font-size: 0.9375rem;
 }
 
+.toolbarActions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.editButton {
+  padding: 0.625rem 1.25rem;
+  background: white;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.editButton:hover {
+  background: #f9fafb;
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+.editButton:active {
+  transform: scale(0.98);
+}
+
 .copyButton {
   padding: 0.625rem 1.25rem;
   background: white;
@@ -147,6 +175,71 @@
 }
 
 .copyButton:active {
+  transform: scale(0.98);
+}
+
+.exportButton {
+  padding: 0.625rem 1.25rem;
+  background: white;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  color: #374151;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.exportButton:hover {
+  background: #f9fafb;
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.exportButton:active {
+  transform: scale(0.98);
+}
+
+.saveButton {
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.saveButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.saveButton:active {
+  transform: translateY(0);
+}
+
+.cancelButton {
+  padding: 0.625rem 1.25rem;
+  background: white;
+  border: 1.5px solid #dc2626;
+  border-radius: 8px;
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.cancelButton:hover {
+  background: #fef2f2;
+  border-color: #b91c1c;
+  color: #b91c1c;
+}
+
+.cancelButton:active {
   transform: scale(0.98);
 }
 
@@ -172,6 +265,25 @@
 
 .pre code {
   display: block;
+}
+
+.editTextarea {
+  width: 100%;
+  min-height: 500px;
+  padding: 0;
+  margin: 0;
+  background: #ffffff;
+  border: none;
+  color: #111827;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+}
+
+.editTextarea::placeholder {
+  color: #9ca3af;
 }
 
 .tabEmptyState {
@@ -203,6 +315,122 @@
   background: #9ca3af;
 }
 
+/* Refinement Section */
+.refinementSection {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.refinementHeader {
+  margin-bottom: 1rem;
+}
+
+.refinementHeader h3 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.refinementHeader p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.refinementInputGroup {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.refinementInput {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: #ffffff;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  color: #111827;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  resize: vertical;
+  transition: all 0.15s ease;
+}
+
+.refinementInput:focus {
+  outline: none;
+  border-color: #00A1E0;
+  box-shadow: 0 0 0 3px rgba(0, 161, 224, 0.1);
+}
+
+.refinementInput:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f3f4f6;
+}
+
+.refinementInput::placeholder {
+  color: #9ca3af;
+}
+
+.refineButton {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: fit-content;
+}
+
+.refineButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.refineButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.refineButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.refinementError {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .contentOutputPanel {
@@ -223,7 +451,25 @@
     gap: 0.75rem;
   }
 
-  .copyButton {
+  .toolbarActions {
     width: 100%;
+    flex-direction: column;
+  }
+
+  .editButton,
+  .copyButton,
+  .exportButton,
+  .saveButton,
+  .cancelButton {
+    width: 100%;
+  }
+
+  .refinementInputGroup {
+    flex-direction: column;
+  }
+
+  .refineButton {
+    width: 100%;
+    justify-content: center;
   }
 }

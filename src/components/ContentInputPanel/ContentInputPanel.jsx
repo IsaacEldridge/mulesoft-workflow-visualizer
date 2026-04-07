@@ -45,7 +45,7 @@ export default function ContentInputPanel() {
     if (hasWildcard || trimmedUrl.endsWith('/')) {
       // Expand wildcard pattern or discover nested pages
       setIsFetchingDocs(true);
-      setFetchError(hasWildcard ? 'Expanding wildcard pattern...' : 'Discovering nested pages...');
+      setFetchError(hasWildcard ? '🔍 Expanding wildcard pattern...' : '🔍 Discovering nested pages...');
 
       try {
         const response = await fetch('http://localhost:3001/api/expand-wildcard', {
@@ -389,7 +389,7 @@ export default function ContentInputPanel() {
         )}
 
         {fetchError && (
-          <div className={fetchError.startsWith('✓') ? styles.successMessage : styles.error}>
+          <div className={fetchError.startsWith('✓') || fetchError.startsWith('🔍') ? styles.successMessage : styles.error}>
             {fetchError}
           </div>
         )}
@@ -484,7 +484,7 @@ export default function ContentInputPanel() {
         )}
 
         {fileUploadError && (
-          <div className={fileUploadError.startsWith('✓') ? styles.successMessage : styles.error}>
+          <div className={fileUploadError.startsWith('✓') || fileUploadError.startsWith('🔍') ? styles.successMessage : styles.error}>
             {fileUploadError}
           </div>
         )}

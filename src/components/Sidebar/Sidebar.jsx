@@ -21,21 +21,24 @@ export default function Sidebar() {
 
       <nav className={styles.nav}>
         <div className={styles.navSection}>
-          <button
-            className={`${styles.navItem} ${currentView === 'authoring' ? styles.active : ''}`}
-            onClick={() => setCurrentView('authoring')}
-          >
-            <span className={styles.navIcon}>✏️</span>
-            <span className={styles.navLabel}>Authoring</span>
-          </button>
+          <div className={styles.navGroup}>
+            <span className={styles.navGroupLabel}>Authoring</span>
+            <button
+              className={`${styles.navItem} ${currentView === 'authoring' ? styles.active : ''}`}
+              onClick={() => setCurrentView('authoring')}
+            >
+              <span className={styles.navIcon}>✏️</span>
+              <span className={styles.navLabel}>Add Sources</span>
+            </button>
 
-          <button
-            className={`${styles.navItem} ${currentView === 'distribution' ? styles.active : ''}`}
-            onClick={() => setCurrentView('distribution')}
-          >
-            <span className={styles.navIcon}>📤</span>
-            <span className={styles.navLabel}>Distribution</span>
-          </button>
+            <button
+              className={`${styles.navItem} ${currentView === 'distribution' ? styles.active : ''}`}
+              onClick={() => setCurrentView('distribution')}
+            >
+              <span className={styles.navIcon}>📤</span>
+              <span className={styles.navLabel}>Retrieve Content</span>
+            </button>
+          </div>
         </div>
 
         <div className={styles.navSection}>
