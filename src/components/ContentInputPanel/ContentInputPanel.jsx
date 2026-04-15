@@ -305,7 +305,7 @@ export default function ContentInputPanel() {
     <div className={styles.contentInputPanel}>
       <div className={styles.header}>
         <h2>Add Sources</h2>
-        <p>Create AI-generated blog posts and Trailhead units from your source content</p>
+        <p>Create AI-generated blog posts, Trailhead units, and trail proposals from your source content</p>
       </div>
 
       {/* Source Input Card */}
@@ -606,13 +606,33 @@ export default function ContentInputPanel() {
               </>
             )}
           </button>
+
+          <button
+            className={styles.generateButton}
+            onClick={() => handleGenerate(OUTPUT_TYPES.TRAIL_PROPOSAL)}
+            disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && uploadedFiles.length === 0)}
+          >
+            {isGenerating && generatingType === OUTPUT_TYPES.TRAIL_PROPOSAL ? (
+              <>
+                <span className={styles.spinner}></span>
+                Generating...
+              </>
+            ) : (
+              <>
+                {generatedOutputs.trailProposal && (
+                  <span className={styles.checkmark}>✓</span>
+                )}
+                {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.TRAIL_PROPOSAL]}
+              </>
+            )}
+          </button>
         </div>
         <p className={styles.hint}>
-          Click a button to generate content. You can generate both types from the same source.
+          Click a button to generate content. You can generate all types from the same source.
         </p>
       </div>
 
-      {(generatedOutputs.blogPost || generatedOutputs.trailheadUnit) && (
+      {(generatedOutputs.blogPost || generatedOutputs.trailheadUnit || generatedOutputs.trailProposal) && (
         <div className={styles.successMessage}>
           Generated content is available in Retrieve Content.
         </div>

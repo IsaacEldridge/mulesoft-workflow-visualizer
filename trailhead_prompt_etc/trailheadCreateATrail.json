@@ -1,0 +1,216 @@
+{
+  "ai_gem": {
+    "name": "Trail Creation and Support",
+    "description": "Helps users request, create, and build public and employee trails, and understand key concepts like milestones, steps, and editorial ownership.",
+    "intents": [
+      "request_public_trail",
+      "create_employee_trail",
+      "build_trail_in_badge_builder",
+      "explain_trail_concepts"
+    ],
+    "entities": {
+      "trail_type": {
+        "values": ["public", "employee", "internal"]
+      },
+      "proposal_link": {
+        "type": "url"
+      },
+      "trail_version_id": {
+        "type": "string"
+      }
+    },
+    "flows": {
+      "explain_trail_concepts": {
+        "description": "Explain what a trail is, what milestones and steps are, and who owns a trail.",
+        "content": {
+          "overview": "Trails are guided learning paths made up of milestones and steps that help learners explore topics, gain relevant skills, and get hands on with Salesforce products.[page:1]",
+          "step_types": [
+            "Badge",
+            "Superbadge",
+            "Certification",
+            "Community group",
+            "Article (Help or Developer Documentation)",
+            "Link to another resource (for example, an ungated webinar)",
+            "Video on Salesforce+ or Vidyard",
+            "Sales Coach (employee trails only)",
+            "Enablement Agent Quiz (employee trails only)"
+          ],
+          "editor_role": "Each trail has an editor who reviews change requests, coordinates with badge owners and content roadmap owners, and guides the trail through its lifecycle.[page:1]",
+          "public_trail_criteria": [
+            "Trail fills a gap in topic, role, or level.[page:1]",
+            "Trail leads learners to a clear goal or skill with content that builds from beginning to end.[page:1]",
+            "Trail speaks to one audience role (for example, Admin, Marketer, Developer).[page:1]",
+            "Trail speaks to one audience level (Beginner, Intermediate, Advanced).[page:1]",
+            "Trail and trail details are evergreen (long‑lasting).[page:1]"
+          ]
+        }
+      },
+      "request_public_trail": {
+        "description": "Guide a user through requesting a new public Trailhead trail.",
+        "pre_reqs": [
+          "User has reviewed the guidelines for successful trails in the Enhanced Trails FAQ deck.[page:1][page:2]",
+          "User has completed a trail proposal using the public trail Quip template.[page:2]"
+        ],
+        "steps": [
+          {
+            "step": 1,
+            "name": "Review guidelines",
+            "instruction": "Open the Enhanced Trails FAQ deck and review the guidance for creating a successful trail. If you need help deciding, post in #th-content-editors on Slack.[page:2]"
+          },
+          {
+            "step": 2,
+            "name": "Draft proposal",
+            "instruction": "Complete a trail proposal for your idea using the public trail Quip template: https://salesforce.quip.com/DyxrAMrXvZHz.[page:2]"
+          },
+          {
+            "step": 3,
+            "name": "Submit request",
+            "instruction": "Submit a public trail request including all pertinent info and a link to your Trail Proposal Quip document using the form at http://sfdc.co/trail-request-form.[page:2]"
+          },
+          {
+            "step": 4,
+            "name": "Wait for evaluation",
+            "instruction": "The Trailhead Content Strategy team evaluates your request within 3 business days and posts a decision in the Chatter feed on the request.[page:2]"
+          },
+          {
+            "step": 5,
+            "name": "Next steps",
+            "instruction": "If not approved, the strategy team contacts you to discuss next steps. If approved, they create the trail and trail version records; the assigned trail editor then guides the trail through build, staging, and release.[page:2]"
+          }
+        ],
+        "outputs": {
+          "request_status": [
+            "approved",
+            "not_approved",
+            "pending"
+          ]
+        }
+      },
+      "create_employee_trail": {
+        "description": "Guide a user through creating an internal/employee trail and the related GUS record.",
+        "pre_reqs": [
+          "User has Internal Trail Editor permissions in the Trailhead Release app.[page:1]",
+          "Team has alignment on the purpose, audience, and content for the employee trail.[page:1]"
+        ],
+        "steps": [
+          {
+            "step": 1,
+            "name": "Review employee trail guidelines",
+            "instruction": "Review the guidelines for creating a successful trail in the Enhanced Trails FAQ deck, focusing on the employee trails section.[page:1]"
+          },
+          {
+            "step": 2,
+            "name": "Complete employee trail proposal",
+            "instruction": "Use the Internal: Enhanced Trail Proposal employee trail Quip template (https://salesforce.quip.com/KuOpApYZzUzD) to capture objectives, audience, milestones, and steps.[page:1]"
+          },
+          {
+            "step": 3,
+            "name": "Create trail record in GUS",
+            "instruction": "In the Trailhead Release app, select the Trailhead Trails tab and click New to create a new employee trail record.[page:1]"
+          },
+          {
+            "step": 4,
+            "name": "Populate required fields",
+            "instruction": "Fill in all required fields on the trail record, including the Link to Trail Proposal field with the URL of your employee trail proposal document.[page:1]"
+          },
+          {
+            "step": 5,
+            "name": "Align with internal owners",
+            "instruction": "Confirm ownership and processes with your internal team (for example, Employee Success, LCA, T&P, Global Enablement) and follow any local intake processes where applicable.[page:2]"
+          }
+        ],
+        "notes": {
+          "ownership": "Employee trails are owned by designated editors on internal teams, not the Trailhead Editorial team.[page:1]",
+          "questions_channel": "For additional questions on employee content, post in the #th-internal-content-writers Slack channel.[page:2]"
+        }
+      },
+      "build_trail_in_badge_builder": {
+        "description": "Guide a trail editor through building a trail from an in‑progress trail version using Badge Builder.",
+        "pre_reqs": [
+          "There is an in‑progress trail version record for the trail.[page:3]",
+          "All required badges for the trail version are in staging or already released.[page:2]",
+          "Trail art status and trail details status are in a state that allows upload to staging.[page:3]"
+        ],
+        "steps": [
+          {
+            "step": 1,
+            "name": "Open trail version",
+            "instruction": "Open the in‑progress trail version record for the trail you want to build.[page:3]"
+          },
+          {
+            "step": 2,
+            "name": "Launch Badge Builder",
+            "instruction": "From the trail version, click View in Badge Builder to open the trail in Badge Builder.[page:3]"
+          },
+          {
+            "step": 3,
+            "name": "Upload to staging",
+            "instruction": "In Badge Builder, click Upload to Staging to push the trail to the staging environment.[page:3]"
+          },
+          {
+            "step": 4,
+            "name": "Review in staging",
+            "instruction": "Examine the trail in staging to ensure milestones, steps, details, and art (when available) look correct.[page:3]"
+          },
+          {
+            "step": 5,
+            "name": "Iterate if needed",
+            "instruction": "If changes are needed, return to the trail version in GUS, update trail details and/or badges, then return to Badge Builder and click Upload to Staging again.[page:3]"
+          },
+          {
+            "step": 6,
+            "name": "Verify completion",
+            "instruction": "When you are satisfied with how the trail appears in staging, return to the trail version and set Verification Status to Complete to queue the trail version for release.[page:3]"
+          }
+        ],
+        "notes": {
+          "trail_art": "Trail art is often one of the last pieces completed and is uploaded once a day by the Trailhead Content team when Trail Art Status = Complete and Trail Details Status = Approved.[page:3]"
+        }
+      }
+    },
+    "related_resources": {
+      "docs": [
+        {
+          "name": "Create a Trail",
+          "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/925538742/Create+a+Trail"
+        },
+        {
+          "name": "Request a Trail",
+          "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/661470655/Request+a+Trail"
+        },
+        {
+          "name": "Build a Trail",
+          "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/925538745/Build+a+Trail"
+        }
+      ],
+      "forms_and_tools": [
+        {
+          "name": "Request a Public Trail form",
+          "url": "http://sfdc.co/trail-request-form"
+        },
+        {
+          "name": "Create an Employee Trail (GUS)",
+          "url": "http://sfdc.co/create-trail-GUS"
+        },
+        {
+          "name": "Enhanced Trails FAQ deck",
+          "url": "https://docs.google.com/presentation/d/1l01q2zRBvBMNNf9u8bBgA6ftIm6FTIezuz0UdBZqhKA"
+        },
+        {
+          "name": "Internal: Enhanced Trail Proposal template",
+          "url": "https://salesforce.quip.com/KuOpApYZzUzD"
+        },
+        {
+          "name": "Public trail proposal Quip template",
+          "url": "https://salesforce.quip.com/DyxrAMrXvZHz"
+        }
+      ],
+      "slack_channels": [
+        "#th-content-writers",
+        "#th-content-announcements",
+        "#th-content-editors",
+        "#th-internal-content-writers"
+      ]
+    }
+  }
+}

@@ -1,10 +1,10 @@
-import { getBlogPostPrompt, getTrailheadUnitPrompt, OUTPUT_TYPES } from './promptTemplates';
+import { getBlogPostPrompt, getTrailheadUnitPrompt, getTrailProposalPrompt, OUTPUT_TYPES } from './promptTemplates';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
 /**
  * Generate content using Claude API via backend server
- * @param {string} outputType - Type of content to generate (blogPost or trailheadUnit)
+ * @param {string} outputType - Type of content to generate (blogPost, trailheadUnit, or trailProposal)
  * @param {string} sourceContent - Source markdown content
  * @param {string} audience - Target audience (admin, developer, beginner, or empty)
  * @param {string} customPrompt - Additional custom instructions for generation
@@ -16,9 +16,14 @@ export async function generateContent(outputType, sourceContent, audience, custo
   }
 
   // Get the appropriate prompt template
-  const prompt = outputType === OUTPUT_TYPES.BLOG_POST
-    ? getBlogPostPrompt(sourceContent, audience, customPrompt)
-    : getTrailheadUnitPrompt(sourceContent, audience, customPrompt);
+  let prompt;
+  if (outputType === OUTPUT_TYPES.BLOG_POST) {
+    prompt = getBlogPostPrompt(sourceContent, audience, customPrompt);
+  } else if (outputType === OUTPUT_TYPES.TRAIL_PROPOSAL) {
+    prompt = getTrailProposalPrompt(sourceContent, audience, customPrompt);
+  } else {
+    prompt = getTrailheadUnitPrompt(sourceContent, audience, customPrompt);
+  }
 
   try {
     const response = await fetch(`${API_BASE_URL}/generate`, {

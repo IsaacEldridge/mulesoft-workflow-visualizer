@@ -1,0 +1,1352 @@
+{
+  "trailhead_style_guide": {
+    "content_details": {
+      "pages": [
+        {
+          "page_title": "Content Details",
+          "page_id": "668086065",
+          "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086065/Content+Details",
+          "created_by": "Lisa Caten",
+          "last_updated_date": "Apr 22, 2025",
+          "read_time": "1 minute read",
+          "view_count": "785 views",
+          "introduction": "This section has standards and specifications for defining Trailhead content, including trails and various types of badges.",
+          "related_pages": [
+            "Content Length",
+            "Names and Descriptions",
+            "Products/Features",
+            "Roles and Levels",
+            "Industry Tags",
+            "Skills and Skill Sets"
+          ]
+        },
+        {
+          "page_title": "Content Length",
+          "page_id": "668086605",
+          "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086605/Content+Length",
+          "created_by": "Lisa Caten",
+          "last_updated_date": "Dec 10, 2025",
+          "read_time": "1 minute read",
+          "view_count": "1,028 views",
+          "content_guidelines": [
+            {
+              "content_type": "Trail",
+              "guidelines": [
+                "A new trail format was launched at Dreamforce 2024: enhanced trails (informally known as trails 2.0).",
+                "Legacy trail: 2-7 badges",
+                "Enhanced trail: 1-7 milestones with 2-7 steps in each milestone",
+                "Note: A badge can be included in multiple trails. A public trail contains only public badges, but an employee trail can contain both public and employee badges. (Both public and private badges can be added to a private trailmix.)"
+              ]
+            },
+            {
+              "content_type": "Badge",
+              "guideline": "2-5 units per badge"
+            },
+            {
+              "content_type": "Quick Look Badge",
+              "guideline": "1 unit, 600-800 words"
+            },
+            {
+              "content_type": "Unit",
+              "guidelines": [
+                "500-1500 words per unit*",
+                "1500 is the maximum number of words per unit, but limiting to 500-1000 words is strongly recommended because badge completion rates are lower on longer content.",
+                "* You may exclude the words in image alt text, code snippets, interactivities, resources, and quizzes from the word count."
+              ]
+            },
+            {
+              "content_type": "Learning Objectives",
+              "guideline": "2-5 learning objectives per unit"
+            }
+          ]
+        },
+        {
+          "page_title": "Names and Descriptions",
+          "page_id": "668093966",
+          "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668093966/Names+and+Descriptions",
+          "created_by": "Lisa Caten",
+          "last_updated_date": "Dec 09, 2025",
+          "read_time": "1 minute read",
+          "view_count": "952 views",
+          "introduction": "Follow these guidelines as you write titles and descriptions for your content.",
+          "note": "Use \"General\" only when no other product value applies.",
+          "content_types": [
+            {
+              "type": "Trail",
+              "guidelines": [
+                {
+                  "element": "Trail Name",
+                  "structure": "[imperative verb] + [topic], No more than 80 characters, Title capitalization",
+                  "guidelines": "What skill will the user have after completing the trail? What's the main benefit of this trail (or related product)? Try to use a verb that communicates what makes the trail or product unique; avoid \"Learn About\" or \"Get to Know\" if possible.",
+                  "examples": [
+                    "Develop Apps with Heroku Enterprise",
+                    "Get on the Road with Field Service Lightning",
+                    "Automate Your Business Processes with Lightning Flow",
+                    "Manage the Salesforce Way"
+                  ]
+                },
+                {
+                  "element": "Description",
+                  "structure": "[imperative verb] + [learning objectives], No more than 120 characters, Sentence capitalization, ends with a period",
+                  "guidelines": "What are the main learning objectives of the trail? How does the trail explain the product? Avoid repeating the title.",
+                  "examples": [
+                    "Learn how Salesforce can help you better manage your donations, grants, and events."
+                  ]
+                },
+                {
+                  "element": "Milestone Title",
+                  "structure": "[imperative verb] + [topic], No more than 80 characters, Title capitalization",
+                  "guidelines": "What skill will the user have after completing the trail? What's the main benefit of this trail (or related product)? Try to use a verb that communicates what makes the trail or product unique; avoid \"Learn About\" or \"Get to Know\" if possible.",
+                  "examples": [
+                    "Create Generative AI Experiences Using Prompt Builder",
+                    "Set Up and Administer Data 360"
+                  ]
+                },
+                {
+                  "element": "Milestone Description",
+                  "structure": "Not currently in use",
+                  "guidelines": "N/A"
+                },
+                {
+                  "element": "Step Title / Step Description",
+                  "guidelines": "For steps that are not badges, follow the guidelines for a badge."
+                }
+              ]
+            },
+            {
+              "type": "Badge",
+              "guidelines": [
+                {
+                  "element": "Badge Name",
+                  "structure": "[noun], No more than 80 characters, Title capitalization",
+                  "guidelines": "What marketable skill will the user have after completing the badge? What would a user put on their resume? Append \"Basics\" for the first badge in a series on a topic. Not \"101,\" \"Overview,\" or \"Intro.\" If there won't be more badges on that topic, don't append \"Basics.\"",
+                  "examples": [
+                    "Data Modeling",
+                    "Screen Flow Distribution",
+                    "Service Console Customization"
+                  ]
+                },
+                {
+                  "element": "Description",
+                  "structure": "[imperative verb] + [learning objectives], No more than 90 characters, Sentence capitalization, ends with a period",
+                  "guidelines": "What are the main learning objectives of the badge? Avoid repeating the title.",
+                  "examples": [
+                    "Explore ways to mitigate risk and better prepare for the digital future."
+                  ]
+                },
+                {
+                  "element": "Unit Name",
+                  "structure": "[imperative verb] + [topic], Title capitalization, No more than 80 characters",
+                  "guidelines": "What will the user build or do in the unit?",
+                  "examples": [
+                    "Choose the Right Automation Tool",
+                    "Use Picklists in Formulas"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Quick Look Badge",
+              "guidelines": [
+                {
+                  "element": "Quick Look Badge Name",
+                  "structure": "[noun] + : Quick Look, No more than 80 characters, Title capitalization",
+                  "guidelines": "What product or features will a learner be familiar with on a high level after completing the Quick Look badge?",
+                  "examples": [
+                    "Agentforce: Quick Look",
+                    "Trailblazer Community: Quick Look"
+                  ]
+                },
+                {
+                  "element": "Description",
+                  "structure": "[imperative verb] + [learning objectives], No more than 90 characters, Sentence capitalization, ends with a period",
+                  "guidelines": "What are the main learning objectives of the quick look badge? Avoid repeating the title.",
+                  "examples": [
+                    "Discover how Agentforce helps employees perform business tasks more efficiently."
+                  ]
+                },
+                {
+                  "element": "Unit Name",
+                  "structure": "[imperative verb] + [topic], No more than 80 characters",
+                  "guidelines": "What's the key objective of the unit?",
+                  "examples": [
+                    "Get to Know Agentforce"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Quick Start Badge",
+              "guidelines": [
+                {
+                  "element": "Quick Start Badge Name",
+                  "structure": "Quick Start: + [imperative verb] + [topic], No more than 80 characters, Title capitalization",
+                  "guidelines": "What will the user build or create in the badge?",
+                  "examples": [
+                    "Quick Start: Customize an App with Lightning Object Creator"
+                  ]
+                },
+                {
+                  "element": "Description",
+                  "structure": "[imperative verb] + [learning objectives], No more than 90 characters, Sentence capitalization, ends with a period",
+                  "guidelines": "What are the main learning objectives of the badge? Avoid repeating the title.",
+                  "examples": [
+                    "Import data to create a custom object."
+                  ]
+                },
+                {
+                  "element": "Unit Name",
+                  "structure": "[imperative verb] + [topic], Title capitalization, No more than 80 characters",
+                  "guidelines": "What will the user build or do in the unit?",
+                  "examples": [
+                    "Set up your Salesforce DX environment."
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+            "page_title": "Product Tags and Latest Rebrand Context",
+            "primaryProductPicklistValues": [
+              "Agentforce",
+              "Agentforce 360 Platform",
+              "Agentforce Automotive",
+              "Agentforce Builder",
+              "Agentforce Commerce",
+              "Agentforce Communications",
+              "Agentforce Construction & Real Estate",
+              "Agentforce Consumer Goods",
+              "Agentforce Education",
+              "Agentforce Energy & Utilities",
+              "Agentforce Field Service",
+              "Agentforce Financial Services",
+              "Agentforce Health",
+              "Agentforce IT Service",
+              "Agentforce Life Sciences",
+              "Agentforce Manufacturing",
+              "Agentforce Marketing",
+              "Agentforce Media",
+              "Agentforce MuleSoft",
+              "Agentforce Net Zero",
+              "Agentforce Nonprofit",
+              "Agentforce Public Sector",
+              "Agentforce Retail",
+              "Agentforce Revenue Management",
+              "Agentforce Sales",
+              "Agentforce Service",
+              "Agentforce Voice",
+              "AppExchange",
+              "B2B Commerce",
+              "B2C Commerce",
+              "Business Rules Engine",
+              "Contracts & Document Generation",
+              "CRM Analytics",
+              "Data 360",
+              "Enterprise Product Catalog",
+              "Experience Cloud",
+              "Feedback Management",
+              "Flow Builder",
+              "General/No Salesforce Product",
+              "Government Cloud",
+              "Heroku",
+              "Industries CPQ",
+              "Industries Order Management",
+              "Informatic",
+              "Insurance",
+              "Loyalty Management",
+              "Marketing Cloud Account Engagement",
+              "Marketing Cloud Engagement",
+              "Marketing Cloud Next",
+              "Marketing Intelligence",
+              "MuleSoft Anypoint Platform",
+              "MuleSoft Composer",
+              "MuleSoft RPA",
+              "Omnichannel Inventory",
+              "OmniStudio",
+              "Order Management",
+              "Payments",
+              "Platform Security",
+              "Prompt Builder",
+              "Quip",
+              "Revenue Lifecycle Management",
+              "Salesforce Mobile App",
+              "Salesforce Personalization",
+              "Salesforce Success Cloud",
+              "Scheduler",
+              "Slack",
+              "Spiff",
+              "Tableau",
+              "Tableau Next"
+            ],
+            "productRebrandMapping": {
+                "Einstein Trust Layer": "Agentforce Trust Layer",
+                "Data Cloud": "Data 360",
+                "Salesforce (product portfolio)": "Agentforce 360",
+                "Agentforce (Agentic layer of our platform)": "Agentforce 360 Platform",
+                "Sales Cloud": "Agentforce Sales",
+                "Service Cloud": "Agentforce Service",
+                "Marketing Cloud": "Agentforce Marketing",
+                "Commerce Cloud": "Agentforce Commerce",
+                "Revenue Cloud": "Agentforce Revenue Management",
+                "Field Service": "Agentforce Field Service",
+                "ITSM": "Agentforce IT Service",
+                "MuleSoft": "Agentforce MuleSoft",
+                "Automotive Cloud": "Agentforce Automotive",
+                "Communications Cloud": "Agentforce Communications",
+                "Consumer Goods Cloud": "Agentforce Consumer Goods",
+                "Education Cloud": "Agentforce Education",
+                "Energy & Utilities Cloud": "Agentforce Energy & Utilities",
+                "Financial Services Cloud": "Agentforce Financial Services",
+                "Government Cloud": "Agentforce Government Cloud",
+                "Health Cloud": "Agentforce Health",
+                "Life Sciences Cloud": "Agentforce Life Sciences",
+                "Manufacturing Cloud": "Agentforce Manufacturing",
+                "Media Cloud": "Agentforce Media",
+                "Net Zero Cloud": "Agentforce Net Zero",
+                "Nonprofit Cloud": "Agentforce Nonprofit"
+            },
+            "trailheadProductFeatureMatrix": {
+                "Agentforce": [
+                    "Agentforce Builder (formerly Agent Builder)",
+                    "Agentforce Voice",
+                    "Prompt Builder"
+                ],
+                "Agentforce 360 Platform (formerly Salesforce Platform) ": [
+                    "AppExchange",
+                    "Flow Builder",
+                    "Heroku",
+                    "Salesforce Mobile App",
+                    "Platform Security"
+                ],
+                "Agentforce Commerce ": [
+                    "B2B Commerce ",
+                    "B2C Commerce",
+                    "Order Management",
+                    "Omnichannel Inventory",
+                    "Payments"
+                ],
+                "Agentforce Field Service": [
+                    "Scheduler"
+                ],
+                "Agentforce Marketing": [
+                    "Loyalty Management",
+                    "Marketing Cloud Account Engagement",
+                    "Marketing Cloud Engagement",
+                    "Marketing Cloud Next",
+                    "Marketing Intelligence",
+                    "Salesforce Personalization"
+                ],
+                "Agentforce MuleSoft": [
+                    "MuleSoft Anypoint Platform",
+                    "MuleSoft Composer",
+                    "MuleSoft RPA"
+                ],
+                "Agentforce Sales": [
+                    "Spiff"
+                ],
+                "Analytics": [
+                    "CRM Analytics",
+                    "Tableau",
+                    "Tableau Next"
+                ],
+                "Industry Solutions": [
+                    "Agentforce Automotive (net new)",
+                    "Agentforce Communications (net new)",
+                    "Agentforce Consumer Goods (formerly Consumer Goods Cloud)",
+                    "Agentforce Education (formerly Education Cloud)",
+                    "Agentforce Energy & Utilities (net new)",
+                    "Agentforce Financial Services (formerly Financial Services Cloud)",
+                    "Government Cloud (net new)",
+                    "Agentforce Health (net new)",
+                    "Agentforce Life Sciences (net new)",
+                    "Agentforce Manufacturing (formerly Manufacturing Cloud)",
+                    "Agentforce Media (net new)",
+                    "Agentforce Net Zero (formerly Net Zero Cloud)",
+                    "Agentforce Nonprofit (formerly Nonprofit Cloud)",
+                    "Agentforce Public Sector (formerly Public Sector Solutions)",
+                    "Agentforce Retail (net new)"
+                ]
+            }
+        },
+        {
+          "page_title": "Products/Features",
+          "page_id": "675498725",
+          "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/675498725/Products+Features",
+          "created_by": "Lisa Caten",
+          "last_updated_by": "Justin Shukas",
+          "last_updated_date": "Dec 18, 2025",
+          "read_time": "2 minute read",
+          "view_count": "325 views",
+          "introduction": "Also known as tags, filters help Trailblazers find relevant badges and trails by product/feature, role, skill, industry, and level of experience.",
+          "product_fields": [
+            "The Trailhead Product Categories field reflects one or more values that you specify in the Trailhead Products/Features field.",
+            "The Trailhead Products/Features field (formerly Trailhead Product Filter) allows you to specify one or more products/features that Trailblazers can select on Trailhead to see content related to those products/features.",
+            "The Primary Product/Feature field (formerly Primary Product) allows you to specify the product/feature most prominently featured in the badge, for internal reporting purposes."
+          ],
+          "note": "Trails inherit Trailhead Product Category and Trailhead Products/Features from the badges in the trail.",
+          "reference_link": "See the latest product tags available in GUS/Trailhead UI here.",
+          "examples": [
+            {
+              "trailhead_product_category": "Agentforce",
+              "trailhead_products_features": "Prompt Builder",
+              "primary_product_feature": "Prompt Builder"
+            },
+            {
+              "trailhead_product_category": "Industry Solutions",
+              "trailhead_products_features": "Agentforce Financial Services",
+              "primary_product_feature": "Agentforce Financial Services"
+            },
+            {
+              "trailhead_product_category": "Agentforce Marketing",
+              "trailhead_products_features": "Marketing Cloud Engagement",
+              "primary_product_feature": "Marketing Cloud Engagement"
+            }
+          ],
+          "best_practices": [
+            "Usually you only need one product/feature tag. There might be some exceptions for products/features that overlap, such as Lightning. For example, Lightning Web Components Basics has two product tags: Lightning and Agentforce 360 Platform.",
+            "Avoid using General/No Salesforce Product if possible. (Choose General/No Salesforce Product only if no other product fits.)",
+            "Never use General/No Salesforce Product along with another product.",
+            "Use General/No Salesforce Product if the badge is: Not related to a Salesforce product or feature or industry (e.g., Git and Github Basics); Related to a product that doesn't have a product tag yet (e.g., myTrailhead Basics); About soft skills (e.g., Writing Style)."
+          ],
+          "see_also": [
+            "Roles and Levels",
+            "Names and Descriptions",
+            "Check Filters and Other Details"
+          ]
+          
+
+
+        },
+        {
+          "page_title": "Roles and Levels",
+          "page_id": "675495722",
+          "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/675495722/Roles+and+Levels",
+          "created_by": "Lisa Caten",
+          "last_updated_date": "Apr 22, 2025",
+          "read_time": "4 minute read",
+          "view_count": "743 views",
+          "introduction": "Also known as tags, filters help Trailblazers find relevant badges and trails by product/feature, role, skill, industry, and level of experience.",
+          "badge_focus": "Each Trailhead badge should be focused on a specific target audience. When you create a badge, you've got to know your audience.",
+          "audience_questions": [
+            "Who is the learner? An admin, a designer, a marketer, a student?",
+            "What's their level of experience with the subject? Beginner, intermediate, or advanced?",
+            "What are their goals? Get started, address pain points, learn about new features?"
+          ],
+          "roles": {
+            "note": "Choose only one role for a badge.",
+            "role_definitions": [
+              {
+                "role": "Administrator",
+                "description": "A Salesforce Administrator configures and manages the Agentforce 360 Platform, ensuring that it meets the company's requirements. They handle user accounts, create reports, dashboards, workflows, and maintain data quality."
+              },
+              {
+                "role": "Architect",
+                "description": "A Salesforce Architect designs scalable and robust solutions within the Agentforce 360 Platform. They are responsible for the overall structure of Salesforce systems, ensuring they align with business processes and technical requirements."
+              },
+              {
+                "role": "Business Analyst",
+                "description": "A Salesforce Business Analyst acts as a bridge between business problems and technology solutions. They analyze business processes, gather requirements, and help design Salesforce solutions that improve efficiency and productivity."
+              },
+              {
+                "role": "Consultant",
+                "description": "A Salesforce Consultant advises businesses on how to best use the Agentforce 360 Platform. They analyze business needs, recommend solutions, and help implement Salesforce systems to meet strategic objectives."
+              },
+              {
+                "role": "Customer Service Professional",
+                "description": "A Customer Service Professional uses Salesforce Service Cloud to manage customer support and service processes. They handle customer inquiries, cases, and provide support to ensure a high level of customer satisfaction."
+              },
+              {
+                "role": "Cybersecurity",
+                "description": "A professional focused on Cybersecurity within Salesforce is responsible for securing the Salesforce environment. This includes safeguarding sensitive data, monitoring for security threats, and ensuring compliance with security policies and regulations."
+              },
+              {
+                "role": "Data Analyst",
+                "description": "A Data Analyst enables stakeholders to make business decisions by understanding the business problem, identifying data to explore for analysis, and delivering actionable insights."
+              },
+              {
+                "role": "Designer",
+                "description": "A Salesforce Designer focuses on the user interface and experience within the Agentforce 360 Platform. They design the layout, visual elements, and interactions to ensure a seamless and effective user experience."
+              },
+              {
+                "role": "Developer",
+                "description": "A Salesforce Developer builds and customizes Salesforce applications using the platform's various development tools, such as Apex, Visualforce, and Lightning Components. They write code to create new functionality and integrate external systems."
+              },
+              {
+                "role": "End user",
+                "description": "An End User is an individual who uses Salesforce on a daily basis to perform their job functions and achieve the business goals and objectives."
+              },
+              {
+                "role": "Marketer",
+                "description": "A Marketer in the Salesforce ecosystem uses Salesforce Marketing Cloud and other marketing tools to create and manage marketing campaigns, track customer journeys, and analyze marketing performance."
+              },
+              {
+                "role": "Sales Professional",
+                "description": "A Sales Professional uses Salesforce Sales Cloud to manage their sales processes, including tracking leads, opportunities, and customer interactions, to close deals and grow revenue."
+              }
+            ],
+            "general_skills_note": "For general information and soft skills (such as public speaking skills or Trailhead basics), choose the End User role."
+          },
+          "levels": {
+            "description": "Use these level descriptions to understand what your target audience knows and can do. Then you can create content that's appropriate for their role and skill level.",
+            "level_definitions": [
+              {
+                "level": "Foundational",
+                "user_facing_definition": "Are you ready to start your Salesforce journey or explore the latest product features and industry trends? This content is tailored for both new Trailblazers and experienced professionals. You're introduced to Salesforce products and features, essential skills, and industry tools, all while preparing for foundational-level certifications. Discover various roles within the Salesforce ecosystem and stay up-to-date on key industry themes and technologies.",
+                "target_audience": "New Salesforce users, beginners, or individuals with limited or no prior experience in Salesforce.",
+                "learning_focus": [
+                  "Prepares for foundational level certifications",
+                  "Introduces basic product features or terminology",
+                  "Provides a foundational understanding of Salesforce products, skills, navigation, and/or concepts",
+                  "Introduces Salesforce roles and essential skills",
+                  "Covers key industry themes, trends, and technologies",
+                  "Helps learners transition from an outside platform to Salesforce, such as 'SQL to SOQL'",
+                  "Focuses on both click and code skills"
+                ]
+              },
+              {
+                "level": "Intermediate",
+                "user_facing_definition": "Ready to take your Salesforce skills to the next level? This content is for those with some experience who want to deepen their understanding and proficiency in specific Salesforce roles or products. Build on your basics and showcase your growing expertise!",
+                "target_audience": "Users with a working knowledge of Salesforce that are exploring new products and features to handle more complex organizational needs. Intermediate learners have moved beyond the basics and are now delving deeper into specific areas of the Agentforce 360 Platform. They are building on their foundational knowledge and starting to apply what they have learned in more complex scenarios.",
+                "learning_focus": [
+                  "Prepares for Professional certifications",
+                  "Covers core elements of setup and implementation",
+                  "Teaches learners to tailor Salesforce solutions for their business",
+                  "Engages in discovery to grasp customer requirements",
+                  "Shares best practices to design basic Salesforce solutions",
+                  "Delves into industry-specific themes, trends, and tech discussions",
+                  "Teaches the learner how to do all types of testing for code and click solutions",
+                  "Supports and troubleshoots user challenges"
+                ]
+              },
+              {
+                "level": "Advanced",
+                "user_facing_definition": "Elevate your Salesforce expertise! Designed for professionals familiar with the basics, this content helps you tackle more complex tasks and challenges within the Salesforce ecosystem. Enhance your skills and become a Salesforce pro by optimizing and expanding your use of Salesforce!",
+                "target_audience": "Experienced Salesforce users, consultants, developers, and admins, including those working toward specialist certifications. They are capable of handling complex tasks and are often seen as experts within their organizations.",
+                "learning_focus": [
+                  "Prepares for Advanced certifications",
+                  "Deepens expertise in Salesforce configuration, usage, and complex feature applications",
+                  "Expands knowledge with multi-cloud solutions and integrates them into business ecosystems",
+                  "Delves into complex automation",
+                  "Develops skills to design and implement scalable solutions",
+                  "Includes Salesforce features such as custom development, integration, and advanced analytics",
+                  "Tackles intricate business issues using declarative methods and code",
+                  "Links business objectives to Salesforce solutions and enhances product adoption",
+                  "Analyzes industry trends for strategic application and elevates digital transformations with advanced strategies",
+                  "Prepares for effective application of advanced configurations and data management in real-world scenarios"
+                ]
+              }
+            ]
+          },
+          "see_also": [
+            "Names and Descriptions",
+            "Products/Features",
+            "Check Filters and Other Details"
+          ]
+        },
+        {
+            "page_title": "Industry Tags",
+            "page_id": "857475230",
+            "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/857475230/Industry+Tags",
+            "created_by": "Lisa Caten",
+            "last_updated_date": "Apr 24, 2025",
+            "read_time": "5 minute read",
+            "introduction": "Also known as tags, filters help Trailblazers find relevant badges and trails. The Industries filter on Trailhead relies on Industry tags in metadata to associate the badge with relevant business domain(s). Not every Trailhead badge needs to be tagged with an Industry, but badges where the tags do apply will benefit from better discoverability.",
+            "sections": [
+                {
+                    "section_title": "Where does the list of Industry tags come from?",
+                    "content": "Industry tags align with the L1 Industries listed in the Salesforce C360 taxonomy. In turn, the C360 Industries categories map to Standard Industrial Classification (SIC) codes, which are governed by the U.S. Securities and Exchange Commission."
+                },
+                {
+                    "section_title": "What Industry tags are available on Trailhead?",
+                    "available_tags": [
+                        "Agriculture and Mining",
+                        "Communications and Media",
+                        "Education",
+                        "Energy and Utilities",
+                        "Engineering, Construction, and Real Estate",
+                        "Financial Services",
+                        "Healthcare and Life Sciences",
+                        "High Tech",
+                        "Manufacturing and Automotive",
+                        "Nonprofit",
+                        "Professional Services",
+                        "Public Sector",
+                        "Retail and Consumer Goods",
+                        "Travel, Transportation, and Hospitality"
+                    ]
+                },
+                {
+                    "section_title": "How do I determine which Industry filter(s) to use for my badge?",
+                    "approach": "Employ a structured approach combining direct product-to-industry mapping with a criteria-based approach to refine tagging for products spanning multiple industries.",
+                    "note": "Select at least one, and no more than five tags per badge to ensure meaningful results overall. The only exceptions are Industries common components such as Contract and Document Generation, Business Rules Engine (BRE), and Omnistudio, which may have up to eight tags.",
+                    "subsections": [
+                        {
+                            "subsection_title": "Direct Product-to-Industry Mapping",
+                            "description": "Several products map directly to an Industry tag.",
+                            "mappings": [
+                                {"product": "Agentforce Consumer Goods", "industry_tag": "Retail and Consumer Goods"},
+                                {"product": "Agentforce Communications", "industry_tag": "Communications and Media"},
+                                {"product": "Agentforce Education", "industry_tag": "Education"},
+                                {"product": "Agentforce Financial Services", "industry_tag": "Financial Services"},
+                                {"product": "Agentforce Health", "industry_tag": "Healthcare and Life Sciences"},
+                                {"product": "Agentforce Manufacturing", "industry_tag": "Manufacturing and Automotive"},
+                                {"product": "Agentforce Nonprofit", "industry_tag": "Nonprofit"},
+                                {"product": "Agentforce Public", "industry_tag": "Public Sector"},
+                                {"product": "Agentforce Automotive", "industry_tag": "Manufacturing and Automotive"},
+                                {"product": "Agentforce Energy & Utilities", "industry_tag": "Energy and Utilities"},
+                                {"product": "Agentforce Government Cloud", "industry_tag": "Government"},
+                                {"product": "Agentforce Life Sciences", "industry_tag": "Healthcare and Life Sciences"},
+                                {"product": "Agentforce Manufacturing", "industry_tag": "Manufacturing and Automotive"},
+                                {"product": "Agentforce Media", "industry_tag": "Communications and Media"},
+                                {"product": "Agentforce Net Zero", "industry_tag": "Net Zero"},
+                                {"product": "Agentforce Retail", "industry_tag": "Retail and Consumer Goods"}
+                                
+                            ]
+                        },
+                        {
+                            "subsection_title": "Criteria for Cross-Cloud Industry Mapping and Refinement",
+                            "guiding_question": "What are the priority Industries where we want this content to be discoverable using the filter on Trailhead?",
+                            "approach": "Initially, align the product covered in the badge with the broadest applicable industry category. Further refine the badge's alignment by identifying more specific sectors or niches within the broad industry category that the content directly addresses. This structured approach ensures that badges are categorized in a way that reflects both their broad industry relevance and their applicability to specific sectors.",
+                            "steps": [
+                                "Familiarize yourself with the available Industry tags and how they are defined: Refer to the list of tags above (or the Industry field pick list in a GUS badge record). See the Definitions table in the section below for more context about the business domain encompassed by each tag.",
+                                "Analyze badge content: Evaluate the badge's description, learning objectives, target role, and associated skills to align with the appropriate Industry tags.",
+                                "Collaborate for accuracy: Confer with your manager or strategist to choose the best tag(s) based on badge content and goals. Remember, select at least one, and no more than five tags per badge to ensure meaningful results overall."
+                            ],
+                            "example": {
+                                "badge_name": "Product Designer Basics",
+                                "badge_description": "Build out your catalog offerings faster and more precisely.",
+                                "process": [
+                                    "The writer knows from content planning conversations that direct product-to-industry mapping does not apply for this badge.",
+                                    "The writer confers with the content strategist on their team, and together they determine that Enterprise Product Catalog (EPC) is the appropriate internal Primary Product tag.",
+                                    "The writer cross references the badge description, learning objectives, and the associated roles and skills to further refine the alignment with Industry tags. They also scan the Industry tags of badges in this same content area.",
+                                    "Based on this research and analysis, the writer proposes to their editor and content strategist that the Industry tags for this badge are Communications and Media and Energy and Utilities."
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "section_title": "How are the Industry tags on Trailhead defined?",
+                    "definitions": [
+                        {
+                            "tag": "Agriculture and Mining",
+                            "definition": "Agriculture: The production of crops, plants, vines, or trees; and the keeping, grazing, or feeding of livestock. Mining: The extraction of minerals occurring naturally: solids, such as coal and ores; liquids, such as crude petroleum; and gases such as natural gas."
+                        },
+                        {
+                            "tag": "Communications and Media",
+                            "definition": "Communications: Furnishing point-to-point communications services, whether intended to be received aurally or visually; and radio and television broadcasting. Media: Preparing advertising and support materials (writing copy, artwork, graphics, and other creative work) and placing in periodicals, newspapers, radio and television, or other media."
+                        },
+                        {
+                            "tag": "Education",
+                            "definition": "Providing academic or technical instruction. Also includes libraries, student exchange programs, and curriculum development."
+                        },
+                        {
+                            "tag": "Energy and Utilities",
+                            "definition": "The generation, transmission, and/or distribution of electricity or gas or steam. Water and irrigation systems, and sanitary systems engaged in the collection and disposal of garbage, sewage, and other wastes by means of destroying or processing materials."
+                        },
+                        {
+                            "tag": "Engineering, Construction, and Real Estate",
+                            "definition": "Engineering: Industrial, civil, electrical, and mechanical engineering services. Construction: Building construction and heavy construction resulting in new work, additions, alterations, reconstruction, installations, and repairs. Real Estate: Real estate operators, and owners and lessors of real property, as well as buyers, sellers, developers, reps, and brokers."
+                        },
+                        {
+                            "tag": "Financial Services",
+                            "definition": "Depository institutions, non-depository credit institutions, holding and other investment companies, brokers and dealers in securities and commodity contracts, and security and commodity exchanges."
+                        },
+                        {
+                            "tag": "Healthcare and Life Sciences",
+                            "definition": "Health services provided to individuals. These services can occur in a variety of work settings, including hospitals, clinics, dental offices, out-patient surgery centers, birthing centers, emergency medical care, home healthcare, and nursing homes."
+                        },
+                        {
+                            "tag": "High Tech",
+                            "definition": "Computer programming services such as computer software design and analysis; modifications of custom software; and training in the use of custom software."
+                        },
+                        {
+                            "tag": "Manufacturing and Automotive",
+                            "definition": "Manufacturing: The mechanical or chemical transformation of materials or substances into new products. Automotive: Retail dealers selling new and used automobiles, boats, recreational vehicles, utility trailers, and motorcycles."
+                        },
+                        {
+                            "tag": "Nonprofit",
+                            "definition": "Non-governmental organizations primarily engaged in providing social services, including community improvement and social change, or other mission-based work such as animal welfare organizations."
+                        },
+                        {
+                            "tag": "Professional Services",
+                            "definition": "Providing a wide variety of services for individuals, business and government establishments, and other organizations. Includes personal, business, repair, and amusement services, and membership organizations."
+                        },
+                        {
+                            "tag": "Public Sector",
+                            "definition": "The executive, legislative, judicial, administrative and regulatory activities of Federal, State, local, and international governments."
+                        },
+                        {
+                            "tag": "Retail and Consumer Goods",
+                            "definition": "Selling merchandise for personal or household consumption and rendering services incidental to the sale of the goods."
+                        },
+                        {
+                            "tag": "Travel, Transportation, and Hospitality",
+                            "definition": "Travel: Furnishing travel information and acting as reps in arranging tours, transportation, rental of cars, and lodging for travelers. Transportation: Passenger and freight transportation provided to the general public or to other business enterprises. Hospitality: Lodging, or lodging and meals, provided for the general public."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "page_title": "Skills and Skill Sets",
+            "page_id": "804913804",
+            "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/804913804/Skills+and+Skill+Sets",
+            "created_by": "Lisa Caten",
+            "last_updated_date": "Apr 24, 2025",
+            "read_time": "10 minute read",
+            "view_count": "894 views",
+            "sections": [
+                {
+                    "section_title": "Skill tagging basics",
+                    "content": "View the Trailhead Skills Taxonomy (skill sets, skills, skill definitions, and associated skills).",
+                    "subsections": [
+                        {
+                            "subsection_title": "What's a skill set?",
+                            "description": [
+                                "A group of related key skills needed to succeed in a specific business domain in the Salesforce ecosystem",
+                                "Used to filter content",
+                                "Displayed in Trail Details"
+                            ]
+                        },
+                        {
+                            "subsection_title": "What's a skill?",
+                            "description": [
+                                "Knowledge and/or abilities needed to succeed in a role",
+                                "Correlate directly to the badge description OR at least 1 unit's learning objective(s)",
+                                "Displayed in Badge Details along with Role, Level, Products",
+                                "All badges must include a minimum of 1, and a maximum of 5, skills (not required to be from the same Skill Set)"
+                            ]
+                        },
+                        {
+                            "subsection_title": "What's an associated skill?",
+                            "description": [
+                                "Specialized knowledge and/or abilities (or skill synonyms) where there may not be enough content to justify the creation of a new skill tag",
+                                "Used for tagging consistency",
+                                "Not displayed to Trailblazers or included in the badge record"
+                            ]
+                        }
+                    ],
+                    "note": "It's important to note that not all roles are associated with every skill set or skill due to scope of work and responsibilities."
+                },
+                {
+                    "section_title": "Skills by skill set",
+                    "skill_sets": [
+                        {
+                            "skill_set_name": "Agents and AI Technology",
+                            "skill_count": 6,
+                            "skills": [
+                                {
+                                    "skill_name": "AI Agents",
+                                    "skill_description": "Using artificial intelligence (AI) systems that can understand and perform tasks independently.",
+                                    "associated_skills": "Information extraction; Generative adversarial networks"
+                                },
+                                {
+                                    "skill_name": "Artificial Intelligence",
+                                    "skill_description": "Understanding, using, or developing computer systems to think and act like humans.",
+                                    "associated_skills": "Artificial neural networks; Computer vision; Natural language processing; Predictive analytics: Unstructured data"
+                                },
+                                {
+                                    "skill_name": "Applications of AI",
+                                    "skill_description": "Identifying use cases to automate tasks, personalize experiences, and enhance decision-making using AI.",
+                                    "associated_skills": "Deep learning; Natural language understanding; Image recognition; Graph neural networks"
+                                },
+                                {
+                                    "skill_name": "AI Ethics and Trust",
+                                    "skill_description": "Developing responsible AI to ensure trust, prioritize transparency, and avoid biases and discrimination.",
+                                    "associated_skills": "Responsible AI"
+                                },
+                                {
+                                    "skill_name": "AI Development",
+                                    "skill_description": "Creating and deploying AI systems using Agentforce Builder, Prompt Builder and generative AI tools.",
+                                    "associated_skills": "Natural language processing; Text classification; Autoencoders; Generative adversarial networks"
+                                },
+                                {
+                                    "skill_name": "AI Analytics",
+                                    "skill_description": "Delivering real-time insights and predictions to turn data into action.",
+                                    "associated_skills": "Tableau AI; Data for AI"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "App and Software Development",
+                            "skill_count": 7,
+                            "skills": [
+                                {
+                                    "skill_name": "Agile Software Development",
+                                    "skill_description": "Developing software with a collaborative group that delivers small incremental updates, gathers customer feedback, and adapts to changes.",
+                                    "associated_skills": "Agile Methodology, Agile Software Development, SCRUM, Kanban"
+                                },
+                                {
+                                    "skill_name": "App Development and Engineering Practices",
+                                    "skill_description": "Planning, designing, creating, testing, bug-fixing, deployment, and support of software applications.",
+                                    "associated_skills": "Aura Framework, Lightning Web Components, Jest, React"
+                                },
+                                {
+                                    "skill_name": "Framework Development",
+                                    "skill_description": "Developing web applications, including web services, web resources and web APIs.",
+                                    "associated_skills": "iOS, Android, React Native, Hybrid, Lightning Web Components for Mobile"
+                                },
+                                {
+                                    "skill_name": "Mobile Development",
+                                    "skill_description": "Developing software or systems that work well on mobile devices.",
+                                    "associated_skills": "Java, Swift, Apex, Visualforce, Objective-C, Kotlin, Heroku, Ruby, PHP, Node.js, Go, Scala, Clojure, Python"
+                                },
+                                {
+                                    "skill_name": "Programming Languages",
+                                    "skill_description": "Using general purpose computer programming language for a wide range of tasks beyond automation and integration.",
+                                    "associated_skills": "Salesforce Object Query Language (SOQL), SQL"
+                                },
+                                {
+                                    "skill_name": "Query Languages",
+                                    "skill_description": "Using a computer language to search or update a database.",
+                                    "associated_skills": "Application Development, DevOps, Scalability, Software Design Patterns, Software Documentation, Technical Writing"
+                                },
+                                {
+                                    "skill_name": "Software Quality Assurance",
+                                    "skill_description": "Monitoring software engineering processes and methods to ensure high quality and compliance with regulations and standards.",
+                                    "associated_skills": "Code Review, Usability Testing, User Acceptance Testing (UAT), Version Control, Quality Gates, Unit Testing"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Business Analysis and Strategy",
+                            "skill_count": 7,
+                            "skills": [
+                                {
+                                    "skill_name": "Business Analysis",
+                                    "skill_description": "Analyzing and documenting business processes.",
+                                    "associated_skills": "Business Requirements, Business Systems Analysis, Gap Analysis"
+                                },
+                                {
+                                    "skill_name": "Business Consulting",
+                                    "skill_description": "Giving expert advice to a business.",
+                                    "associated_skills": "Consulting"
+                                },
+                                {
+                                    "skill_name": "Business Intelligence",
+                                    "skill_description": "Using research and technology to view and analyze a business's performance.",
+                                    "associated_skills": "Business Intelligence Software, Tableau"
+                                },
+                                {
+                                    "skill_name": "Business Management",
+                                    "skill_description": "Organizing the operations of a running a business.",
+                                    "associated_skills": "Management"
+                                },
+                                {
+                                    "skill_name": "Business Strategy",
+                                    "skill_description": "Creating a strategy for a businesses will achieve its main goals.",
+                                    "associated_skills": "Business Development, Reengineering, Strategic Planning"
+                                },
+                                {
+                                    "skill_name": "General Finance",
+                                    "skill_description": "The study and management of money, currency, assets, and investments.",
+                                    "associated_skills": "Finance, Financial Services"
+                                },
+                                {
+                                    "skill_name": "Research and Discovery",
+                                    "skill_description": "Techniques for collecting and evaluating data with the scientific method and general scientific knowledge.",
+                                    "associated_skills": "Analytical Techniques, Research, General Science and Research"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Business Technology Management & Tools",
+                            "skill_count": 8,
+                            "skills": [
+                                {
+                                    "skill_name": "Application Programming Interface",
+                                    "skill_description": "Using APIs, a software intermediary that allows two applications to talk to each other.",
+                                    "associated_skills": ""
+                                },
+                                {
+                                    "skill_name": "Cloud Solutions",
+                                    "skill_description": "Using cloud-based services, computer networks, storage, applications, or resources.",
+                                    "associated_skills": "Software as a Service (SaaS), Cloud Computing, Cloud Services"
+                                },
+                                {
+                                    "skill_name": "Computer Science",
+                                    "skill_description": "Using computer systems, programming languages, algorithms, data structures, and programming for information processing.",
+                                    "associated_skills": "Automation, Computing Platforms, Emerging Technologies, Information Systems, Information Technology"
+                                },
+                                {
+                                    "skill_name": "Integration Management",
+                                    "skill_description": "Using technology to manage and integrate a company's technology and applications.",
+                                    "associated_skills": "Enterprise Application Software, Mulesoft"
+                                },
+                                {
+                                    "skill_name": "IT Management",
+                                    "skill_description": "Managing the information technology resources of a company, including hardware, software, data, networks and data center operations.",
+                                    "associated_skills": "Apache Ant, Jenkins, Environmental Management, Management Information Systems, Release Management"
+                                },
+                                {
+                                    "skill_name": "Office and Productivity Technology",
+                                    "skill_description": "Using technology that allows a user to complete tasks quickly and easily.",
+                                    "associated_skills": "Quip, Slack, Office Productivity"
+                                },
+                                {
+                                    "skill_name": "Social Media",
+                                    "skill_description": "Creating, publishing, and managing content and communities on social media platforms.",
+                                    "associated_skills": "Social Media, Facebook, Twitter, TikTok, LinkedIn, Instagram"
+                                },
+                                {
+                                    "skill_name": "Web Services",
+                                    "skill_description": "Using reliable, scalable, and inexpensive cloud computing services.",
+                                    "associated_skills": ""
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Career Management",
+                            "skill_count": 3,
+                            "skills": [
+                                {
+                                    "skill_name": "Employee Training",
+                                    "skill_description": "Developing a plan to onboard new employees and continuously train them.",
+                                    "associated_skills": "Onboarding, Developing Training Materials, Instructional Design"
+                                },
+                                {
+                                    "skill_name": "Self-Development",
+                                    "skill_description": "Creating a fulfilling career through continuous learning and growth.",
+                                    "associated_skills": "Cert Prep, Salesforce Certifications"
+                                },
+                                {
+                                    "skill_name": "Teaching",
+                                    "skill_description": "Educational methodologies and techniques for teaching students or employees.",
+                                    "associated_skills": "Mentorship, Training"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Customer Service and Success",
+                            "skill_count": 4,
+                            "skills": [
+                                {
+                                    "skill_name": "Account Management",
+                                    "skill_description": "Overseeing, nurturing, and retaining customer relationships and accounts.",
+                                    "associated_skills": "Customer Management"
+                                },
+                                {
+                                    "skill_name": "Client Support",
+                                    "skill_description": "Ensuring success and satisfaction for your customers through onboarding, education, and customer advocacy.",
+                                    "associated_skills": "Customer Success Management"
+                                },
+                                {
+                                    "skill_name": "Customer Service",
+                                    "skill_description": "Interacting with customers and helping to resolve their problems.",
+                                    "associated_skills": "Customer Support, Field Service"
+                                },
+                                {
+                                    "skill_name": "Technical Support and Services",
+                                    "skill_description": "Helping customers with technical issues from installation to maintenance and repairs.",
+                                    "associated_skills": "End-User Training and Support"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Data Analysis and Management",
+                            "skill_count": 6,
+                            "skills": [
+                                {
+                                    "skill_name": "Data Analysis",
+                                    "skill_description": "Compiling and analyzing data to discover useful information and support decision-making.",
+                                    "associated_skills": "Analytics, Dashboards, Forecasting"
+                                },
+                                {
+                                    "skill_name": "Data Governance, Ethics, and Privacy",
+                                    "skill_description": "Managing an organization's data ethically and ensuring compliance with laws and policies.",
+                                    "associated_skills": ""
+                                },
+                                {
+                                    "skill_name": "Data Integration",
+                                    "skill_description": "Integrating data from various sources into a database so it can be accessed and used.",
+                                    "associated_skills": "Data Cleansing, Data Standardization, Data Extraction, Transformation, and Loading (ETL)"
+                                },
+                                {
+                                    "skill_name": "Data Management",
+                                    "skill_description": "Managing an organization's data through data governance, architecture, integration, and quality.",
+                                    "associated_skills": "Data Maintenance, Data Mapping, Data Migration, Data Quality"
+                                },
+                                {
+                                    "skill_name": "Data Science",
+                                    "skill_description": "Using scientific methods and algorithms to gain knowledge and insights from data.",
+                                    "associated_skills": "Data Modeling, Big Data, Data Engineering"
+                                },
+                                {
+                                    "skill_name": "Data Visualization",
+                                    "skill_description": "Representing data in easily understood graphics or visualizations.",
+                                    "associated_skills": "Dashboards, Reports"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Design",
+                            "skill_count": 5,
+                            "skills": [
+                                {
+                                    "skill_name": "App and Web Design",
+                                    "skill_description": "Planning, designing, programming, and deploying applications and web pages.",
+                                    "associated_skills": "Design Software"
+                                },
+                                {
+                                    "skill_name": "Digital Design",
+                                    "skill_description": "Designing multimedia for viewing on a screen.",
+                                    "associated_skills": "Functional Requirement, System Architecture, Requirements Elicitation"
+                                },
+                                {
+                                    "skill_name": "Graphic and Visual Design",
+                                    "skill_description": "Designing content using typography, photography, and illustration, to communicate a message or promote a product.",
+                                    "associated_skills": "Graphic and Visual Design Software (Adobe Creative Suite, Figma)"
+                                },
+                                {
+                                    "skill_name": "System Design and Implementation",
+                                    "skill_description": "Planning and designing effective information systems.",
+                                    "associated_skills": "Axure RP, Information Architecture, Usability, User Experience (UX), User Interface, User Research, Wireframing"
+                                },
+                                {
+                                    "skill_name": "User Interface and User Experience Design",
+                                    "skill_description": "Creating user interfaces that make technology easy to understand and use.",
+                                    "associated_skills": "Cascading Style Sheets (CSS), HyperText Markup Language (HTML), Lightning Web Components, Web Design"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Interpersonal",
+                            "skill_count": 7,
+                            "skills": [
+                                {
+                                    "skill_name": "Collaboration",
+                                    "skill_description": "Working well with others toward a common goal.",
+                                    "associated_skills": "Teamwork, Social Skills, Intrapersonal Skills"
+                                },
+                                {
+                                    "skill_name": "Communication",
+                                    "skill_description": "Expressing ideas in a way that’s both effective and easy for others to understand, whether written, verbal, or nonverbal.",
+                                    "associated_skills": "Presentations, Intrapersonal Communication Skills, Storytelling, Writing, Editing"
+                                },
+                                {
+                                    "skill_name": "Critical Thinking and Problem Solving",
+                                    "skill_description": "Thinking critically and finding creative and effective solutions to problems.",
+                                    "associated_skills": "Innovation, Troubleshooting, Analytical Skills"
+                                },
+                                {
+                                    "skill_name": "Personal Success",
+                                    "skill_description": "Personal qualities and positive character traits, such as sincerity, trustworthiness, and willingness to learn.",
+                                    "associated_skills": "Detail Oriented, Multitasking, Work Ethic"
+                                },
+                                {
+                                    "skill_name": "Productivity",
+                                    "skill_description": "Completing tasks and using resources efficiently so you can accomplish your goals.",
+                                    "associated_skills": ""
+                                },
+                                {
+                                    "skill_name": "Project Management",
+                                    "skill_description": "Planning and managing a team's work to achieve the goals of a project.",
+                                    "associated_skills": ""
+                                },
+                                {
+                                    "skill_name": "Scheduling",
+                                    "skill_description": "Creating a schedule, including using technology like online calendaring tools.",
+                                    "associated_skills": "Prioritization"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Leadership",
+                            "skill_count": 6,
+                            "skills": [
+                                {
+                                    "skill_name": "Accessibility and Inclusion",
+                                    "skill_description": "Working to creating a more just, equitable, and inclusive environment.",
+                                    "associated_skills": "Diversity, Equity, Inclusion, Equality"
+                                },
+                                {
+                                    "skill_name": "Business Leadership",
+                                    "skill_description": "Providing vision, direction, and leadership in order to ensure the overall success of an organization.",
+                                    "associated_skills": "Strategic Planning"
+                                },
+                                {
+                                    "skill_name": "Community and Social Work",
+                                    "skill_description": "Working to improving the health, well-being, and quality of life of individuals and communities.",
+                                    "associated_skills": "Community Outreach, Well-Being, Communities, Psychological Safety, Team Building"
+                                },
+                                {
+                                    "skill_name": "Motivating and Empowering",
+                                    "skill_description": "Using communication and interpersonal skills to inspire others and motivate them to achieve goals.",
+                                    "associated_skills": "Coaching, Influencing, Leadership, Decision Making, Driving Performance, Feedback"
+                                },
+                                {
+                                    "skill_name": "Personal Effectiveness",
+                                    "skill_description": "Taking initiative and motivating yourself to complete tasks and achieve goals.",
+                                    "associated_skills": "Initiative, Coordinating, Planning, Self-Motivation, Time Management, Accountability"
+                                },
+                                {
+                                    "skill_name": "Sustainability",
+                                    "skill_description": "Driving systematic change to protect the wellbeing of our planet.",
+                                    "associated_skills": ""
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Marketing",
+                            "skill_count": 6,
+                            "skills": [
+                                {
+                                    "skill_name": "Content Development and Management",
+                                    "skill_description": "Creating, editing, and publishing content or information in a variety of formats.",
+                                    "associated_skills": ""
+                                },
+                                {
+                                    "skill_name": "Digital Marketing",
+                                    "skill_description": "Using internet-based digital media and web platforms to promoting a brand or product.",
+                                    "associated_skills": "Marketing Automation, Marketing Software, Digital Experience"
+                                },
+                                {
+                                    "skill_name": "Marketing Software",
+                                    "skill_description": "Using technology to plan, execute, and analyze marketing activities.",
+                                    "associated_skills": ""
+                                },
+                                {
+                                    "skill_name": "Marketing Strategy and Techniques",
+                                    "skill_description": "Developing, implementing, and assessing an organization's marketing plan.",
+                                    "associated_skills": "Marketing, Marketing Management, Go-to-Market Strategy"
+                                },
+                                {
+                                    "skill_name": "Promotions and Campaigns",
+                                    "skill_description": "Planning, executing, and managing the promotion of a brand or product.",
+                                    "associated_skills": "Demand Generation, Product Marketing"
+                                },
+                                {
+                                    "skill_name": "Web Analytics and Search Engine Optimization",
+                                    "skill_description": "Collecting and analyzing data about user behavior and trends on the web and improving website visibility in search engines.",
+                                    "associated_skills": "Google Analytics"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Process Improvement and Operations",
+                            "skill_count": 6,
+                            "skills": [
+                                {
+                                    "skill_name": "Automation",
+                                    "skill_description": "Creating systems or processes that reduce the need for humans to interact with IT systems and tasks.",
+                                    "associated_skills": ""
+                                },
+                                {
+                                    "skill_name": "Business Operations",
+                                    "skill_description": "Planning and executing day-to-day activities that help a business function well.",
+                                    "associated_skills": "Business Process, Operations"
+                                },
+                                {
+                                    "skill_name": "Change Management",
+                                    "skill_description": "Helping people and organizations navigate the impacts of change in a business.",
+                                    "associated_skills": ""
+                                },
+                                {
+                                    "skill_name": "Process Engineering",
+                                    "skill_description": "Process development, control, and validation in engineering processes.",
+                                    "associated_skills": ""
+                                },
+                                {
+                                    "skill_name": "Process Improvement and Optimization",
+                                    "skill_description": "Improving processes and aligning them business strategy to make the business more effective.",
+                                    "associated_skills": "Key Performance Indicators (KPIs), Workflow Management, Process Improvement"
+                                },
+                                {
+                                    "skill_name": "Quality Assurance and Control",
+                                    "skill_description": "Using technology and processes to maintaining the quality of a product or service.",
+                                    "associated_skills": "Safety Assurance"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Product",
+                            "skill_count": 4,
+                            "skills": [
+                                {
+                                    "skill_name": "Business Solutions",
+                                    "skill_description": "Identifying and solving specific problems impacting a business.",
+                                    "associated_skills": "Business Requirements Documentation, Solution Architecture"
+                                },
+                                {
+                                    "skill_name": "Configuration Management",
+                                    "skill_description": "Creating, maintaining, and controlling the quality of a product over time, through systems engineering processes.",
+                                    "associated_skills": "IT Setup"
+                                },
+                                {
+                                    "skill_name": "Product Development",
+                                    "skill_description": "Developing a new product, including conceptualization, research, prototyping, and testing.",
+                                    "associated_skills": "New Product Development, Prototyping"
+                                },
+                                {
+                                    "skill_name": "Product Management",
+                                    "skill_description": "Overseeing the planning, development, and ongoing improvement of a product or technology.",
+                                    "associated_skills": "Product Lifecycle Management, User Story, Product Roadmaps, Product Strategy"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "Sales",
+                            "skill_count": 8,
+                            "skills": [
+                                {
+                                    "skill_name": "Account Management and Strategy",
+                                    "skill_description": "Managing relationships with customers and accounts.",
+                                    "associated_skills": "Territory Planning, Customer Management"
+                                },
+                                {
+                                    "skill_name": "Business-to-Business Sales",
+                                    "skill_description": "Selling products or services to businesses, as opposed to directly to consumers.",
+                                    "associated_skills": ""
+                                },
+                                {
+                                    "skill_name": "Customer Communication",
+                                    "skill_description": "Interacting with customers in a clear, concise, and helpful way.",
+                                    "associated_skills": "Customer Advocacy, Customer Management, Objection Handling, Storytelling, Demo Design, Value Articulation"
+                                },
+                                {
+                                    "skill_name": "eCommerce",
+                                    "skill_description": "Using digital systems to buy and sell goods and services online.",
+                                    "associated_skills": ""
+                                },
+                                {
+                                    "skill_name": "General Sales Practices",
+                                    "skill_description": "Developing relationships and selling products or services through the full sales cycle.",
+                                    "associated_skills": "Negotiation, Contracting, Closing Deals, Regional Sales, Sales, Sales Pipelines, Sales Strategy, Sales Techniques"
+                                },
+                                {
+                                    "skill_name": "Prospecting and Qualification",
+                                    "skill_description": "Finding prospective clients and creating new sales opportunities.",
+                                    "associated_skills": "Lead Generation, Sales Prospecting, Determining Customer Challenges"
+                                },
+                                {
+                                    "skill_name": "Sales Management",
+                                    "skill_description": "Managing a team of sellers and creating an effective strategy to meet sales goals.",
+                                    "associated_skills": "Market Share, Sales Operations"
+                                },
+                                {
+                                    "skill_name": "Specialized Sales",
+                                    "skill_description": "Selling in a specialized area that requires extra product knowledge and an understanding of the unique relationship to the type of customer.",
+                                    "associated_skills": "Business-to-Consumer (B2C), Outside Sales, Channel Sales"
+                                }
+                            ]
+                        },
+                        {
+                            "skill_set_name": "User Management and Security",
+                            "skill_count": 2,
+                            "skills": [
+                                {
+                                    "skill_name": "Cybersecurity",
+                                    "skill_description": "Protecting computer systems from theft or damage to hardware, software, or electronic data.",
+                                    "associated_skills": "Salesforce Security, Threat Protection, Threat Prevention"
+                                },
+                                {
+                                    "skill_name": "Identity and Access Management",
+                                    "skill_description": "Ensure only authorized users have access to particular data and system resources.",
+                                    "associated_skills": "Authentications"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "section_title": "Choosing skills tags for a badge",
+                    "steps": [
+                        {
+                            "step": "1. What is the primary skill gained when completing the badge?",
+                            "guidance": [
+                                "Review the badge name, badge description, and unit title. What are the primary skills that Trailblazers learn in this badge?",
+                                "Review word → skill associations (below)"
+                            ]
+                        },
+                        {
+                            "step": "2. What skills correlate to the unit learning objectives?",
+                            "guidance": ["Review word → skill associations (below)"]
+                        },
+                        {
+                            "step": "3. What product → skill associations exist?",
+                            "guidance": ["Review product/feature → skill associations (below)"]
+                        },
+                        {
+                            "step": "4. Do the skills align with what is in demand for that role?",
+                            "guidance": ["Review role → skill associations"]
+                        }
+                    ]
+                },
+                {
+                    "section_title": "Description key word association to skills",
+                    "description": "Badge descriptions beginning with the following action verb commonly include the associated skill tag.",
+                    "associations": [
+                        {"action_verb": "Assess", "skill": "Critical Thinking & Problem Solving"},
+                        {"action_verb": "Automate", "skill": "Process Improvement & Optimization OR IT Automation"},
+                        {"action_verb": "Complete the capstone assessment...", "skill": "Self-Development"},
+                        {"action_verb": "Configure", "skill": "Configuration Management"},
+                        {"action_verb": "Customize", "skill": "System Design & Implementation, Product Management"},
+                        {"action_verb": "Deploy", "skill": "Agile Software Development"},
+                        {"action_verb": "Explore highlights from the [release date] release", "skill": "IT Management, Product Management"},
+                        {"action_verb": "Install", "skill": "Configuration Management OR System Design & Implementation"},
+                        {"action_verb": "Optimize", "skill": "Process Improvement & Optimization"},
+                        {"action_verb": "Set Up", "skill": "Configuration Management"},
+                        {"action_verb": "Simplify", "skill": "Process Improvement & Optimization"},
+                        {"action_verb": "Streamline", "skill": "Process Improvement & Optimization"}
+                    ]
+                },
+                {
+                    "section_title": "Product or feature association to skills",
+                    "description": "Several products or features have been mapped directly to a skill. Badges with the following product tags OR primary focus will include the associated skill tag.",
+                    "associations": [
+                        {"product_feature": "Account Engagement", "skill": "Digital Marketing"},
+                        {"product_feature": "Agent Analytics", "skill": "AI Analytics"},
+                        {"product_feature": "Agentforce Builder", "skill": "AI Agents and AI Development"},
+                        {"product_feature": "Agentforce", "skill": "Artificial Intelligence and AI Agents"},
+                        {"product_feature": "Apex Code", "skill": "Programming Languages"},
+                        {"product_feature": "B2B Commerce", "skill": "Business-to-Business Sales"},
+                        {"product_feature": "Business Rules Engine", "skill": "System Design and Implementation"},
+                        {"product_feature": "Certification Maintenance", "skill": "Self-Development and Product Management"},
+                        {"product_feature": "Commerce Cloud", "skill": "Specialized Sales"},
+                        {"product_feature": "Consumer Goods Cloud", "skill": "Specialized Sales"},
+                        {"product_feature": "CRM Analytics", "skill": "Business Intelligence"},
+                        {"product_feature": "Data 360", "skill": "Data Management"},
+                        {"product_feature": "Agentforce", "skill": "Automation and Artificial Intelligence"},
+                        {"product_feature": "Agentforce Trust Layer", "skill": "AI Ethics and Trust"},
+                        {"product_feature": "Agentforce Field Service", "skill": "Customer Service"},
+                        {"product_feature": "Flow", "skill": "Automation and Process Improvement and Optimization"},
+                        {"product_feature": "Heroku", "skill": "Programming Languages"},
+                        {"product_feature": "Lightning Web Components", "skill": "Framework Development and App and Web Design"},
+                        {"product_feature": "Lightning Web Components for Mobile", "skill": "Mobile Development"},
+                        {"product_feature": "Agentforce Marketing", "skill": "Digital Marketing"},
+                        {"product_feature": "Agentforce Mulesoft", "skill": "Integration Management"},
+                        {"product_feature": "Agentforce Net Zero", "skill": "Sustainability"},
+                        {"product_feature": "Release Highlights", "skill": "IT Management"},
+                        {"product_feature": "Prompt Builder", "skill": "AI Development"},
+                        {"product_feature": "Quip", "skill": "Office & Productivity Technology"},
+                        {"product_feature": "Agentforce Sales", "skill": "General Sales Practices"},
+                        {"product_feature": "Salesforce Development", "skill": "System Design & Implementation"},
+                        {"product_feature": "Salesforce Object Query Language (SOQL)", "skill": "Query Languages"},
+                        {"product_feature": "Salesforce Object Search Language (SOSL)", "skill": "Query Languages"},
+                        {"product_feature": "Agentforce Service", "skill": "Customer Service"},
+                        {"product_feature": "Scheduler", "skill": "Scheduling"},
+                        {"product_feature": "Slack", "skill": "Office & Productivity Technology"},
+                        {"product_feature": "Tableau", "skill": "Business Intelligence"},
+                        {"product_feature": "Tableau AI", "skill": "AI Analytics"},
+                        {"product_feature": "Trust Layer", "skill": "Data Governance, Ethics, and Privacy"},
+                        {"product_feature": "Visualforce", "skill": "Programming Languages"}
+                    ]
+                },
+                {
+                    "section_title": "Requesting changes to the Trailhead Taxonomy",
+                    "content": "The Content Strategy Team will review Trailhead skills taxonomy and make revisions as needed to ensure learners can find the most in-demand skills on Trailhead. The Taxonomy will be reviewed on an ad-hoc basis as new quests are made and when new skills research is released. To learn more review the Trailhead Skills Taxonomy Change Process."
+                }
+            ],
+            "see_also": [
+                "Trailhead Skills Strategy",
+                "Trailhead Skills Taxonomy",
+                "Trailhead Skills → Roles in Salesforce Ecosystem",
+                "Trailhead Skills Taxonomy Change Process"
+            ]
+        }
+      ]
+    }
+  }
+}     

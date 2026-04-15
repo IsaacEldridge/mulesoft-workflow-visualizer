@@ -21,7 +21,8 @@ export function WorkflowProvider({ children }) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [generatedOutputs, setGeneratedOutputs] = useState({
     blogPost: null,
-    trailheadUnit: null
+    trailheadUnit: null,
+    trailProposal: null
   });
   const [isGenerating, setIsGenerating] = useState(false);
 

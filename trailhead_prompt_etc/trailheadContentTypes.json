@@ -1,0 +1,350 @@
+{
+  "wiki_section": "Content Types",
+  "confluence_url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086067/Content+Types",
+  "last_updated": "Apr 22, 2025",
+  "author": "Lisa Caten",
+  "description": "This section includes style guidelines for each Trailhead content type.",
+  "child_pages": [
+    "Badges",
+    "Projects",
+    "Quick Look Badges",
+    "Quick Start Badges",
+    "Superbadges",
+    "Trail Together",
+    "Trailmixes",
+    "Trails"
+  ],
+  "pages": [
+    {
+      "title": "Badges",
+      "confluence_url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086073/Badges",
+      "last_updated": "Dec 11, 2025",
+      "author": "Lisa Caten",
+      "description": "A badge covers a single learning topic and is broken down into units. Each unit covers a subtopic within a badge, and has either a quiz or an HOC (hands-on check or hands-on challenge) at the end. When you ace the quiz or complete the HOC, you get a healthy dose of points that add to the total displayed on your profile. When you've completed all of the units in a badge, you earn a new badge.",
+      "naming_and_structure": [
+        {
+          "element": "Badge Name",
+          "structure": "[noun]",
+          "guidelines": [
+            "No more than 80 characters",
+            "Title capitalization",
+            "What marketable skill will the user have after completing the badge?",
+            "What would a user put on their resume?",
+            "Append 'Basics' for the first badge in a series on a topic. Not '101,' 'Overview,' or 'Intro.' If there won't be more badges on that topic, don't append 'Basics.'"
+          ],
+          "examples": [
+            "Data Modeling",
+            "Screen Flow Distribution",
+            "Service Console Customization"
+          ]
+        },
+        {
+          "element": "Description",
+          "structure": "[imperative verb] + [learning objectives]",
+          "guidelines": [
+            "No more than 90 characters",
+            "Sentence capitalization, ends with a period",
+            "What are the main learning objectives of the badge?",
+            "Avoid repeating the title."
+          ],
+          "examples": [
+            "Explore ways to mitigate risk and better prepare for the digital future."
+          ]
+        },
+        {
+          "element": "Unit Name",
+          "structure": "[imperative verb] + [topic]",
+          "guidelines": [
+            "No more than 80 characters",
+            "What's the key objective of the unit?",
+            "Use 'Get Started with [product or feature]' for the first unit."
+          ],
+          "examples": [
+            "Choose the Right Automation Tool",
+            "Use Picklists in Formulas"
+          ]
+        }
+      ],
+      "learning_objectives": {
+        "guidelines": [
+          "Each unit should have 2 to 5 learning objectives."
+        ]
+      },
+      "assessments": {
+        "types": [
+          "Quiz (two questions)",
+          "Hands-on check",
+          "Hands-on challenge"
+        ]
+      },
+      "see_also": [
+        "Badge and Unit Types",
+        "Trailhead Style Guide: Content Length",
+        "Trailhead Style Guide: Quick Look Badges",
+        "Trailhead Style Guide: Step-by-Step Instructions"
+      ]
+    },
+    {
+      "title": "Quick Look Badges",
+      "confluence_url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086638/Quick+Look+Badges",
+      "last_updated": "Dec 11, 2025",
+      "author": "Lisa Caten",
+      "description": "A quick look badge is a clear, concise, easily-digested introduction to Salesforce. Its intent is to pique a learner's curiosity and point to where they can learn more. A quick look focuses on one key question, such as: 'What are the core functions of Data Cloud?' or 'What role could agentic AI play at my company?' Quick look badges go through the same rigorous production and testing steps as other Trailhead badges, and should not be used solely to get a badge out quickly.",
+      "naming_and_structure": [
+        {
+          "element": "Quick Look Badge Name",
+          "structure": "[noun] + : Quick Look",
+          "guidelines": [
+            "No more than 80 characters",
+            "Title capitalization",
+            "What product or features will a learner be familiar with on a high level after completing the Quick Look badge?"
+          ],
+          "examples": [
+            "Agentforce: Quick Look",
+            "Trailblazer Community: Quick Look"
+          ]
+        },
+        {
+          "element": "Description",
+          "structure": "[imperative verb] + [learning objectives]",
+          "guidelines": [
+            "No more than 90 characters",
+            "Sentence capitalization, ends with a period",
+            "What are the main learning objectives of the quick look badge?",
+            "Avoid repeating the title."
+          ],
+          "examples": [
+            "Discover how Agentforce helps employees perform business tasks more efficiently."
+          ]
+        },
+        {
+          "element": "Unit Name",
+          "structure": "[imperative verb] + [topic]",
+          "guidelines": [
+            "No more than 80 characters",
+            "What's the key objective of the unit?"
+          ],
+          "examples": [
+            "Get to Know Agentforce"
+          ]
+        }
+      ],
+      "quick_look_considerations": {
+        "format_specs": {
+          "unit_count": 1,
+          "word_count": "500–800",
+          "topic_titles_h2": "At least 1",
+          "graphic_or_video": "At least 1",
+          "resources": "At least 1 resource link to further information",
+          "assessment": "2 quiz questions worth 100 points (no hands-on challenges)"
+        },
+        "role_of_quick_looks": [
+          "Optimally, quick looks have an ongoing place at the 'head of the trail.'",
+          "Think of a quick look as a badge that describes briefly what a product does or why a strategic initiative is important, and as a badge that you maintain over time.",
+          "For a quick look released early in the life of a product, design it to eventually point to new, full badges that tell more about a specific feature set or how the product is used in a sector or role.",
+          "For a quick look about soft skills, or an overview of a doc set, plan ahead for including the badge in a trail.",
+          "Don't think of a quick look as a short badge that will transition into a full badge in the future: a well-written quick look doesn't 'lift and shift' into a unit 1 of a full badge; it causes unnecessary churn for release and badge art teams; the user experience becomes confusing."
+        ],
+        "what_a_quick_look_can_be_about": [
+          "Product overview (e.g., Sales Cloud: Quick Look, Sustainability Cloud: Quick Look)",
+          "Soft skills (e.g., Effective Emails: Quick Look)",
+          "Overview of a doc set (e.g., Salesforce Solution Kits: Quick Look)",
+          "Overview of a role (e.g., architect, developer, business analyst)",
+          "Definition of a key term",
+          "Clarification of an often-misunderstood point",
+          "Point-and-click how-to for simple, very common concept or procedure (e.g., Custom Objects: Quick Look)"
+        ],
+        "dos": [
+          "Goal: Write to answer one key question",
+          "Coherence: Align the learning objectives and quiz with the key question you are focusing on",
+          "Connection: Place in a trail whenever possible",
+          "Correct information: Circle back to update the content or retire the badge, every 6–12 months"
+        ],
+        "donts": [
+          "Step-by-step instructions",
+          "Story lines or Salesforcelandians",
+          "Embedded videos longer than 2 minutes (longer videos can be linked in the Resources section)",
+          "Prerequisite badges",
+          "Detailed explanations of complex concepts"
+        ]
+      },
+      "see_also": [
+        "Badge Types",
+        "Trailhead Style Guide: Badges",
+        "Trailhead Style Guide: Quick Start Badges"
+      ]
+    },
+    {
+      "title": "Quick Start Badges",
+      "confluence_url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086641/Quick+Start+Badges",
+      "last_updated": "Dec 09, 2025",
+      "author": "Lisa Caten",
+      "description": "A quick start badge is short and divided into units. Quick start badges build confidence by giving the learner a positive experience building something small. It provides step-by-step instructions for the learner to follow and validates that they did everything correctly.",
+      "naming_and_structure": [
+        {
+          "element": "Quick Start Badge Name",
+          "structure": "Quick Start: + [imperative verb] + [topic]",
+          "guidelines": [
+            "No more than 80 characters",
+            "Title capitalization",
+            "What will the user build or create in the badge?"
+          ],
+          "examples": [
+            "Quick Start: Customize an App with Lightning Object Creator"
+          ]
+        },
+        {
+          "element": "Description",
+          "structure": "[imperative verb] + [learning objectives]",
+          "guidelines": [
+            "No more than 90 characters",
+            "Sentence capitalization, ends with a period",
+            "What are the main learning objectives of the badge?",
+            "Avoid repeating the title."
+          ],
+          "examples": [
+            "Import data to create a custom object."
+          ]
+        },
+        {
+          "element": "Unit Name",
+          "structure": "[imperative verb] + [topic]",
+          "guidelines": [
+            "Title capitalization",
+            "No more than 80 characters",
+            "What will the user build or do in the unit?"
+          ],
+          "examples": [
+            "Set up your Salesforce DX environment."
+          ]
+        }
+      ],
+      "see_also": [
+        "Badge and Unit Types",
+        "Trailhead Style Guide: Badges",
+        "Trailhead Style Guide: Quick Look Badges"
+      ]
+    },
+    {
+      "title": "Superbadges",
+      "confluence_url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086646/Superbadges",
+      "last_updated": "Aug 27, 2025",
+      "author": "Lisa Caten",
+      "description": "A superbadge is a hands-on technical skills assessment that gives trailblazers the opportunity to work through real-world scenarios to build a solution without step-by-step guidance. These scenario-based challenges present requirements in a narrative format. Trailblazers satisfy the requirements by configuring a technical solution in a special Salesforce Developer Edition org.",
+      "key_characteristics": [
+        "Designed to check configuration in a Salesforce org.",
+        "Cannot test soft skills or off-platform technical solutions.",
+        "Requirements are presented in a narrative format.",
+        "Learners work in a special Salesforce Developer Edition org."
+      ]
+    },
+    {
+      "title": "Trail Together",
+      "confluence_url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086663/Trail+Together",
+      "last_updated": "Dec 11, 2025",
+      "author": "Lisa Caten",
+      "description": "Guidelines for adding embedded Trail Together videos to a Trailhead badge. Include a topic in each unit that includes the embedded Trail Together video. In the first unit, also add a link to the full video in the Resources section. In subsequent units, include timing information so the learner can easily rewind to the beginning of the unit.",
+      "steps": [
+        {
+          "step": "Step 1 — First unit",
+          "placement": "Place before the first set of step-by-step instructions.",
+          "section_heading": "Follow Along with Trail Together",
+          "boilerplate_text": "Want to follow along with an instructor as you work through this unit? Take a look at this video, part of the Trail Together series on Trailhead Live. You can find a link to the full session in the Resources section.",
+          "instructions": [
+            "[embed video]",
+            "[add link in Resources section, using this format: Trailhead Live: [Trail Together: Name of Session]]"
+          ]
+        },
+        {
+          "step": "Subsequent steps — All remaining units",
+          "placement": "Place at the beginning of the unit.",
+          "section_heading": "Follow Along with Trail Together",
+          "boilerplate_text": "Want to follow along with an instructor as you work through this unit? Take a look at this video, part of the Trail Together series on Trailhead Live.",
+          "instructions": [
+            "[embed video]",
+            "(This clip starts at the xx:xx minute mark, in case you want to rewind and watch the beginning of the unit again.)",
+            "[no link to full video in Resources section]"
+          ]
+        }
+      ],
+      "see_also": [
+        "Trailhead Style Guide: Quick Start Badges"
+      ]
+    },
+    {
+      "title": "Trails",
+      "confluence_url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/675497346/Trails",
+      "last_updated": "Dec 09, 2025",
+      "author": "Lisa Caten",
+      "description": "A trail provides a sequence of badges that form an effective learning experience.",
+      "naming_and_structure": [
+        {
+          "element": "Trail Name",
+          "structure": "[imperative verb] + [topic]",
+          "guidelines": [
+            "No more than 80 characters",
+            "Title capitalization",
+            "What skill will the user have after completing the trail?",
+            "What's the main benefit of this trail (or related product)?",
+            "Try to use a verb that communicates what makes the trail or product unique; avoid 'Learn About' or 'Get to Know' if possible."
+          ],
+          "examples": [
+            "Develop Apps with Heroku Enterprise",
+            "Get on the Road with Field Service Lightning",
+            "Automate Your Business Processes with Lightning Flow",
+            "Manage the Salesforce Way"
+          ]
+        },
+        {
+          "element": "Description",
+          "structure": "[imperative verb] + [learning objectives]",
+          "guidelines": [
+            "No more than 120 characters",
+            "Sentence capitalization, ends with a period",
+            "What are the main learning objectives of the trail?",
+            "How does the trail explain the product?",
+            "Avoid repeating the title."
+          ],
+          "examples": [
+            "Learn how Salesforce can help you better manage your donations, grants, and events."
+          ]
+        },
+        {
+          "element": "Milestone Title",
+          "structure": "[imperative verb] + [topic]",
+          "guidelines": [
+            "No more than 80 characters",
+            "Title capitalization",
+            "What skill will the user have after completing the trail?",
+            "What's the main benefit of this trail (or related product)?",
+            "Try to use a verb that communicates what makes the trail or product unique; avoid 'Learn About' or 'Get to Know' if possible."
+          ],
+          "examples": [
+            "Create Generative AI Experiences Using Prompt Builder",
+            "Set Up and Administer Data Cloud"
+          ]
+        },
+        {
+          "element": "Step Title",
+          "structure": "For steps that are not badges, follow the guidelines for a badge.",
+          "guidelines": [
+            "No more than 80 characters",
+            "Title capitalization",
+            "What marketable skill will the user have after completing the badge?",
+            "What would a user put on their resume?"
+            ]
+        },
+        {
+          "element": "Step Description",
+          "structure": "For steps that are not badges, follow the guidelines for a badge.",
+          "guidelines": [
+            "No more than 90 characters",
+            "Sentence capitalization, ends with a period",
+            "What are the main learning objectives of the badge?",
+            "Avoid repeating the title."
+            ]
+        }
+      ]
+    }
+  ]
+}

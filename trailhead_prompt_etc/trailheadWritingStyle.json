@@ -1,0 +1,886 @@
+{
+  "wiki": "Trailhead Content Wiki",
+  "section": "Writing Style",
+  "source_url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/655107041/Writing+Style",
+  "pages": [
+    {
+      "title": "Characters and Storylines",
+      "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/913467710/Characters+and+Storylines",
+      "last_updated": "Dec 10, 2025",
+      "read_time": "5 minutes",
+      "summary": "Using characters and stories in Trailhead badges can be helpful to engage learners and teach concepts, but you don't have to use characters in every badge. Some badges are better without them. Consider focusing on addressing the reader directly (using 'you' statements) instead of using a storyline.",
+      "sections": {
+        "Guidelines": [
+          "Focus your badge on a job to be done, a set of jobs to be done, or industry challenges. Then describe how Salesforce solves the challenge or enables successful completion of the job. When practical, use characters to reinforce and illustrate the focus and goal of the badge.",
+          "Use characters to support learning objectives and jobs to be done, not to drive the badge narrative.",
+          "Characters should be relatable to learners and represent diverse backgrounds.",
+          "Use the Salesforce characters (Salesforcelandians) when possible.",
+          "Keep character backstories simple and relevant to the learning objectives.",
+          "Use characters consistently throughout a badge once introduced.",
+          "Don't use real customer names or stories without legal approval."
+        ],
+        "Introduce the storyline": [
+          "Introduce the character and situation at the start of the badge to set context.",
+          "Keep the introduction brief—one to two sentences.",
+          "Make the character's challenge or goal clear and relatable.",
+          "Good example: Honeydew Inc.'s admin, Aparna (she/her), needs to help her company set up Service Cloud. She's heard it can transform her team's work, but she's not sure where to start.",
+          "Offending example: Aparna is an admin at a large company that does many things. Today she is going to set up Service Cloud for the first time and she is a little nervous about it."
+        ],
+        "Weave the storyline throughout the badge": [
+          "Reference the character and their situation throughout the badge to reinforce the learning.",
+          "Use the character's perspective to frame new concepts and tasks.",
+          "Keep character appearances brief—one sentence or less.",
+          "Good example: Aparna knows her team handles hundreds of cases a day, so she sets the case auto-response to trigger immediately.",
+          "Offending example: Aparna has been working at Honeydew Inc. for several years. She really cares about her team and wants them to succeed. Today she is going to set the case auto-response."
+        ],
+        "Use few high-impact Salesforcelandian illustrations": [
+          "Use Salesforcelandian illustrations only when it reinforces learning. These images aren't required for every badge.",
+          "If you choose to use a Salesforcelandian illustration, try first to work with your graphics team to create a group or action scene, or include a Salesforcelandian in a graphic such as a screenshot or diagram.",
+          "If no other image is available, you can use one Salesforcelandian headshot illustration to show the hero of the story."
+        ],
+        "Resolve the storyline": [
+          "If you introduce a character's story, resolve it by the end of the badge and share the happy ending. However, don't end the badge with that story—instead, tie the story back to the main message of the badge.",
+          "Yes: With [Product], Amelia was able to boost her organization's revenue and make her users happy. [Product] can do the same for you with the skills you learned in this badge. [The End]",
+          "No: With [Product], Amelia was able to boost her organization's revenue and make her users happy. [The End]",
+          "No: [Product] can do the same for you with the skills you learned in this badge. [The End, with no resolution for Amelia]"
+        ]
+      }
+    },
+   {
+       "title": "Grammar and Mechanics",
+       "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086589/Grammar+and+Mechanics",
+       "last_updated": "Dec 11, 2025",
+       "read_time": "12 minutes",
+       "intro": "Adhering to certain rules of grammar and mechanics helps us keep our writing clear and consistent. This section outlines our house style, which applies to all our content unless otherwise noted in this guide. (We cover a lot of ground in this section—the search feature will help if you're looking for something in particular.)",
+       "sections": {
+           "General guidelines": {
+               "Abbreviations and Acronyms": {
+                   "guidance": "If there's a chance your reader won't recognize an abbreviation or acronym, spell it out the first time you mention it in body copy (avoid in titles and headers). Repeat for first mention in subsequent units. Then use the short version for all other references. If the abbreviation isn't clearly related to the full version, specify in parentheses. When spelling out an acronym, capitalize the individual words only if they're proper nouns. If the abbreviation or acronym is well known, like API or HTML, use it instead (and don't worry about spelling it out).",
+                   "examples": [
+                       "First use: network operations center (NOC); Second use: NOC",
+                       "First use: Coordinated Universal Time (UTC); Second use: UTC"
+                    ]
+                },
+                "Active Voice and Verb Tenses": {
+                    "guidance": "Use simple present tense verbs. Avoid future tense. Use active voice. Avoid passive voice. In active voice, the subject of the sentence does the action. In passive voice, the subject of the sentence has the action done to it. Words like 'was' and 'by' may indicate that you're writing in passive voice. Scan for these words and rework sentences where they appear. One exception is when you want to specifically emphasize the action over the subject.",
+                    "examples": [
+                        { "result": "Yes", "text": "In this video, you learn all about Data Cloud." },
+                        { "result": "No", "text": "In this video, you'll learn all about Data Cloud." },
+                        { "result": "Yes", "text": "Marti logged in to the account." },
+                        { "result": "No", "text": "The account was logged in to by Marti." },
+                        { "result": "Exception OK", "text": "Your account was flagged by our abuse team." }
+                    ]
+                },
+                "Address the Audience": {
+                    "guidance": "Whenever possible, address the learner with second-person pronouns. Use you and your rather than we and our.",
+                    "examples": [
+                        { "result": "Yes", "text": "To prepare for testing, you need to complete a few more tasks to get your agent ready." },
+                        { "result": "No", "text": "To prepare for testing, we need to complete a few more tasks to get our agent ready." }
+                    ]
+                },
+                "Capitalization": {
+                    "guidance": "Except in titles and headings, don't capitalize words in generic usage: Unless a word is a proper noun or branded term, use lowercase. Don't use all caps for emphasis. For titles and headings (including column headings in tables), use title capitalization. For lists and table cells, use sentence capitalization. When writing out an email address or website URL, use all lowercase.",
+                    "title_capitalization_rules": [
+                        "All nouns, verbs, adjectives, adverbs, and subordinating conjunctions (no matter the length)",
+                        "All pronouns (It, That, You, Your, Who, Which, They, and so on)",
+                        "Prepositions five or more letters long (About, Between)",
+                        "The first and last words, no matter what the words are",
+                        "The first word after the colon",
+                        "All words in a verb phrase (Log In, Log Out)",
+                        "Words in hyphenated compounds that would be capitalized if they stood alone (Third-Party, Just-in-Time)"
+                    ],
+                    "never_capitalize_in_sentence": [
+                        "website", "internet", "online", "email", "ecommerce"
+                    ],
+                    "examples": [
+                        "astro@salesforce.com",
+                        "salesforce.com"
+                    ],
+                    "note": "Exception: MuleSoft uses camel case."
+                },
+                "Contractions": {
+                    "guidance": "They're great! They give your writing an informal, friendly tone. In most cases, use them as you see fit."
+                },
+                "Lists": {
+                    "guidance": "Bulleted lists are the preferred list form. Use a numbered list when the items follow sequentially, like steps for help instructions.",
+                    "tips": [
+                        "Use a period after the introductory text if it is a complete sentence; use a colon for fractions.",
+                        "Use sentence case.",
+                        "Capitalize only the first word after the bullet.",
+                        "Use sentence case and bold for lead-in text followed by a colon. The colon should also be bolded.",
+                        "Use parallel construction when possible.",
+                        "Use end punctuation if an item is a complete sentence.",
+                        "If all items in a list are fragments, do not use end punctuation.",
+                        "Use end punctuation for all items if you are mixing fragments and complete sentences. In other words: If one item needs a period, then all items should end with periods.",
+                        "Do not end a bulleted item with a semicolon or a comma."
+                    ],
+                    "example": {
+                        "intro": "Jasper loves to bake the following during the holidays.",
+                        "items": [
+                            "Gingerbread cookies: These cookies are characterized by a warm flavor from a blend of spices and a dark color derived from molasses.",
+                            "Pecan tassies: They are a mini variation of a pecan pie, baked in small cups (traditionally) or small muffin pans.",
+                            "Pull-apart rolls: These soft, buttery rolls can be served in countless ways."
+                        ]
+                    }
+                },
+                "Numbers": {
+                    "guidance": "In body text, spell out whole numbers from zero through nine, and use numerals for 10 or greater. Use digits for all measurements, including time. Spell out ordinal numbers. Spell out numerals that begin a sentence, or recast to avoid. Sometimes it feels weird to use the numeral. If it's an expression that typically uses spelled-out numbers, leave them that way.",
+                    "commas": "Numbers over three digits get commas: 999 / 1,000 / 150,000.",
+                    "large_numbers": "Write out big numbers in full. Abbreviate them if there are space restraints: 1k, 150k.",
+                    "examples": [
+                        "I ate three donuts at Coffee Hour.",
+                        "Meg won first place in last year's Walktober contest.",
+                        "At age 80, he has zero chance of running a 3-minute mile.",
+                        "That is a third-party integration.",
+                        "When you send your newsletter, Freddie gives you a high-five."
+                    ]
+                },
+                "Dates": {
+                    "guidance": "Generally, spell out the day of the week and the month. Abbreviate only if space is an issue in the app. Don't use st, d, or th in dates: April 15, not April 15th.",
+                    "examples": [
+                        "Saturday, January 24",
+                        "Sat., Jan. 24"
+                    ]
+                },
+                "Decimals and Fractions": {
+                    "guidance": "Spell out fractions. Use decimal points when a number can't be easily written out as a fraction, like 1.375 or 47.2.",
+                    "examples": [
+                        { "result": "Yes", "text": "two-thirds" },
+                        { "result": "No", "text": "2/3" }
+                    ]
+                },
+                "Percentages": {
+                    "guidance": "Use the % symbol instead of spelling out percent."
+                },
+                "Ranges and Spans": {
+                    "guidance": "Use a closed en dash (–) to indicate a range or span of numbers.",
+                    "examples": ["It takes 20–30 days."]
+                },
+                "Money": {
+                    "guidance": "When writing about US currency, include US and the dollar sign before the amount. Include a decimal and number of cents if more than 0. When writing about other currencies, follow the same symbol-amount format.",
+                    "examples": [
+                        "US$20 (first mention of currency)",
+                        "$19.99 (omit US after first mention of currency in doc)",
+                        "¥1",
+                        "€1"
+                    ]
+                },
+                "Telephone Numbers": {
+                    "guidance": "Use dashes without spaces between numbers. Use a country code if your reader is in another country.",
+                    "examples": [
+                        "555-867-5309",
+                        "+1-404-123-4567"
+                    ]
+                },
+                "Temperature": {
+                    "guidance": "Use the degree symbol and the capital F abbreviation for Fahrenheit.",
+                    "examples": ["98°F"]
+                },
+                "Time": {
+                    "guidance": "Use numerals and AM or PM, with a space in between. Don't use minutes for on-the-hour time. Capitalize AM and PM. Don't use periods between the letters. Use an en dash between times to indicate a time period. Specify time zones when writing about an event or something else people schedule.",
+                    "examples": [
+                        "7 AM",
+                        "7:30 PM",
+                        "7 AM–10:30 PM"
+                    ],
+                    "time_zones": {
+                        "note": "In content, only Pacific time is capitalized; eastern, central, mountain are lowercase.",
+                        "abbreviations": [
+                            "eastern time: ET",
+                            "central time: CT",
+                            "mountain time: MT",
+                            "Pacific time: PT"
+                        ],
+                        "international": "When referring to international time zones, spell them out: Nepal Standard Time, Australian Eastern Time. If a time zone does not have a set name, use its Coordinated Universal Time (UTC) offset."
+                    },
+                    "decades": [
+                        "Abbreviate decades within the past 100 years, no apostrophe before the s: the 00s, the 90s.",
+                        "For decades more than 100 years ago, be more specific: the 1900s, the 1890s."
+                    ]
+                },
+                "Words Ending in -ing": {
+                    "guidance": "A word ending in -ing can be a verb, a noun, or an adjective. Use -ing words with care. They can be difficult to localize and hard for non-native English speakers to understand. The sentence should make it clear which role the word plays. Gerunds are verbs that end in -ing but function as nouns. Don't start a title or an H2 with a gerund.",
+                    "examples": [
+                        { "result": "Yes", "text": "Create a Document" },
+                        { "result": "No", "text": "Creating a Document" }
+                    ]
+                }
+            },
+            "Punctuation": {
+                "Ampersands": {
+                    "guidance": "Don't use ampersands unless one is part of a company or brand name.",
+                    "examples": [
+                        "Ben and Dan",
+                        "Ben & Jerry's"
+                    ] 
+                },
+                "Apostrophes": {
+                    "guidance": "The apostrophe's most common use is making a word possessive. If the word already ends in an s and it's singular, you also add an 's. If the word ends in an s and is plural, just add an apostrophe. Do not make Salesforce a possessive; recast to avoid. Apostrophes can also be used to denote that you've dropped some letters from a word, usually for humor or emphasis. When using to indicate dropped numerals in dates, such as Dreamforce '22, be sure to use the closing quote (9-shaped versus 6).",
+                    "examples": [
+                        "The donut thief ate Sam's donut.",
+                        "The donut thief ate Chris's donut.",
+                        "The donut thief ate the managers' donuts."
+                    ]
+                },
+                "Colons": {
+                    "guidance": "Use a colon (rather than an ellipsis, em dash, or comma) to offset a list. You can also use a colon to join two related phrases. If a complete sentence follows the colon, capitalize the first word.",
+                    "examples": [
+                        "Erin ordered three kinds of donuts: glazed, chocolate, and pumpkin.",
+                        "She was faced with a dilemma: She wanted a donut, but had just eaten a bagel."
+                    ]
+                },
+                "Commas": {
+                    "guidance": "When writing a list, use the serial comma (also known as the Oxford comma). If a series contains more than three items or the items are lengthy, consider a bulleted list to improve readability.",
+                    "use_comma_to": [
+                        "Join independent clauses with a conjunction",
+                        "Following an introductory phrase",
+                        "In a series of two or more adjectives that precede a noun, if the order of the adjectives can be reversed or if they can be separated by and without changing the meaning"
+                    ],
+                    "examples": [
+                        { "result": "Yes", "text": "David admires his parents, Oprah, and Justin Timberlake." },
+                        { "result": "No", "text": "David admires his parents, Oprah and Justin Timberlake." }
+                    ]
+                },
+                "Dashes and Hyphens": {
+                    "guidance": "Use a hyphen (-) without spaces on either side to link words into single phrase. Use an en dash (–) without spaces to indicate a span or range. Use an em dash (—) without spaces on either side to offset an aside. Use a true em dash, not hyphens (- or --).",
+                    "examples": [
+                        "Hyphen: first-time user",
+                        "En dash: Monday–Friday / She is between 30–35",
+                        "Em dash: Multivariate testing—just one of our new Pro features—can help you grow your business.",
+                        "Em dash: Austin thought Brad was the donut thief, but he was wrong—it was Lain."
+                    ]
+                },
+                "Ellipses": {
+                    "guidance": "Ellipses (...) can be used to indicate that you're trailing off before the end of a thought. Use them sparingly. Don't use them for emphasis or drama, and don't use them in titles or headers. Don't use a fourth dot, even if the ellipsis is at the end of a sentence. In docs, use no space before the ellipsis and one space after. Ellipses, in brackets, can also be used to show that you're omitting words in a quote.",
+                    "examples": [
+                        "'Where did all those donuts go?' Christy asked. Lain said, 'I don't know...'",
+                        "'When in the Course of human events it becomes necessary for one people to dissolve the political bands which have connected them with another and to assume among the powers of the earth, [...] a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation.'"
+                    ]
+                },
+                "Exclamation Points": {
+                    "guidance": "Use exclamation points sparingly, and never more than one at a time. They're like high-fives: A well-timed one is great, but too many can be annoying. Exclamation points go inside quotation marks. Like periods and question marks, they go outside parentheses when the parenthetical is part of a larger sentence, and inside parentheses when the parenthetical stands alone. Never use exclamation points in failure messages or alerts. When in doubt, avoid!"
+                },
+                "Periods": {
+                    "guidance": "Periods go inside quotation marks. They go outside parentheses when the parenthetical is part of a larger sentence, and inside parentheses when the parenthetical stands alone. Leave a single space between sentences, never two or more.",
+                    "examples": [
+                        "Christy said, 'I ate a donut.'",
+                        "I ate a donut (and I ate a bagel, too).",
+                        "I ate a donut and a bagel. (The donut was Sam's.)"
+                    ]
+                },
+                "Question Marks": {
+                    "guidance": "Question marks go inside quotation marks if they're part of the quote. Like periods, they go outside parentheses when the parenthetical is part of a larger sentence, and inside parentheses when the parenthetical stands alone. Do not use quotation marks to show that a word is used figuratively. Recast colloquial or metaphorical expressions using clearer language."
+                },
+                "Quotation Marks": {
+                    "guidance": "Use quotes to refer to titles of short works (like articles and poems), and direct quotations. Periods and commas go within quotation marks. Question marks within quotes follow logic—if the question mark is part of the quotation, it goes within. If you're asking a question that ends with a quote, it goes outside the quote. Use single quotation marks for quotes within quotes.",
+                    "examples": [
+                        "Who was it that said, \"A fool and his donut are easily parted\"?",
+                        "Brad said, \"A wise man once told me, 'A fool and his donut are easily parted.'\""
+                    ]
+                },
+                "Semicolons": {
+                    "guidance": "Go easy on semicolons. They usually support long, complicated sentences that could easily be simplified. Try an em dash (—) instead, or, even better, simply start a new sentence."
+                }
+            },
+            "People, places, and things": {
+                "File Extensions": {
+                    "guidance": "When referring generally to a file extension type, use all uppercase without a period. Add a lowercase s to make plural. When referring to a specific file, the filename should be lowercase.",
+                    "examples": {
+                        "general_references": ["GIF", "PDF", "HTML", "JPGs"],
+                        "specific_files": ["slowclap.gif", "MCBenefits.pdf", "ben-twitter-profile.jpg", "ilovedonuts.html"]
+                    }
+                },
+                "Pronouns": {
+                    "guidance": "If your subject's gender is unknown or irrelevant, use they, them, and their as a singular pronoun. If your subject prefers they/them or other specific pronouns, include their name first, followed by preferred pronouns in parens for first mention. Use he/him/his and she/her/her pronouns as appropriate. Don't use 'one' as a pronoun. For more on writing about gender, see Writing about people."
+                },
+                "Quotes": {
+                    "guidance": "When quoting someone in a blog post or other publication, use the present tense.",
+                    "examples": [
+                        "'Using Salesforce has helped our business grow,' says Jamie Smith."
+                    ]
+                },
+                "Names and Titles": {
+                    "guidance": "The first time you mention a person in writing, refer to them by their first and last names. On all other mentions, refer to them by their first name. Capitalize the names of departments and teams (but not the words team or department). Capitalize individual job titles only if it precedes a person's name. Don't capitalize when referring to the role in general terms. Don't refer to someone as a ninja, rockstar, or wizard unless they literally are one.",
+                    "examples": [
+                        "The Marketing team",
+                        "Our Support department",
+                        "President Obama is the first Black US president.",
+                        "Our new marketing manager starts today.",
+                        "All the managers ate donuts."
+                    ]
+                },
+                "Schools": {
+                    "guidance": "The first time you mention a school, college, or university in a piece of writing, refer to it by its full official name. On all other mentions, use its more common abbreviation.",
+                    "examples": [
+                        "Georgia Institute of Technology, Georgia Tech",
+                        "Georgia State University, GSU"
+                    ]
+                },
+                "States, Cities, and Countries": {
+                    "guidance": "Spell out all city and state names. Don't abbreviate city names. Per AP Style, all cities should be accompanied by their state, with the exception of: Atlanta, Baltimore, Boston, Chicago, Cincinnati, Cleveland, Dallas, Denver, Detroit, Honolulu, Houston, Indianapolis, Las Vegas, Los Angeles, Miami, Milwaukee, Minneapolis, New Orleans, New York, Oklahoma City, Philadelphia, Phoenix, Pittsburgh, St. Louis, Salt Lake City, San Antonio, San Diego, San Francisco, Seattle, Washington. On first mention, write out United States. On subsequent mentions, US is fine. The same rule applies to any other country or federation with a common abbreviation (European Union, EU; United Kingdom, UK)."
+                },
+                "URLs and Websites": {
+                    "guidance": "Capitalize the names of websites and web publications. Don't italicize. Avoid spelling out URLs, but when you need to, leave off the http://www."
+                },
+                "Writing About Salesforce": {
+                    "guidance": "Always capitalize S. Refer to Salesforce as 'we,' not 'it.' Capitalize branded terms, like Salesforce Essentials. We also capitalize pricing plan names (Premium, Standard, Essentials, and Free) to distinguish them from generic use of those adjectives. Don't capitalize descriptive product or feature names, like email or landing pages. Do not make Salesforce a possessive (Salesforce's). Recast to avoid.",
+                    "examples": [
+                        "Salesforce templates",
+                        "The Salesforce mobile app",
+                        "Essentials plan"
+                    ]
+                },
+                "Writing About Other Companies": {
+                    "guidance": "Honor companies' own names for themselves and their products. Go by what's used on their official website. However, don't go by company logo styles in body copy; for example, if the company logo is all caps. Refer to a company or product as 'it' (not 'they'). In general, we do not trademark other company's products, per legal.",
+                    "examples": ["iPad", "YouTube", "Yahoo!"]
+                },
+                "Slang, Idioms, and Jargon": {
+                    "guidance": "Write in plain English. If you need to use a technical term, briefly define it so everyone can understand.",
+                    "examples": [
+                        "The Salesforce ops team is constantly scaling our servers to make sure our users have a great experience with our products. One way we do this is with shards, or partitions, that help us better horizontally scale our database infrastructure."
+                    ]
+                },
+                "Text Formatting": {
+                    "guidance": "Use italics to indicate the title of a long work (like a book, movie, or album) or to emphasize a word (sparingly). Otherwise, avoid italics; they are difficult for low-vision folks to read. Don't use underline formatting (except to indicate correct quiz answers in Google docs), and don't use any combination of italic, bold, caps, and underline. Left-align text, never center or right-aligned. Leave one space between sentences, never two.",
+                    "examples": [
+                        "Dunston Checks In (italicized title)",
+                        "Brandon really loves Dunston Checks In. (italicized for emphasis)"
+                    ],
+                    "formatting_procedures": [
+                        "Bold items that you want users to click. Example: Click Search.",
+                        "Use inline code formatting (change the font to Courier New) for items you want users to input. Example: Enter Communities."
+                    ],
+                    "see_also": "Step-by-Step Instructions: https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086593/Step-by-Step+Instructions"
+                },
+                "Write Positively": {
+                    "guidance": "Use positive language rather than negative language. One way to detect negative language is to look for words like 'can't,' 'don't,' and so on. Don't use negative stems in questions; rephrase for clarity.",
+                    "examples": [
+                        { "result": "Yes", "text": "To get a donut, stand in line." },
+                        { "result": "No", "text": "You can't get a donut if you don't stand in line." }
+                    ]
+                }
+            }
+            
+        }
+        
+    },
+    {
+        "title": "Voice and Tone",
+        "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086656/Voice+and+Tone",
+        "last_updated": "Apr 22, 2025",
+        "read_time": "3 minutes",
+        "intro": "You may have heard that voice is what you say and tone is how you say it. That's definitely true at Trailhead, where our voice and tone is one of the things that set us apart from other learning platforms.",
+        "voice_vs_tone": {
+            "voice": {
+                "definition": "Voice refers to our company's personality. Our voice, like our personality, never changes. We use the Salesforce brand voice.",
+                "values": "Trust is our #1 value, and we're truthful in our writing. We help people achieve to the best of their ability, and our writing engages, encourages, and supports them."
+            },
+            "tone": {
+                "definition": "Tone reflects two characteristics of the content. Audience refers to who the content is designed for. Context refers to how the content is being used. Unlike our voice, our tone changes based on the audience and context. A badge for developers might have a different tone than a badge for business users. And a badge introducing new features might have a different tone than a badge that covers installation or troubleshooting tasks.",
+                "values": "Our writing is concise and easy to understand. We're dedicated to conversational, upbeat language that's friendly, plainspoken, and inclusive."
+            }
+        },
+        "trailhead_tone_is": [
+            "Positive",
+            "Friendly",
+            "Encouraging",
+            "Helpful",
+            "Compassionate",
+            "Informal and conversational",
+            "Occasionally offbeat"
+        ],
+        "trailhead_tone_is_not": [
+            "Negative",
+            "Unkind",
+            "Pessimistic",
+            "Sarcastic",
+            "Corporate and filled with jargon"
+        ],
+        "general_guidelines": {
+            "intro": "Trailhead is the fun place to learn. And part of what makes it fun is our writing style. Here are some guidelines to help you master the Trailhead style.",
+            "our_content_is": [
+                {
+                    "quality": "Conversational",
+                    "guidance": "Understand the topic you're writing about. Use simple words and sentences."
+                },
+                {
+                    "quality": "Direct",
+                    "guidance": "Address the learner directly: 'you' rather than 'we.' It's informal and makes the content feel more personal to the reader."
+                },
+                {
+                    "quality": "Encouraging",
+                    "guidance": "Before you start writing, ask yourself: What purpose does this serve? Who is going to read it? What do they need to know?"
+                },
+                {
+                    "quality": "Down-to-Earth",
+                    "guidance": "Write like a human. Don't be afraid to break a few rules if it makes your writing more relatable. All of our content, from splashy homepage copy to system alerts, should be warm and human."
+                },
+                {
+                    "quality": "Empathetic",
+                    "guidance": "Technology can be complex. Write in a way that empathizes with the learner wherever they may be on their Trailhead journey."
+                },
+                {
+                    "quality": "Respectful",
+                    "guidance": "Treat learners with the respect they deserve. Write in a way that suits the situation. Just like you do in face-to-face conversations, adapt your tone depending on who you're writing to and what you're writing about."
+                },
+                {
+                    "quality": "Inclusive",
+                    "guidance": "Strive to represent all of our learners. Be aware of blind spots and hidden biases."
+                },
+                {
+                    "quality": "Brief",
+                    "guidance": "Tell readers what they need to know. Give them the exact information they need. We love narratives and other creative flourishes, but don't let that overshadow the instructional parts of your content."
+                },
+                {
+                    "quality": "Clear",
+                    "guidance": "Strive for clarity. Break down complex topics to their constituent parts and always look for ways to simplify a process, paragraph, sentence, or word."
+                },
+                {
+                    "quality": "Positive",
+                    "guidance": "Write like you are talking to a good friend. Avoid being sarcastic or mean."
+                }
+            ]
+        },
+        "see_also": [
+            {
+                "title": "Salesforce Platform Basics",
+                "url": "https://developer.salesforce.com/trailhead/module/starting_force_com"
+            },
+            {
+                "title": "Lightning Flow",
+                "url": "https://developer.salesforce.com/trailhead/module/business_process_automation"
+            },
+            {
+                "title": "Event Monitoring",
+                "url": "https://developer.salesforce.com/trailhead/module/event_monitoring"
+            }
+        ]
+    },
+    {
+        "title": "Word List",
+        "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086660/Word+List",
+        "last_updated": "Feb 06, 2026",
+        "read_time": "3 minutes",
+        "intro": "Words can be tricky. Here are some common examples we find in Trailhead content and how to handle them. For a more comprehensive list, check out the CX Style Guidelines & Standards site (https://confluence.internal.salesforce.com/pages/viewpage.action?pageId=93889984).",
+        "standardized_spellings": [
+            "agent",
+            "Agentforce",
+            "Agentforce reasoning engine (FKA Atlas Reasoning Engine; avoid)",
+            "agentic: avoid when possible",
+            "agentic enterprise (lowercase for Trailhead)",
+            "Agentic IT Services",
+            "AI agent (don't use Agentforce agent)",
+            "AI-Generated Search Answers (feature, initial case)",
+            "antispoof; antispoofing",
+            "@mention",
+            "app/apps (capitalize only when it's a proper name—as in Apple App Store—or when beginning a sentence, phrase, headline, or bullet)",
+            "AppExchange (do not add 'the' in front)",
+            "Asset Lifecycle Management (Revenue Cloud feature)",
+            "basecamp",
+            "bidirectional",
+            "Boolean",
+            "checkboxes",
+            "changelogs",
+            "change management",
+            "check mark",
+            "communications service providers (CSPs)",
+            "company-wide (it's in the UI; otherwise, no hyphen for words with the suffix -wide)",
+            "Configure, Price, Quote (CPQ)",
+            "Configuration Management Database (CMDB)",
+            "cross-cloud (but multicloud)",
+            "cyber: cyberattack, cybercrime, cybercriminal(s), cybersecurity, cyber-secure, cyberthreat, cyber risk",
+            "data change requests (DCRs)",
+            "data lake object (DLO)",
+            "data model object (DMO)",
+            "dataset",
+            "datasheets",
+            "dataspace",
+            "dropdown (noun), drop down (verb)",
+            "ecommerce",
+            "e-discovery",
+            "Einstein Bots (The product is called Einstein Bots and 'Einstein' differentiates this from traditional service bots. Agentforce is flexible and requires less configuration because it's powered by an LLM.)",
+            "email",
+            "emoji (singular and plural)",
+            "endpoint",
+            "Enhanced Messaging, enhanced messaging channels (note different case styles)",
+            "flashcard",
+            "Flexcards",
+            "Flow Builder; flow/flows lowercase for generic references",
+            "hands-on (adj.), hands on (n.); Hands-on (for title case)",
+            "human-in-the-loop (HITL) validation",
+            "humanlike",
+            "incident management",
+            "Information Technology Infrastructure Library (ITIL)",
+            "Integration Procedures",
+            "IT service management (ITSM)",
+            "Jobs to Be Done framework; jobs to be done (generic, no hyphens unless an adj)",
+            "jumpstart (one word)",
+            "Knowledge article",
+            "Latino, Latina (not Latinx, Latine, or Latines)",
+            "lifecycle",
+            "login (noun, adjective), log in (verb)",
+            "MuleSoft",
+            "multichannel",
+            "multicloud",
+            "Multi-Factor Authentication or multi-factor authentication (hyphenate in all uses; initial case depending on use)",
+            "multitenant",
+            "multiworkspace(s)",
+            "nonprofit",
+            "Omni-Channel (Salesforce Service Cloud product name; always hyphenate and use initial caps); omnichannel (not hyphenated or capitalized) only as a generic term",
+            "Omniscripts",
+            "Omnistudio Data Mappers (or Data Mappers)",
+            "on premises / on-premises ('premises' functions like a plural noun, meaning the property/location)",
+            "onsite",
+            "open time email",
+            "organization-wide",
+            "OK",
+            "popup (noun, adjective), pop up (verb)",
+            "prebuilt",
+            "price book (two words)",
+            "release management",
+            "REST API",
+            "retrieval augmented generation (RAG)",
+            "request management",
+            "Salesforce mobile app",
+            "Salesforce Platform (cap P; 'the platform' on subsequent mentions is OK)",
+            "sandbox(es)",
+            "seeding",
+            "simulation",
+            "single sign-on (SSO)",
+            "standalone (no hyphen)",
+            "super agent",
+            "superbadge (lowercase for general references; cap if part of title)",
+            "superuser (one word in tech terminology)",
+            "timeframe (one word)",
+            "timeline",
+            "timestamp (one word)",
+            "time to market, time-to-market adj.",
+            "time to value, time-to-value adj.",
+            "Trailblazer",
+            "Transaction Management (Revenue Cloud feature)",
+            "web-based",
+            "webcast / webpage / website",
+            "wellbeing (no hyphen)",
+            "workstream (one word)",
+            "white paper (two words)",
+            "zero-copy",
+            "zero-day (hyphenate all references)"
+        ],
+        "standardized_spellings_note": "Omni-Channel note: Commerce Cloud also has an Omnichannel Inventory feature which is unrelated to the Service Cloud product.",
+        "terms_to_avoid": [
+            "above/below references; use terms like previous/subsequent or following instead",
+            "actionable (try to recast)",
+            "and/or (just choose one of these conjunctions)",
+            "as well as (just say and)",
+            "blacklist, whitelist, grandfathered, slave, master, deaf, blind and any other term with racist, sexist, or ableist connotations",
+            "crushing it; killing it",
+            "crazy, nuts, insane, or similar words to describe people",
+            "deep dive",
+            "drive (avoid, recast)",
+            "functionality (jargon)",
+            "human agent (say representative or reference an appropriate specific role)",
+            "incentivize, leverage, disruption, thought leader, learnings, or other fluffy corporate terms",
+            "Latin abbreviations (i.e., e.g., aka, etc.; spell them out)",
+            "master/slave references",
+            "operational efficiency (avoid)",
+            "optimize (overused, jargon)",
+            "streamline (overused, jargon)",
+            "young, old, elderly, or any other word describing a person's age",
+            "buzzwords, idioms, or jargon"
+        ],
+        "see_also": [
+            {
+                "title": "Jargon, cliches, and slang",
+                "url": "https://confluence.internal.salesforce.com/x/rgSGC"
+            },
+            {
+                "title": "Slang, idioms, and cultural references",
+                "url": "https://confluence.internal.salesforce.com/x/LAWGC"
+            },
+            {
+                "title": "Buzzword Bingo",
+                "url": "https://salesforce.quip.com/PgyAAfMJ4JeV#KTcACAwPWjx"
+            },
+            {
+                "title": "Agentforce Style Guidelines",
+                "url": "https://confluence.internal.salesforce.com/x/AwNaPQ"
+            },
+            {
+                "title": "Best Practices for Optimizing Content for Generative AI",
+                "url": "https://confluence.internal.salesforce.com/x/Go0HOQ"
+            }
+        ]
+    },
+    {
+        "title": "Writing About People",
+        "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/655107044/Writing+About+People",
+        "last_updated": "Apr 16, 2024",
+        "read_time": "3 minutes",
+        "intro": "Whether you're writing for an internal or external audience, it's important to write for and about other people in a way that's compassionate, inclusive, and respectful. In this section, we'll lay out some guidelines for writing about people with compassion and understanding.",
+        "sections": {
+            "Age": [
+                "Don't reference a person's age unless it's relevant to what you're writing. If it is relevant, include the person's specific age, offset by commas. Example: The CEO, 16, just got her driver's license.",
+                "Don't refer to people using age-related descriptors like 'young,' 'old,' or 'elderly.'"
+            ],
+            "Disability": [
+                "Don't refer to a person's disability unless it's relevant to what you're writing. If you need to mention it, ask whether your subject prefers person-first language ('people with disabilities') or identity-first language ('disabled people').",
+                "Avoid disability-related idioms like 'lame', 'falling on deaf ears'.",
+                "Avoid ableist colloquialisms such as 'take a look', 'you might have heard', and 'let's walk through this example'.",
+                "When writing about a person with disabilities, don't use the words 'suffer,' 'victim,' or 'handicapped.' 'Handicapped parking' is OK.",
+                "See the Inclusive Language Guide from the Salesforce Office of Accessibility for a more comprehensive list of terms to avoid and recommended alternatives."
+            ],
+            "Gender and sexuality": [
+                "When writing about a person, use their communicated pronouns. When in doubt, just ask or use their name.",
+                "When introducing a character in a storyline, include the character's pronouns in parentheses (at first mention only). Example: 'The team's admin, Ryan (they/them), is on the case.'",
+                "It's OK to use 'they' as a singular pronoun.",
+                "Don't call groups of people 'guys.' Don't call women 'girls.'",
+                "Avoid gendered terms in favor of neutral alternatives, like 'server' instead of 'waitress' and 'businessperson' instead of 'businessman.'",
+                "Use the following words as modifiers, but never as nouns: lesbian, gay, bisexual, transgender (never 'transgendered'), trans, queer, LGBT.",
+                "Don't use these words in reference to LGBT people or communities: homosexual, lifestyle, preference.",
+                "Don't use 'same-sex' marriage, unless the distinction is relevant to what you're writing. (Avoid 'gay marriage.') Otherwise, it's just 'marriage.'"
+            ],
+            "Hearing": [
+                "Use 'deaf' as an adjective to describe a person with significant hearing loss. You can also use 'partially deaf' or 'hard of hearing.'"
+            ],
+            "Heritage and nationality": [
+                "Don't use hyphens when referring to someone with dual heritage or nationality. For example, use 'Asian American' instead of 'Asian-American.'"
+            ],
+            "Medical conditions": [
+                "Don't refer to a person's medical condition unless it's relevant to what you're writing.",
+                "If a reference to a person's medical condition is warranted, use the same rules as writing about people with physical disabilities and emphasize the person first. Don't call a person with a medical condition a 'victim.'"
+            ],
+            "Mental and cognitive conditions": [
+                "Don't refer to a person's mental or cognitive condition unless it's relevant to what you're writing. Never assume that someone has a medical, mental, or cognitive condition.",
+                "Don't describe a person as 'mentally ill.' If a reference to a person's mental or cognitive condition is warranted, use the same rules as writing about people with physical disabilities or medical conditions and emphasize the person first."
+            ],
+            "Vision": [
+                "Use the adjective 'blind' to describe a person who is unable to see. Use 'low vision' to describe a person with limited vision."
+            ]
+        },
+        "see_also": [
+            {
+                "title": "Voice and Tone",
+                "url": "https://confluence.internal.salesforce.com/display/TWFWE/Voice+and+Tone"
+            },
+            {
+                "title": "Inclusive Language Guide (Salesforce Office of Accessibility)",
+                "url": "https://docs.google.com/document/d/1AIMWkMbhWgFHycsT3RkFweiXPNZGLLdbJbCwR_EiQF0/edit"
+            }
+        ]
+    },
+    {
+        "title": "Writing for a Global Audience",
+        "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/655107047/Writing+for+a+Global+Audience",
+        "last_updated": "Jan 06, 2026",
+        "read_time": "6 minutes",
+        "intro": "Many of our badges are localized into multiple languages. In addition, Trailblazers from all around the world consume English content as non-native English speakers. Think carefully about your use of colloquialisms and cultural references in all your writing. That said, colloquial language and cultural references are part of what makes Trailhead so successful. If you're unsure about your use of language in your badge, contact the localization team.",
+        "sections": {
+            "General guidelines": {
+                "Voice": "Use active voice. Active voice is especially important when writing for translation.",
+                "Sentence structure": "Use the subject-verb-object sentence structure. It's not used by all languages, but it's widely recognized.",
+                "Tone": "Use positive words when talking about positive situations. For example, because a question like 'Don't you think she did a great job?' begins with a negative word, a non-native English speaker may interpret its implication as negative. A better version would be, 'She did a good job, right?'",
+                "Prioritize clarity": "Keep your copy brief, but don't sacrifice clarity for brevity. You may need to repeat or add words to make the meaning of your sentences clear to a translator.",
+                "Cultural differences": "The Trailhead voice is conversational and informal. However, in some cultures, informal text may be considered offensive. Check with the localization team if you are not sure if your writing would work. When writing content, be careful about making references to things of local or regional importance. These may not be recognizable to readers outside the US.",
+                "Images and video": "Use as little text in your graphics as possible because we don't localize graphics. If you have videos in your content, make sure all videos have human-edited closed captions that are not baked into videos so they can be localized."
+            },
+            "Things to repeat": {
+                "Repeat verbs with multiple subjects": {
+                    "examples": [
+                        { "result": "No", "text": "Customers who have ordered online or who are walk-ins should stop at the cashier to order or pick up their food." },
+                        { "result": "Yes", "text": "Customers who have ordered online can pick up their food at the cashier. Walk-in customers should stop by the cashier to order their food." }
+                    ]
+                },
+                "Repeat helping verbs that belong to multiple verbs": {
+                    "examples": [
+                        { "result": "No", "text": "We can send your campaign on the fly or schedule your campaign to go out at a set time." },
+                        { "result": "Yes", "text": "We can send your campaign on the fly, or we can schedule your campaign to go out at a set time." }
+                    ]
+                },
+                "Repeat subjects and verbs": {
+                    "examples": [
+                        { "result": "No", "text": "Mandrill sends transactional emails but not Pardot." },
+                        { "result": "Yes", "text": "Mandrill sends transactional emails, but Pardot does not." }
+                    ]
+                },
+                "Repeat markers in a list or series": {
+                    "examples": [
+                        { "result": "No", "text": "Use Pardot to send email campaigns, manage your mailing lists, and integrate with other applications." },
+                        { "result": "Yes", "text": "Use Pardot to send email campaigns, to manage your mailing lists, and to integrate with other applications." }
+                    ]
+                }
+            },
+            "Things to avoid": {
+                "Avoid unclear pronoun references": {
+                    "examples": [
+                        { "result": "No", "text": "Many believe that buying a list of email addresses and sending it to the list through Pardot is OK. This can actually cause high rates of abuse, bounces, and unsubscribes. It can ultimately cause your account to be suspended." },
+                        { "result": "Yes", "text": "Many believe that buying a list of email addresses and sending it to the list through Pardot is OK. Such action can actually cause high rates of abuse, bounces, and unsubscribes. Purchasing a list and sending it may cause your account to be suspended." }
+                    ]
+                },
+                "Avoid -ing words": {
+                    "guidance": "In English, many different types of words end in -ing: nouns, adjectives, progressive verbs, and so on. A translator who is a non-native English speaker may not recognize the distinctions. Avoid -ing words when possible. Exception: words like 'graphing calculator' and 'riding lawnmower,' where the -ing word is part of a noun's name.",
+                    "Gerunds": {
+                        "examples": [
+                            { "result": "No", "text": "In this article, we talk about getting list subscribers." },
+                            { "result": "Yes", "text": "In this article, we talk about the list subscriber collection." }
+                        ]
+                    },
+                    "Adjectives": {
+                        "examples": [
+                            { "result": "No", "text": "At the top of the page, there is a smiling Freddie." },
+                            { "result": "Yes", "text": "At the top of the page, there is Freddie with a smile on his face." }
+                        ]
+                    },
+                    "Parts of verbs": {
+                        "examples": [
+                            { "result": "No", "text": "Several developers are working on that feature." },
+                            { "result": "Yes", "text": "Several developers are currently working on that feature. (When you can't easily avoid the -ing word, it may help to add an adverb to clarify the meaning.)" }
+                        ]
+                    },
+                    "Parts of phrases modifying nouns": {
+                        "examples": [
+                            { "result": "No", "text": "From our backyard, we could hear the planes taking off from the airport." },
+                            { "result": "Yes", "text": "From our backyard, we could hear the planes that took off from the airport." }
+                        ]
+                    }
+                }
+            },
+            "Other words and mechanics to avoid": [
+                "Slang, idioms, and cliches",
+                "Uncommon or ambiguous acronyms (not clearly defined in authoritative dictionaries, or not widely used in the tech industry)",
+                "Uncommon foreign words (use 'genuine,' not 'bona fide')",
+                "Latin abbreviations (use 'for example,' not 'e.g.'; use 'that is,' not 'i.e.'; use 'and so on' or 'and so forth,' not 'etc.')",
+                "Converting one part of speech into another if it isn't already commonly used (use 'Send us an email' instead of 'message us')",
+                "Nonstandard or indirect verb usage (use 'he says,' not 'he's like' or 'he was all')",
+                "Double negatives ('Do you not like this?')",
+                "Synonyms, generally. Don't use a lot of different words for the same thing in a single piece of writing. Pick one term and stick with it."
+            ],
+            "Other considerations": {
+                "Keep small words": {
+                    "guidance": "Keep words like 'then,' 'a,' 'the,' 'to,' and 'that,' even if you think they could be cut.",
+                    "examples": [
+                        { "result": "No", "text": "When sending a campaign, it's necessary to have a 'From:' name, 'From:' address, and subject line." },
+                        { "result": "Yes", "text": "When sending a campaign, it's necessary to have a 'From:' name, a 'From:' address, and a subject line." },
+                        { "result": "No", "text": "Be sure you're truly ready to send your campaign before you click the 'Send Now' button." },
+                        { "result": "Yes", "text": "Be sure that you're truly ready to send your campaign before you click the 'Send Now' button." }
+                    ]
+                },
+                "Beware of words with multiple meanings": {
+                    "'Once' (could mean 'one time,' 'after,' 'in the past,' or 'when')": {
+                        "examples": [
+                            { "result": "No", "text": "Once you log in, you can see your account's Dashboard." },
+                            { "result": "Yes", "text": "After you log in, you can see your account's Dashboard." }
+                        ]
+                    },
+                    "'Right' (could mean 'correct,' 'the opposite of left,' 'politically conservative,' etc.)": {
+                        "examples": [
+                            { "result": "No", "text": "In the File Manager, click the right image, and drag it to the right pane." },
+                            { "result": "Yes", "text": "In the File Manager, click the correct image, and drag it to the pane at the right." }
+                        ]
+                    },
+                    "'Since' (could refer to a point in time, or a synonym of 'because')": {
+                        "examples": [
+                            { "result": "No", "text": "Since you already have a complete mailing list, you can send your campaign at any time." },
+                            { "result": "Yes", "text": "Because you already have a complete mailing list, you can send your campaign at any time." }
+                        ]
+                    },
+                    "'Require' plus an infinitive (could confuse the relationship between subject and object)": {
+                        "examples": [
+                            { "result": "No", "text": "A paid account is required to send autoresponders. (This could imply that users with paid accounts are required to send autoresponders.)" },
+                            { "result": "Yes", "text": "Autoresponders can be configured and sent from paid accounts." }
+                        ]
+                    },
+                    "'Has' or 'have' plus a past participle (could confuse the relationship between subject and object)": {
+                        "examples": [
+                            { "result": "No", "text": "The folder has sent campaigns." },
+                            { "result": "Yes", "text": "The folder contains sent campaigns." }
+                        ]
+                    }
+                },
+                "Measurements": "When writing for an international audience, use the metric system. Spell out all units and avoid abbreviations.",
+                "Currency": {
+                    "guidance": "The first time prices are mentioned in body copy, give them in US dollars (US$) with no space between US and the currency symbol. The US can be omitted in subsequent prices. Use a comma for more than three digits. Omit decimal places for whole numbers (.00) in a price. For US denominations over four figures, use a comma, as in US$1,000. However, for euro denominations, omit the comma (2000 euros). Avoid colloquial phrases that relate to money, like 'five-and-dime,' 'greenbacks,' or 'c-notes.'",
+                    "examples": [
+                        "The product is priced at US$1,995 ($1,295 for an upgrade).",
+                        "The mobile apps are $39.95 and $50, respectively.",
+                        "300 Canadian dollars = C$300 or Can$300"
+                    ]
+                }
+            }
+        },
+        "see_also": [
+            {
+                "title": "Voice and Tone",
+                "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/668086656/Voice+and+Tone"
+            },
+            {
+                "title": "CX: Writing for a Global Audience",
+                "url": "https://confluence.internal.salesforce.com/spaces/DOCTEAM/pages/364315396/Writing+for+a+Global+Audience"
+            }
+        ]
+    },
+    {
+        "title": "Writing Marketing Content",
+        "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/655107052/Writing+Marketing+Content",
+        "last_updated": "Jun 08, 2023",
+        "read_time": "1 minute",
+        "intro": "Marketing content drives awareness, demand, and usage of our products. Marketing goals are to: Engage prospects, Convert everyone, Retain customers.",
+        "sections": {
+            "Voice and tone": [
+                "Marketing content should be friendly and conversational, just like all Trailhead content.",
+                "Avoid jargon and buzzwords."
+            ],
+            "Subject matter": [
+                "Soft skills and best practices",
+                "Product knowledge",
+                "Adoption strategies"
+            ],
+            "Best practices": [
+                "Create a storyline or develop use cases for marketing content.",
+                "Remember that we can't use customer stories.",
+                "Use images, screenshots, and video walkthroughs when applicable.",
+                "Look for learning opportunities for your content."
+            ]
+        },
+        "see_also": [
+            {
+                "title": "Voice and Tone",
+                "url": "https://confluence.internal.salesforce.com/display/TWFWE/Voice+and+Tone"
+            }
+        ]
+    },
+    {
+        "title": "Writing Developer Content",
+        "url": "https://confluence.internal.salesforce.com/spaces/THWIKI/pages/655107050/Writing+Developer+Content",
+        "last_updated": "Jun 08, 2023",
+        "read_time": "1 minute",
+        "intro": "Developer content, like all Trailhead content, should be friendly, conversational, and approachable. The goal is to make a complex topic as simple and understandable as possible.",
+        "sections": {
+            "Voice and tone": [
+                "Developer content should be friendly and conversational, just like all Trailhead content.",
+                "Avoid excessive jokes and silliness.",
+                "Strive to make complex topics as simple as possible.",
+                "Break long processes into separate, smaller sections."
+            ],
+            "Audience": [
+                "Know your audience. Content for advanced developers should be different from content aimed at beginning developers."
+            ],
+            "Code examples": [
+                "Use inline code for short code snippets (less than one line).",
+                "Use code blocks for more than one line of code."
+            ],
+            "Code comments": [
+                "Include code comments to provide additional context to learners."
+            ],
+            "Best practices": [
+                "If the badge requires complex coding, provide an example of the completed code so that learners can compare their own code to it (or copy and paste it, if needed)."
+            ]
+        },
+        "see_also": [
+            {
+                "title": "Voice and Tone",
+                "url": "https://confluence.internal.salesforce.com/display/TWFWE/Voice+and+Tone"
+            }
+        ]
+    }
+  ]
+}
