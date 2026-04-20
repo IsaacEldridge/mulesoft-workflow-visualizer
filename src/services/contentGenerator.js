@@ -1,10 +1,10 @@
-import { getBlogPostPrompt, getBadgeDraftPrompt, getBadgeProposalPrompt, OUTPUT_TYPES } from './promptTemplates';
+import { getBlogProposalPrompt, getBlogDraftPrompt, getBadgeDraftPrompt, getBadgeProposalPrompt, OUTPUT_TYPES } from './promptTemplates';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
 /**
  * Generate content using Claude API via backend server
- * @param {string} outputType - Type of content to generate (blogPost, badgeProposal, or badgeDraft)
+ * @param {string} outputType - Type of content to generate (blogProposal, blogDraft, badgeProposal, or badgeDraft)
  * @param {string} sourceContent - Source markdown content
  * @param {string} audience - Target audience (admin, developer, beginner, or empty)
  * @param {string} customPrompt - Additional custom instructions for generation
@@ -17,8 +17,10 @@ export async function generateContent(outputType, sourceContent, audience, custo
 
   // Get the appropriate prompt template
   let prompt;
-  if (outputType === OUTPUT_TYPES.BLOG_POST) {
-    prompt = getBlogPostPrompt(sourceContent, audience, customPrompt);
+  if (outputType === OUTPUT_TYPES.BLOG_PROPOSAL) {
+    prompt = getBlogProposalPrompt(sourceContent, audience, customPrompt);
+  } else if (outputType === OUTPUT_TYPES.BLOG_DRAFT) {
+    prompt = getBlogDraftPrompt(sourceContent, audience, customPrompt);
   } else if (outputType === OUTPUT_TYPES.BADGE_PROPOSAL) {
     prompt = getBadgeProposalPrompt(sourceContent, audience, customPrompt);
   } else if (outputType === OUTPUT_TYPES.BADGE_DRAFT) {

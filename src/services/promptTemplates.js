@@ -1,43 +1,244 @@
 // Prompt templates for different content output types
 
-export function getBlogPostPrompt(sourceContent, audience, customPrompt = '') {
+export function getBlogProposalPrompt(sourceContent, audience, customPrompt = '') {
   const audienceContext = audience
     ? `\n\nTarget audience: ${audience} (adjust complexity and depth accordingly)`
+    : '\n\nDefault target audience: technical professionals and decision-makers';
+
+  const customInstructions = customPrompt?.trim()
+    ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}\n(Incorporate these instructions into your blog proposal while maintaining the format requirements below)`
     : '';
+
+  return `You are a MuleSoft content strategist creating a blog proposal for blogs.mulesoft.com.
+
+CRITICAL RULES:
+- Use ONLY information from the source content provided below
+- Do NOT invent features, claims, timelines, or product behavior
+- If information is insufficient, note what's missing rather than fabricating
+- Follow official MuleSoft Blog Guidelines and Standards
+
+SOURCE CONTENT:
+${sourceContent}${audienceContext}${customInstructions}
+
+===== MULESOFT BLOG PROPOSAL REQUIREMENTS =====
+
+BLOG OBJECTIVES:
+The MuleSoft blog drives awareness, education, and engagement with prospects and customers. Your proposal must clearly demonstrate one or more of these objectives.
+
+CONTENT THEMES (Priority Topics):
+- Agentforce & Agent Fabric
+- APIs & API Management
+- Artificial Intelligence & Generative AI
+- Automation & RPA
+- Integration
+- Developer guides (how-to, what is, explainer articles)
+- Industry-specific content (healthcare, manufacturing, banking, automotive, etc.)
+
+BLOG CRITERIA (must meet all):
+- Original content (not published elsewhere)
+- Relevant to MuleSoft audience
+- Backed by data, research, case studies, or customer stories
+- Clear narrative thread that tells a story
+- Informative, valuable, and relatable (not self-serving or opinion-based)
+- Evergreen or time-sensitive business value
+
+===== YOUR TASK =====
+
+Analyze the source content and create a comprehensive Blog Proposal with:
+
+1. **Article Overview:**
+   - Proposed Title (≤60 characters, include primary keyword)
+   - Article Summary (2-3 sentences)
+   - Primary Objective (Awareness/Education/Engagement)
+   - Content Theme (from priority topics list)
+   - Target Audience (be specific)
+   - Estimated Word Count (1000-1200 preferred, up to 3000 max)
+
+2. **Key Message and Value Proposition:**
+   - What is the main message or takeaway?
+   - Why should readers care about this topic?
+   - What specific value will readers gain?
+   - How does this align with MuleSoft's business objectives?
+
+3. **Content Outline:**
+   - Section 1: [Title] - Brief description of what this section covers
+   - Section 2: [Title] - Brief description
+   - Section 3: [Title] - Brief description
+   - (Continue for all major sections)
+   - Include primary keywords for each section
+
+4. **Supporting Evidence:**
+   - Data points/statistics available from source material
+   - Case studies or customer stories (if applicable)
+   - Research or external sources to be referenced
+   - Links to relevant internal MuleSoft content for backlinking
+
+5. **SEO and Keywords:**
+   - Primary keyword/phrase
+   - Secondary keywords (3-5)
+   - Long-tail keywords or questions readers might search
+
+6. **Differentiation:**
+   - What makes this article unique or valuable?
+   - How does it differ from existing content on the topic?
+   - What fresh perspective or insight does it provide?
+
+7. **Promotional Angle:**
+   - Why is this content worth sharing on social media?
+   - What hooks or quotes could drive engagement?
+   - Which audience segments would find this most valuable?
+
+===== OUTPUT FORMAT =====
+
+Present the proposal as a well-structured markdown document with clear sections, bullet points, and strategic thinking that demonstrates the article's value and alignment with MuleSoft's blog objectives.`;
+}
+
+export function getBlogDraftPrompt(sourceContent, audience, customPrompt = '') {
+  const audienceContext = audience
+    ? `\n\nTarget audience: ${audience} (adjust complexity and depth accordingly)`
+    : '\n\nDefault target audience: technical professionals and decision-makers';
 
   const customInstructions = customPrompt?.trim()
     ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}\n(Incorporate these instructions into your content generation while maintaining the format requirements below)`
     : '';
 
-  return `You are a MuleSoft content strategist creating a blog post for blogs.mulesoft.com.
+  return `You are a MuleSoft content writer creating a blog post for blogs.mulesoft.com.
+
+===== YOUR ROLE =====
+
+Write human, clear, and inspiring content that drives awareness, education, and engagement. Your content must be original, valuable, and backed by legitimate sources—not AI-generated filler.
 
 CRITICAL RULES:
 - Use ONLY information from the source content provided below
 - Do NOT invent features, claims, timelines, or product behavior
 - If information is missing, explicitly state "Information not available in source"
 - Do NOT add speculative content or assumptions
+- All claims, data, and statements of truth MUST have source links
+- Follow official MuleSoft Blog Guidelines and Standards
 
 SOURCE CONTENT:
 ${sourceContent}${audienceContext}${customInstructions}
 
-Generate a MuleSoft blog post with these requirements:
+===== OFFICIAL MULESOFT BLOG STANDARDS =====
 
-FORMAT REQUIREMENTS:
-- Thought leadership tone (authoritative but approachable)
-- Clear structure: intro, problem statement, solution, benefits, conclusion
-- Professional and engaging writing style
-- Good for external publishing on blogs.mulesoft.com
-- Include relevant technical depth without being overwhelming
+VOICE AND TONE:
+- **Human**: Plain-spoken, conversational, tailored to audience. Avoid unnecessary superlatives and clichés.
+- **Clear**: Active voice, simple sentences. Write for scanning first, reading second.
+- **Inspiring**: Positive, energizing language that focuses on possibilities. Persuasive but not exaggerated.
 
-STRUCTURE:
-1. **Engaging Title**: Clear, benefit-focused (under 60 characters)
-2. **Introduction**: Hook the reader, preview the value (2-3 paragraphs)
-3. **Problem Statement**: What challenge does this address? (2-3 paragraphs)
-4. **Solution**: How does this work? What's the approach? (3-5 paragraphs)
-5. **Benefits**: What value does this provide? (3-4 bullet points or paragraphs)
-6. **Conclusion**: Recap and call-to-action (1-2 paragraphs)
+WRITING STANDARDS:
+- Write in **second-person POV** (you, your, yours) with **active voice**
+- Follow **AP Stylebook** with Oxford comma
+- American English
+- **8th-9th grade reading level** (check via Hemingwayapp.com)
+- Sentences: **25 words or fewer**
+- Paragraphs: **3-4 sentences each**
+- Conversational but backed by legitimate sources
 
-Output the blog post in markdown format. Use appropriate headings, bullet points, and formatting.`;
+HEADLINE REQUIREMENTS:
+- **60 characters or fewer** (search optimization)
+- Include primary SEO keyword near beginning
+- Title case for main headline
+- Sentence case for section headers
+- Set clear expectations—no clickbait
+
+CONTENT LENGTH:
+- Preferred: **1000-1200 words**
+- Acceptable: Up to **2000-3000 words**
+- Anything beyond may be edited for concision
+
+STRUCTURE AND FORMATTING:
+- Use section headers with keywords for scannability
+- Break content into digestible chunks
+- Include quotes or callouts throughout
+- Bullet points for lists (where appropriate)
+- Numbered lists for step-by-step processes
+
+CITATIONS AND LINKS:
+- All claims, data, facts, and statements of truth MUST include direct source links
+- Hyperlink keywords or key phrases (max 5 words), NOT full sentences
+- Link to informative content, not promotional homepages
+- Include relevant internal MuleSoft backlinks for SEO
+- DO NOT mention these competitors: Amazon, Axway, Boomi, CA Tech, Google (Apigee), IBM, Informatica, Jitterbit, Kong, Microsoft, Oracle, Red Hat, SAP, SnapLogic, Software AG, Talend, TIBCO, Workato, UiPath, AutomationAnywhere
+
+ACCESSIBILITY:
+- Sentences scannable with headers and quotes
+- If mentioning images, note: "Image caption: [description under 125 characters]"
+- Use descriptive link text (not "click here")
+- Example: "Learn more in our [Connectivity Benchmark Report](URL)"
+
+===== ARTICLE STRUCTURE =====
+
+1. **Headline** (H1):
+   - ≤60 characters, title case
+   - Include primary keyword
+   - Benefit-focused and clear
+
+2. **Introduction** (2-3 paragraphs):
+   - Hook: Open with compelling statement or question
+   - Context: Why this matters now
+   - Preview: What readers will learn
+   - Keep paragraphs to 3-4 sentences each
+
+3. **Section 1: [Problem/Context]** (H2):
+   - Identify the challenge or opportunity
+   - Include relevant data or statistics (with source links)
+   - Make it relatable to the target audience
+   - 2-4 paragraphs
+
+4. **Section 2: [Solution/Approach]** (H2):
+   - Explain the solution or approach
+   - Break into H3 subsections if complex
+   - Include examples from source material
+   - Use bullet points where appropriate
+   - 3-5 paragraphs or subsections
+
+5. **Section 3: [Benefits/Value]** (H2):
+   - What value does this provide?
+   - Include real-world impacts
+   - Use data or case studies where available
+   - 2-3 paragraphs or bulleted list
+
+6. **Section 4: [Implementation/How-To]** (H2, optional):
+   - If applicable, provide practical guidance
+   - Step-by-step if relevant
+   - Keep actionable and clear
+
+7. **Conclusion** (2-3 paragraphs):
+   - Recap key takeaways
+   - Call-to-action (subtle, not pushy)
+   - End with forward-looking statement
+
+8. **Additional Notes**:
+   - Identify 2-3 key quotes that could be pulled out as callouts
+   - Suggest 1-2 sentences for social media promotion
+
+===== QUALITY CHECKLIST =====
+
+Before finalizing, verify:
+- Headline is ≤60 characters
+- All sentences are ≤25 words
+- All paragraphs are 3-4 sentences
+- Active voice and second-person POV throughout
+- All claims have source links
+- Reading level is 8th-9th grade
+- Content tells a cohesive story
+- Keywords are naturally integrated
+- No competitor mentions from prohibited list
+- Content is scannable with clear headers
+
+===== OUTPUT FORMAT =====
+
+Output the complete blog post in markdown format with:
+- H1 for headline
+- H2 for major sections
+- H3 for subsections (if needed)
+- Proper markdown syntax for links: [text](URL)
+- Bullet points or numbered lists where appropriate
+- Bold for emphasis on key terms (sparingly)
+- Clear paragraph breaks
+
+Remember: This is web content for blogs.mulesoft.com. Write content that is human, clear, inspiring, and valuable—not AI-generated filler. Every claim must be sourced.`;
 }
 
 export function getBadgeDraftPrompt(sourceContent, audience, customPrompt = '') {
@@ -377,13 +578,15 @@ Be thorough, strategic, and ensure the badge provides genuine value to learners 
 }
 
 export const OUTPUT_TYPES = {
-  BLOG_POST: 'blogPost',
+  BLOG_PROPOSAL: 'blogProposal',
+  BLOG_DRAFT: 'blogDraft',
   BADGE_PROPOSAL: 'badgeProposal',
   BADGE_DRAFT: 'badgeDraft'
 };
 
 export const OUTPUT_TYPE_LABELS = {
-  [OUTPUT_TYPES.BLOG_POST]: 'MuleSoft Blog Post',
+  [OUTPUT_TYPES.BLOG_PROPOSAL]: 'Blog Proposal',
+  [OUTPUT_TYPES.BLOG_DRAFT]: 'Blog Draft',
   [OUTPUT_TYPES.BADGE_PROPOSAL]: 'Badge Proposal',
   [OUTPUT_TYPES.BADGE_DRAFT]: 'Badge Draft'
 };

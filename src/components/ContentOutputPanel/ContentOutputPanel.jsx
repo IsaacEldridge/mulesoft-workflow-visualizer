@@ -13,7 +13,7 @@ export default function ContentOutputPanel() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState('');
 
-  const hasOutputs = generatedOutputs.blogPost || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft;
+  const hasOutputs = generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft;
 
   const handleCopy = async (outputType) => {
     const content = generatedOutputs[outputType];
@@ -107,8 +107,10 @@ Please revise the content according to the user's request while maintaining the 
     // Generate filename based on content type and timestamp
     const timestamp = new Date().toISOString().slice(0, 10);
     let contentTypeName = 'content';
-    if (activeTab === OUTPUT_TYPES.BLOG_POST) {
-      contentTypeName = 'blog-post';
+    if (activeTab === OUTPUT_TYPES.BLOG_PROPOSAL) {
+      contentTypeName = 'blog-proposal';
+    } else if (activeTab === OUTPUT_TYPES.BLOG_DRAFT) {
+      contentTypeName = 'blog-draft';
     } else if (activeTab === OUTPUT_TYPES.BADGE_PROPOSAL) {
       contentTypeName = 'badge-proposal';
     } else if (activeTab === OUTPUT_TYPES.BADGE_DRAFT) {
@@ -164,12 +166,21 @@ Please revise the content according to the user's request while maintaining the 
       </div>
 
       <div className={styles.tabs}>
-        {generatedOutputs.blogPost && (
+        {generatedOutputs.blogProposal && (
           <button
-            className={`${styles.tab} ${activeTab === OUTPUT_TYPES.BLOG_POST ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab(OUTPUT_TYPES.BLOG_POST)}
+            className={`${styles.tab} ${activeTab === OUTPUT_TYPES.BLOG_PROPOSAL ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab(OUTPUT_TYPES.BLOG_PROPOSAL)}
           >
-            {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.BLOG_POST]}
+            {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.BLOG_PROPOSAL]}
+            <span className={styles.badge}>✓</span>
+          </button>
+        )}
+        {generatedOutputs.blogDraft && (
+          <button
+            className={`${styles.tab} ${activeTab === OUTPUT_TYPES.BLOG_DRAFT ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab(OUTPUT_TYPES.BLOG_DRAFT)}
+          >
+            {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.BLOG_DRAFT]}
             <span className={styles.badge}>✓</span>
           </button>
         )}

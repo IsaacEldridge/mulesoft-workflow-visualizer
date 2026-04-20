@@ -284,8 +284,22 @@ export default function ContentInputPanel() {
         combinedContent += sourceContent;
       }
 
+      // If generating Blog, generate BOTH blog proposal and blog draft
+      if (outputType === 'blog') {
+        // Generate blog proposal first
+        const proposalContent = await generateContent(OUTPUT_TYPES.BLOG_PROPOSAL, combinedContent, audience, customPrompt);
+
+        // Generate blog draft
+        const draftContent = await generateContent(OUTPUT_TYPES.BLOG_DRAFT, combinedContent, audience, customPrompt);
+
+        setGeneratedOutputs(prev => ({
+          ...prev,
+          blogProposal: proposalContent,
+          blogDraft: draftContent
+        }));
+      }
       // If generating Trailhead Badge, generate BOTH badge proposal and badge draft
-      if (outputType === 'badge') {
+      else if (outputType === 'badge') {
         // Generate badge proposal first
         const proposalContent = await generateContent(OUTPUT_TYPES.BADGE_PROPOSAL, combinedContent, audience, customPrompt);
 
@@ -296,14 +310,6 @@ export default function ContentInputPanel() {
           ...prev,
           badgeProposal: proposalContent,
           badgeDraft: draftContent
-        }));
-      } else {
-        // For blog post, generate normally
-        const content = await generateContent(outputType, combinedContent, audience, customPrompt);
-
-        setGeneratedOutputs(prev => ({
-          ...prev,
-          [outputType]: content
         }));
       }
 
@@ -321,7 +327,7 @@ export default function ContentInputPanel() {
     <div className={styles.contentInputPanel}>
       <div className={styles.header}>
         <h2>Add Sources</h2>
-        <p>Create AI-generated blog posts and Trailhead badges from your source content</p>
+        <p>Create AI-generated MuleSoft blog posts and Trailhead badges from your source content</p>
       </div>
 
       {/* Source Input Card */}
@@ -585,20 +591,20 @@ export default function ContentInputPanel() {
         <div className={styles.buttonGroup}>
           <button
             className={styles.generateButton}
-            onClick={() => handleGenerate(OUTPUT_TYPES.BLOG_POST)}
+            onClick={() => handleGenerate('blog')}
             disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && uploadedFiles.length === 0)}
           >
-            {isGenerating && generatingType === OUTPUT_TYPES.BLOG_POST ? (
+            {isGenerating && generatingType === 'blog' ? (
               <>
                 <span className={styles.spinner}></span>
-                Generating...
+                Generating Blog...
               </>
             ) : (
               <>
-                {generatedOutputs.blogPost && (
+                {(generatedOutputs.blogProposal || generatedOutputs.blogDraft) && (
                   <span className={styles.checkmark}>✓</span>
                 )}
-                {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.BLOG_POST]}
+                MuleSoft Blog Post
               </>
             )}
           </button>
@@ -624,11 +630,11 @@ export default function ContentInputPanel() {
           </button>
         </div>
         <p className={styles.hint}>
-          Click a button to generate content. Trailhead Badge generates both a proposal and draft.
+          Each button generates both a proposal and draft for the selected content type.
         </p>
       </div>
 
-      {(generatedOutputs.blogPost || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft) && (
+      {(generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft) && (
         <div className={styles.successMessage}>
           Generated content is available in Retrieve Content.
         </div>

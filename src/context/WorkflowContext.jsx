@@ -20,7 +20,8 @@ export function WorkflowProvider({ children }) {
   const [fetchedDocsContent, setFetchedDocsContent] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [generatedOutputs, setGeneratedOutputs] = useState({
-    blogPost: null,
+    blogProposal: null,
+    blogDraft: null,
     badgeProposal: null,
     badgeDraft: null
   });
