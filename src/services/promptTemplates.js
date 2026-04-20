@@ -40,7 +40,7 @@ STRUCTURE:
 Output the blog post in markdown format. Use appropriate headings, bullet points, and formatting.`;
 }
 
-export function getTrailheadUnitPrompt(sourceContent, audience, customPrompt = '') {
+export function getBadgeDraftPrompt(sourceContent, audience, customPrompt = '') {
   const audienceContext = audience
     ? `\n\nTarget audience: ${audience} (adjust complexity and prerequisites accordingly)`
     : '\n\nDefault target audience: beginner (assume minimal prior knowledge)';
@@ -49,7 +49,7 @@ export function getTrailheadUnitPrompt(sourceContent, audience, customPrompt = '
     ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}\n(Incorporate these instructions into your content generation while maintaining the format requirements below)`
     : '';
 
-  return `You are a Salesforce Trailhead content author creating an educational unit for Trailhead.
+  return `You are a Salesforce Trailhead content author creating badge content (units) for Trailhead.
 
 ===== YOUR ROLE AS CONTENT COMPANION =====
 
@@ -80,13 +80,22 @@ CRITICAL RULES:
 SOURCE CONTENT:
 ${sourceContent}${audienceContext}${customInstructions}
 
-===== OFFICIAL TRAILHEAD UNIT STANDARDS =====
+===== OFFICIAL TRAILHEAD BADGE STANDARDS =====
 
-CONTENT LENGTH REQUIREMENTS:
-- Unit word count: 500-1500 words total (strongly recommend 500-1000 for better completion rates)
+BADGE STRUCTURE REQUIREMENTS:
+- Create a complete badge with 2-5 units
+- Each unit: 500-1500 words (strongly recommend 500-1000 for better completion rates)
 - Exclude from word count: image alt text, code snippets, resources, and quiz content
 - Learning objectives: 2-5 per unit (required)
-- Estimated completion time: Include realistic time estimate (e.g., "~15 minutes", "~25 minutes")
+- Each unit estimated time: 15-35 minutes
+- Total badge completion time: 1-3 hours
+
+BADGE NAMING CONVENTION:
+- Structure: [noun]
+- Maximum: 80 characters
+- Title capitalization
+- Should represent a marketable skill
+- Examples: "Data Modeling", "API Basics", "Service Console Customization"
 
 UNIT NAMING CONVENTION:
 - Structure: [imperative verb] + [topic]
@@ -127,9 +136,23 @@ QUALITY STANDARDS (aim for "Excellent" rating):
 - Content aligns with approved Salesforce terminology and existing published Trailhead content
 - All assertions must be traceable to source content
 
-===== UNIT STRUCTURE =====
+===== BADGE AND UNIT STRUCTURE =====
 
-1. **Unit Title**:
+**BADGE STRUCTURE:**
+1. **Badge Title** (H1):
+   - [noun], under 80 characters
+   - Marketable skill name
+
+2. **Badge Description**:
+   - Brief overview of what learners will achieve
+   - 1-2 sentences
+
+3. **Units (2-5 units required)**:
+   Generate 2-5 complete units following the structure below for EACH unit
+
+**EACH UNIT STRUCTURE:**
+
+1. **Unit Title** (H1):
    - [imperative verb] + [topic]
    - Under 80 characters, title capitalization
 
@@ -194,102 +217,101 @@ Before finalizing content, verify:
 
 ===== OUTPUT FORMAT =====
 
-Output the complete Trailhead unit in markdown format with:
-- Clear heading hierarchy (H1 for title, H2 for main sections, H3 for subsections)
+Output the complete Trailhead badge in markdown format with:
+
+**Badge Header:**
+- H1: Badge Title
+- Badge description (1-2 sentences)
+- Line break
+
+**For Each Unit (2-5 units):**
+- Clear heading hierarchy (H1 for unit title, H2 for main sections, H3 for subsections)
+- Follow the unit structure exactly for each unit
+- Include all required sections: learning objectives, introduction, main content, summary, quiz
 - Properly formatted lists (numbered and bulleted)
 - Bold for emphasis on key terms (first mention only)
 - Code formatting for technical elements (if applicable)
 - Proper markdown syntax throughout
 
-Remember: Quality over marketing. Be clear, concise, and educational. Every claim must be supported by the source content.`;
+**Unit Progression:**
+- Ensure units build on each other logically
+- First unit should introduce core concepts
+- Subsequent units should deepen knowledge and skills
+- Final unit should bring everything together
+
+Remember: Quality over marketing. Be clear, concise, and educational. Every claim must be supported by the source content. Generate 2-5 complete, production-ready units for this badge.`;
 }
 
-export function getTrailProposalPrompt(sourceContent, audience, customPrompt = '') {
+export function getBadgeProposalPrompt(sourceContent, audience, customPrompt = '') {
   const audienceContext = audience
     ? `\n\nTarget audience: ${audience} (adjust role and level accordingly)`
     : '\n\nDefault target audience: beginner to intermediate learners';
 
   const customInstructions = customPrompt?.trim()
-    ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}\n(Incorporate these instructions into your trail proposal while maintaining the format requirements below)`
+    ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}\n(Incorporate these instructions into your badge proposal while maintaining the format requirements below)`
     : '';
 
-  return `You are a Salesforce Trailhead content strategist creating an Enhanced Trail Proposal.
+  return `You are a Salesforce Trailhead content strategist creating a Badge Proposal.
 
 CRITICAL RULES:
 - Use ONLY information from the source content provided below
 - Do NOT invent features, claims, timelines, or product behavior
 - If information is insufficient, note what's missing rather than fabricating
-- Follow official Salesforce Trailhead trail creation guidelines
-- Ensure the trail has a clear learning progression from beginning to end
+- Follow official Salesforce Trailhead badge creation guidelines
+- Ensure the badge has a clear learning progression from beginning to end
 
 SOURCE CONTENT:
 ${sourceContent}${audienceContext}${customInstructions}
 
-===== ENHANCED TRAIL PROPOSAL REQUIREMENTS =====
+===== BADGE PROPOSAL REQUIREMENTS =====
 
-TRAIL CRITERIA (must meet all):
-- Trail fills a gap in topic, role, or level
-- Trail leads learners to a clear goal or skill with content that builds from beginning to end
-- Trail speaks to ONE audience role (Admin, Developer, Marketer, Architect, etc.)
-- Trail speaks to ONE audience level (Beginner, Intermediate, or Advanced)
-- Trail and trail details are evergreen (long-lasting)
+BADGE DEFINITION:
+A badge covers a single learning topic and is broken down into units. Each unit covers a subtopic within a badge, and has either a quiz or an HOC (hands-on check or hands-on challenge) at the end. When learners complete all units in a badge, they earn the badge.
 
-TRAIL STRUCTURE:
-- 1-7 milestones (logical learning sections)
-- 2-7 steps per milestone (actual content pieces)
-- Total trail should take 2-6 hours to complete
+BADGE CRITERIA (must meet all):
+- Badge covers a single, focused learning topic
+- Badge fills a gap in topic, role, or level
+- Badge speaks to ONE audience role (Admin, Developer, Marketer, Architect, etc.)
+- Badge speaks to ONE audience level (Beginner, Intermediate, or Advanced)
+- Badge content is evergreen (long-lasting)
+- Badge provides a marketable skill
+
+BADGE STRUCTURE:
+- 2-5 units per badge (required)
+- Each unit: 500-1500 words (strongly recommend 500-1000)
+- 2-5 learning objectives per unit
+- Each unit ends with assessment (quiz or hands-on challenge)
+- Total badge completion time: 1-3 hours
 
 NAMING CONVENTIONS:
 
-**Trail Name:**
+**Badge Name:**
+- Structure: [noun]
+- Maximum: 80 characters
+- Title capitalization
+- What marketable skill will the user have after completing the badge?
+- What would a user put on their resume?
+- Append 'Basics' for the first badge in a series on a topic (not '101,' 'Overview,' or 'Intro')
+- If there won't be more badges on that topic, don't append 'Basics'
+- Examples: "Data Modeling", "Screen Flow Distribution", "Service Console Customization"
+
+**Badge Description:**
+- Structure: [imperative verb] + [learning objectives]
+- Maximum: 90 characters
+- Sentence capitalization, ends with a period
+- What are the main learning objectives of the badge?
+- Avoid repeating the title
+- Example: "Explore ways to mitigate risk and better prepare for the digital future."
+
+**Unit Names:**
 - Structure: [imperative verb] + [topic]
 - Maximum: 80 characters
 - Title capitalization
-- Focus on the SKILL learners will have after completion
-- Use unique verbs that communicate what makes the trail special
-- Avoid "Learn About" or "Get to Know" if possible
-- Examples: "Develop Apps with Heroku Enterprise", "Automate Your Business Processes with Lightning Flow"
+- What's the key objective of the unit?
+- Use 'Get Started with [product or feature]' for the first unit
+- Examples: "Choose the Right Automation Tool", "Use Picklists in Formulas"
 
-**Trail Description:**
-- Structure: [imperative verb] + [learning objectives]
-- Maximum: 120 characters (including ending period)
-- Sentence capitalization, ends with a period
-- Main learning objectives of the trail
-- Avoid repeating the title
-
-**Milestone Name:**
-- Structure: [imperative verb] + [topic]
-- Maximum: 80 characters
-- Title capitalization
-- Represents a logical learning section
-- Examples: "Create Generative AI Experiences Using Prompt Builder", "Set Up and Administer Data Cloud"
-
-**Step Title:**
-- Structure: [noun] for badges
-- Maximum: 80 characters
-- Title capitalization
-- Should be a marketable skill (something learners would put on resume)
-- Examples: "Data Modeling", "Service Console Customization", "API Basics"
-
-**Step Description:**
-- Structure: [imperative verb] + [learning objectives]
-- Maximum: 90 characters (including ending period)
-- Sentence capitalization, ends with a period
-- Main learning objectives of the step
-- Avoid repeating the title
-
-STEP TYPES (choose appropriate):
-- Badge (most common - educational content with quiz/hands-on)
-- Superbadge (hands-on assessment without step-by-step guidance)
-- Quick Look Badge (brief overview, 600-800 words, 1 unit)
-- Quick Start Badge (hands-on build, step-by-step)
-- Article (Help or Developer Documentation)
-- Video (Salesforce+ or Vidyard)
-- Certification
-- Community group
-- Link to resource
-
-ROLES (choose one primary for trail):
+ROLES (choose one primary for badge):
 - Admin
 - Developer
 - Marketer
@@ -299,65 +321,69 @@ ROLES (choose one primary for trail):
 - Service Agent
 - General (use only if no other applies)
 
-LEVELS (choose one primary for trail):
+LEVELS (choose one primary for badge):
 - Beginner (foundational knowledge)
 - Intermediate (some experience required)
 - Advanced (expert-level)
 
+ASSESSMENT TYPES:
+- Quiz (two questions) - most common
+- Hands-on check (step-by-step verification)
+- Hands-on challenge (open-ended challenge)
+
 ===== YOUR TASK =====
 
-Analyze the source content and create a comprehensive Enhanced Trail Proposal with:
+Analyze the source content and create a comprehensive Badge Proposal with:
 
-1. **Trail Details:**
-   - Trail Name (compelling, ≤80 chars)
-   - Trail Description (clear objectives, ≤120 chars with period)
-   - Number of Milestones (1-7)
-   - Learner Objective (what skill/outcome will learners achieve?)
-   - Primary Role
-   - Primary Level
+1. **Badge Overview:**
+   - Badge Name ([noun], ≤80 chars, marketable skill)
+   - Badge Description ([imperative verb] + [learning objectives], ≤90 chars with period)
+   - Target Role (one primary role)
+   - Target Level (Beginner/Intermediate/Advanced)
+   - Estimated Total Time (1-3 hours)
+   - Rationale: Why this badge is needed
 
-2. **Milestones and Steps:**
-   - Organize content into logical learning progression
-   - Each milestone should represent a clear learning section
-   - Each step should build on previous steps
-   - Include realistic time estimates (badges: 20-45 min, superbadges: 2-4 hrs, articles: 10-15 min, videos: 5-10 min)
-   - Mark steps as optional only if they're truly supplementary
+2. **Unit Breakdown (2-5 units):**
+   For each unit provide:
+   - Unit Number
+   - Unit Name ([imperative verb] + [topic], ≤80 chars)
+   - Unit Description (2-3 sentences: what will learners accomplish?)
+   - Learning Objectives (2-5 specific, measurable outcomes)
+   - Key Topics Covered (bullet list)
+   - Assessment Type (Quiz/Hands-on check/Hands-on challenge)
+   - Estimated Time (15-35 minutes)
 
-3. **Quality Considerations:**
-   - Ensure 90%+ of steps focus on the selected role
-   - Ensure 90%+ of steps are at the selected level (or show logical progression)
-   - Verify the trail has a clear beginning, middle, and end
-   - Check that all steps contribute to the stated learner objective
+3. **Learning Progression:**
+   - Explain how units build on each other
+   - Describe the skill progression from unit 1 to final unit
+   - Confirm the badge achieves a single, cohesive learning goal
+
+4. **Quality Considerations:**
+   - Verify all content focuses on the selected role
+   - Verify all content is at the selected level
+   - Ensure the badge provides a marketable, resume-worthy skill
+   - Confirm content is evergreen (not tied to temporary features or versions)
 
 ===== OUTPUT FORMAT =====
 
-Provide TWO formats:
+Output as a well-formatted markdown document with:
+- Clear H2 headings for each major section
+- H3 headings for each unit
+- Tables for unit details if appropriate
+- Bullet lists for learning objectives and key topics
+- Professional, strategic tone
 
-**FORMAT 1: STRUCTURED MARKDOWN**
-
-Present the trail proposal as a well-formatted markdown document with:
-- Clear sections for trail details and each milestone
-- Tables showing step details
-- Notes on rationale and learning progression
-
-**FORMAT 2: CSV DATA**
-
-Provide CSV-formatted data that can be copied directly into the Enhanced Trail Proposal spreadsheet:
-- Use proper CSV escaping for commas and quotes
-- Include all required columns
-- Format ready to paste into Google Sheets
-
-Be thorough, strategic, and ensure the trail provides genuine value to learners while maintaining Trailhead quality standards.`;
+Be thorough, strategic, and ensure the badge provides genuine value to learners while maintaining Trailhead quality standards.`;
 }
 
 export const OUTPUT_TYPES = {
   BLOG_POST: 'blogPost',
-  TRAILHEAD_UNIT: 'trailheadUnit',
-  TRAIL_PROPOSAL: 'trailProposal'
+  BADGE_PROPOSAL: 'badgeProposal',
+  BADGE_DRAFT: 'badgeDraft'
 };
 
 export const OUTPUT_TYPE_LABELS = {
   [OUTPUT_TYPES.BLOG_POST]: 'MuleSoft Blog Post',
-  [OUTPUT_TYPES.TRAILHEAD_UNIT]: 'Salesforce Trailhead Unit',
-  [OUTPUT_TYPES.TRAIL_PROPOSAL]: 'Enhanced Trail Proposal'
+  [OUTPUT_TYPES.BADGE_PROPOSAL]: 'Badge Proposal',
+  [OUTPUT_TYPES.BADGE_DRAFT]: 'Badge Draft'
 };

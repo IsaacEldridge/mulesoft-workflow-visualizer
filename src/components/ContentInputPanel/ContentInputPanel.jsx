@@ -284,12 +284,28 @@ export default function ContentInputPanel() {
         combinedContent += sourceContent;
       }
 
-      const content = await generateContent(outputType, combinedContent, audience, customPrompt);
+      // If generating Trailhead Badge, generate BOTH badge proposal and badge draft
+      if (outputType === 'badge') {
+        // Generate badge proposal first
+        const proposalContent = await generateContent(OUTPUT_TYPES.BADGE_PROPOSAL, combinedContent, audience, customPrompt);
 
-      setGeneratedOutputs(prev => ({
-        ...prev,
-        [outputType]: content
-      }));
+        // Generate badge draft
+        const draftContent = await generateContent(OUTPUT_TYPES.BADGE_DRAFT, combinedContent, audience, customPrompt);
+
+        setGeneratedOutputs(prev => ({
+          ...prev,
+          badgeProposal: proposalContent,
+          badgeDraft: draftContent
+        }));
+      } else {
+        // For blog post, generate normally
+        const content = await generateContent(outputType, combinedContent, audience, customPrompt);
+
+        setGeneratedOutputs(prev => ({
+          ...prev,
+          [outputType]: content
+        }));
+      }
 
       // Automatically switch to Retrieve Content view to show output
       setCurrentView('distribution');
@@ -305,7 +321,7 @@ export default function ContentInputPanel() {
     <div className={styles.contentInputPanel}>
       <div className={styles.header}>
         <h2>Add Sources</h2>
-        <p>Create AI-generated blog posts, Trailhead units, and trail proposals from your source content</p>
+        <p>Create AI-generated blog posts and Trailhead badges from your source content</p>
       </div>
 
       {/* Source Input Card */}
@@ -589,50 +605,30 @@ export default function ContentInputPanel() {
 
           <button
             className={styles.generateButton}
-            onClick={() => handleGenerate(OUTPUT_TYPES.TRAILHEAD_UNIT)}
+            onClick={() => handleGenerate('badge')}
             disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && uploadedFiles.length === 0)}
           >
-            {isGenerating && generatingType === OUTPUT_TYPES.TRAILHEAD_UNIT ? (
+            {isGenerating && generatingType === 'badge' ? (
               <>
                 <span className={styles.spinner}></span>
-                Generating...
+                Generating Badge...
               </>
             ) : (
               <>
-                {generatedOutputs.trailheadUnit && (
+                {(generatedOutputs.badgeProposal || generatedOutputs.badgeDraft) && (
                   <span className={styles.checkmark}>✓</span>
                 )}
-                {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.TRAILHEAD_UNIT]}
-              </>
-            )}
-          </button>
-
-          <button
-            className={styles.generateButton}
-            onClick={() => handleGenerate(OUTPUT_TYPES.TRAIL_PROPOSAL)}
-            disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && uploadedFiles.length === 0)}
-          >
-            {isGenerating && generatingType === OUTPUT_TYPES.TRAIL_PROPOSAL ? (
-              <>
-                <span className={styles.spinner}></span>
-                Generating...
-              </>
-            ) : (
-              <>
-                {generatedOutputs.trailProposal && (
-                  <span className={styles.checkmark}>✓</span>
-                )}
-                {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.TRAIL_PROPOSAL]}
+                Trailhead Badge
               </>
             )}
           </button>
         </div>
         <p className={styles.hint}>
-          Click a button to generate content. You can generate all types from the same source.
+          Click a button to generate content. Trailhead Badge generates both a proposal and draft.
         </p>
       </div>
 
-      {(generatedOutputs.blogPost || generatedOutputs.trailheadUnit || generatedOutputs.trailProposal) && (
+      {(generatedOutputs.blogPost || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft) && (
         <div className={styles.successMessage}>
           Generated content is available in Retrieve Content.
         </div>

@@ -1,10 +1,10 @@
-import { getBlogPostPrompt, getTrailheadUnitPrompt, getTrailProposalPrompt, OUTPUT_TYPES } from './promptTemplates';
+import { getBlogPostPrompt, getBadgeDraftPrompt, getBadgeProposalPrompt, OUTPUT_TYPES } from './promptTemplates';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
 /**
  * Generate content using Claude API via backend server
- * @param {string} outputType - Type of content to generate (blogPost, trailheadUnit, or trailProposal)
+ * @param {string} outputType - Type of content to generate (blogPost, badgeProposal, or badgeDraft)
  * @param {string} sourceContent - Source markdown content
  * @param {string} audience - Target audience (admin, developer, beginner, or empty)
  * @param {string} customPrompt - Additional custom instructions for generation
@@ -19,10 +19,12 @@ export async function generateContent(outputType, sourceContent, audience, custo
   let prompt;
   if (outputType === OUTPUT_TYPES.BLOG_POST) {
     prompt = getBlogPostPrompt(sourceContent, audience, customPrompt);
-  } else if (outputType === OUTPUT_TYPES.TRAIL_PROPOSAL) {
-    prompt = getTrailProposalPrompt(sourceContent, audience, customPrompt);
+  } else if (outputType === OUTPUT_TYPES.BADGE_PROPOSAL) {
+    prompt = getBadgeProposalPrompt(sourceContent, audience, customPrompt);
+  } else if (outputType === OUTPUT_TYPES.BADGE_DRAFT) {
+    prompt = getBadgeDraftPrompt(sourceContent, audience, customPrompt);
   } else {
-    prompt = getTrailheadUnitPrompt(sourceContent, audience, customPrompt);
+    throw new Error(`Unknown output type: ${outputType}`);
   }
 
   try {

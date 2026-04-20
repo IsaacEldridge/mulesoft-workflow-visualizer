@@ -13,7 +13,7 @@ export default function ContentOutputPanel() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState('');
 
-  const hasOutputs = generatedOutputs.blogPost || generatedOutputs.trailheadUnit || generatedOutputs.trailProposal;
+  const hasOutputs = generatedOutputs.blogPost || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft;
 
   const handleCopy = async (outputType) => {
     const content = generatedOutputs[outputType];
@@ -109,45 +109,12 @@ Please revise the content according to the user's request while maintaining the 
     let contentTypeName = 'content';
     if (activeTab === OUTPUT_TYPES.BLOG_POST) {
       contentTypeName = 'blog-post';
-    } else if (activeTab === OUTPUT_TYPES.TRAILHEAD_UNIT) {
-      contentTypeName = 'trailhead-unit';
-    } else if (activeTab === OUTPUT_TYPES.TRAIL_PROPOSAL) {
-      contentTypeName = 'trail-proposal';
+    } else if (activeTab === OUTPUT_TYPES.BADGE_PROPOSAL) {
+      contentTypeName = 'badge-proposal';
+    } else if (activeTab === OUTPUT_TYPES.BADGE_DRAFT) {
+      contentTypeName = 'badge-draft';
     }
     const filename = `${contentTypeName}-${timestamp}.md`;
-
-    // Create download link and trigger download
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
-  const handleExportCSV = () => {
-    const content = generatedOutputs[activeTab];
-    if (!content) return;
-
-    // Extract CSV data from the content
-    // The CSV should be in a code block marked as ```csv
-    const csvMatch = content.match(/```csv\n([\s\S]*?)\n```/);
-
-    if (!csvMatch) {
-      alert('No CSV data found in the trail proposal. Please generate a new proposal.');
-      return;
-    }
-
-    const csvContent = csvMatch[1];
-
-    // Create a blob with the CSV content
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
-
-    // Generate filename
-    const timestamp = new Date().toISOString().slice(0, 10);
-    const filename = `trail-proposal-${timestamp}.csv`;
 
     // Create download link and trigger download
     const url = URL.createObjectURL(blob);
@@ -206,21 +173,21 @@ Please revise the content according to the user's request while maintaining the 
             <span className={styles.badge}>✓</span>
           </button>
         )}
-        {generatedOutputs.trailheadUnit && (
+        {generatedOutputs.badgeProposal && (
           <button
-            className={`${styles.tab} ${activeTab === OUTPUT_TYPES.TRAILHEAD_UNIT ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab(OUTPUT_TYPES.TRAILHEAD_UNIT)}
+            className={`${styles.tab} ${activeTab === OUTPUT_TYPES.BADGE_PROPOSAL ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab(OUTPUT_TYPES.BADGE_PROPOSAL)}
           >
-            {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.TRAILHEAD_UNIT]}
+            {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.BADGE_PROPOSAL]}
             <span className={styles.badge}>✓</span>
           </button>
         )}
-        {generatedOutputs.trailProposal && (
+        {generatedOutputs.badgeDraft && (
           <button
-            className={`${styles.tab} ${activeTab === OUTPUT_TYPES.TRAIL_PROPOSAL ? styles.activeTab : ''}`}
-            onClick={() => setActiveTab(OUTPUT_TYPES.TRAIL_PROPOSAL)}
+            className={`${styles.tab} ${activeTab === OUTPUT_TYPES.BADGE_DRAFT ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab(OUTPUT_TYPES.BADGE_DRAFT)}
           >
-            {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.TRAIL_PROPOSAL]}
+            {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.BADGE_DRAFT]}
             <span className={styles.badge}>✓</span>
           </button>
         )}
@@ -269,14 +236,6 @@ Please revise the content according to the user's request while maintaining the 
                     >
                       💾 Export to Markdown
                     </button>
-                    {activeTab === OUTPUT_TYPES.TRAIL_PROPOSAL && (
-                      <button
-                        className={styles.exportButton}
-                        onClick={handleExportCSV}
-                      >
-                        📊 Export CSV
-                      </button>
-                    )}
                   </>
                 )}
               </div>
