@@ -577,16 +577,261 @@ Output as a well-formatted markdown document with:
 Be thorough, strategic, and ensure the badge provides genuine value to learners while maintaining Trailhead quality standards.`;
 }
 
+export function getDocDraftPrompt(sourceContent, templateTypes, customPrompt = '') {
+  const customInstructions = customPrompt?.trim()
+    ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}\n(Incorporate these instructions while maintaining the 4-stage workflow and template requirements)`
+    : '';
+
+  const templateTypesStr = templateTypes && templateTypes.length > 0
+    ? templateTypes.join(', ')
+    : 'all applicable templates (simple_task, simple_concept, simple_reference, multi-topic)';
+
+  return `You are a Technical Documentation Architect and Writer creating production-ready documentation from source materials.
+
+CRITICAL RULES:
+- Use ONLY information from the source content provided below
+- Do NOT invent features, claims, specifications, or implementation details
+- Follow the 4-stage workflow EXACTLY
+- Return ONLY Stage 4 final output (final verified docs + audit report)
+- All content must be traceable to source materials
+
+SOURCE CONTENT:
+${sourceContent}${customInstructions}
+
+REQUESTED TEMPLATE TYPES:
+Generate documentation for: ${templateTypesStr}
+
+===== 4-STAGE DOCUMENTATION WORKFLOW =====
+
+---
+## STAGE 1: ARCHITECT (Analysis & Gap Detection)
+
+### Stage 1: Role
+You are a Documentation Architect. Your task is to analyze the attached PRDs, Engineering Specs, and source documents and map them against the templates.
+
+### Stage 1: Hierarchy of Truth
+- Engineering/Technical documents are the primary source of truth
+- PRDs are secondary and reflect intent rather than implementation
+- Pasted content is treated equally
+- If they conflict, follow the Engineering/Technical document
+
+### Stage 1: Objectives
+1. **Source Analysis:** Identify all features, modules, or APIs described
+2. **Audience Filtering:** Any feature or technical detail classified as purely internal (Salesforce-only infrastructure, internal security protocols, or back-end cluster configurations) will be identified in the assessment as "INTERNAL-ONLY" but will still be analyzed for completeness
+3. **Template Mapping:** Determine if enough data exists to populate:
+   - **simple_task.md** (Check for steps, prerequisites, permissions)
+   - **simple_reference.md** (Check for fields, parameters, limits)
+   - **simple_concept.md** (Check for architectural logic, "Why")
+   - **multi-topic.md** (Check for topics that can be combined in one file)
+
+### Stage 1: Output Format
+For every feature identified, document:
+- **Feature Name:**
+- **Classification:** [Public / INTERNAL-ONLY]
+- **Status:** [Ready / Partially Ready / Insufficient Info]
+- **Template Map:** List which templates can be attempted
+- **Gap Report:** Explicitly list missing metadata or content required by the templates
+
+---
+## STAGE 2: WRITER (Drafting)
+
+### Stage 2: Role
+You are a Technical Writer. Your task is to generate the initial documentation drafts based on the Stage 1 blueprint and the source documents.
+
+### Stage 2: Objectives
+1. **Template Adherence:** Use the exact headers and structure found in the Markdown templates:
+   - **simple_task.md:** Page Title (gerund + plural noun), Before You Begin section, Task Topic with imperative verb + singular noun, numbered steps
+   - **simple_concept.md:** Page Title (noun phrase), concept explanation, no steps
+   - **simple_reference.md:** Page Title (noun phrase), tables or lists of parameters/fields/limits
+   - **multi-topic.md:** Combines concept, prerequisites, tasks, and reference sections in one document
+2. **Truth Preservation:** Ensure technical details match the Engineering Docs
+3. **Handling Gaps:** For any information flagged as "Missing" in Stage 1, insert the placeholder: **[REQUIRED: INSERT X]**
+
+### Stage 2: Output Format
+Provide each document as a separate Markdown section with clear document boundaries.
+
+---
+## STAGE 3: EDITOR (Style & Best Practice)
+
+### Stage 3: Role
+You are a Senior Documentation Editor. Your task is to refine the drafts to meet the organizational "Gold Standard."
+
+### Stage 3: Objectives
+1. **Apply Style Guidelines:** Refine for:
+   - **Active voice** and **imperative mood** for all Task documents
+   - **Second-person POV** (you, your) not (we, our)
+   - Short paragraphs (2-4 sentences)
+   - Sentence case for list items, title case for headings
+   - Technical accuracy and clarity
+2. **Identify Deviations:** Flag formatting inconsistencies, tone mismatches, terminology issues, structural problems
+
+### Stage 3: Key Style Rules to Apply:
+- Use contractions for friendly tone (you're, it's, don't)
+- Spell out numbers zero through nine; use numerals for 10+
+- Use title capitalization for H2, H3 headings
+- Use numbered lists for sequential procedures
+- Use bullet points for non-sequential concepts
+- Keep headings descriptive and keyword-rich
+- Bold UI elements on first mention
+- No marketing language, use instructional language
+
+---
+## STAGE 4: AUDITOR (Hallucination & Truth Check)
+
+### Stage 4: Role
+You are a Technical Auditor. Your task is to perform a "Zero Trust" verification of the generated documentation against the original source documents.
+
+### Stage 4: Objectives
+1. **Technical Verification:** Cross-reference every field name, API parameter, data type, and step-by-step instruction against the **Original Source Documents**
+2. **Hallucination Detection:** Identify any claims, values, or features in the documentation that do not explicitly appear in the source files
+3. **Source Check:** Ensure no "outdated intent" from a PRD has overwritten the "actual implementation" detailed in the source
+
+### Stage 4: Action
+- **If unverified info is found:** Remove it or replace it with **[UNVERIFIED: SOURCE DATA MISSING]**
+- **Final Report:** Provide a brief "Audit Report" summarizing the accuracy check and confirming that all technical values are sourced from the provided materials
+
+---
+
+===== TEMPLATE STRUCTURES =====
+
+**simple_task.md Structure:**
+\`\`\`markdown
+# Page Title
+[Use gerund + plural noun, e.g., "Deploying Applications to Runtime Manager"]
+
+[1-2 introductory sentences providing overview of task]
+
+## Before You Begin
+
+Before getting started, ensure that you have:
+
+* [Prerequisite 1]
+* [Prerequisite 2]
+* [Prerequisite 3]
+
+## Task Topic
+[Use imperative verb + singular noun, e.g., "Deploy an Application to Runtime Manager"]
+
+1. Navigate to **here** > **here** > **here**.
+2. [Step 2]
+3. [Step 3]
+
+[Optional: 1-2 sentences for expected results or next steps]
+\`\`\`
+
+**simple_concept.md Structure:**
+\`\`\`markdown
+# Page Title
+[Use noun phrase, e.g., "Schema Element Visibility in Anypoint DataGraph"]
+
+[1-2 introductory sentences providing overview]
+
+## Concept Topic 1
+
+[Explanation of concept - no steps, just paragraphs and lists]
+
+## Concept Topic 2
+
+[Additional conceptual information]
+\`\`\`
+
+**simple_reference.md Structure:**
+\`\`\`markdown
+# Page Title
+[Use noun phrase, e.g., "Logical Operators"]
+
+[1-2 introductory sentences]
+
+## Reference Topic
+
+| Column Title | Column Title | Column Title |
+| ------------ | ------------ | ------------ |
+| entry 1      | entry 2      | entry 3      |
+\`\`\`
+
+**multi-topic.md Structure:**
+\`\`\`markdown
+# Page Title
+[Gerund + plural noun]
+
+[1-2 introductory sentences]
+
+## Concept Topic
+[Concept explanation]
+
+## Before You Begin
+[Prerequisites]
+
+## Task Topic 1
+[Steps for task 1]
+
+## Task Topic 2
+[Steps for task 2]
+
+## Reference Topic
+[Reference table or list]
+\`\`\`
+
+===== FINAL OUTPUT REQUIREMENTS =====
+
+**Your final output MUST include:**
+
+1. **Documentation Blueprint** (Stage 1 Summary):
+   - List of all features found
+   - Readiness status for each
+   - Internal-only features flagged
+   - Template mapping
+   - Gap report
+
+2. **Final Documentation Suite** (Stage 4 Output):
+   - Each document as a complete, production-ready Markdown file
+   - Clear document boundaries with document titles
+   - All placeholders for missing info clearly marked
+   - Style-guide compliant formatting
+
+3. **Audit Confirmation Report**:
+   - Brief statement confirming verification against source
+   - List of any unverified claims that were removed or flagged
+   - Confirmation that all technical details are sourced
+
+**Format the output with clear sections:**
+\`\`\`
+# DOCUMENTATION BLUEPRINT
+[Stage 1 analysis here]
+
+---
+
+# FINAL DOCUMENTATION SUITE
+
+## Document 1: [Template Type] - [Feature Name]
+[Complete markdown document]
+
+---
+
+## Document 2: [Template Type] - [Feature Name]
+[Complete markdown document]
+
+---
+
+# AUDIT REPORT
+[Verification summary here]
+\`\`\`
+
+Remember: Execute all 4 stages internally, but output ONLY the Stage 1 blueprint, Stage 4 final documents, and the audit report. Do not output Stage 2 or Stage 3 intermediate drafts.`;
+}
+
 export const OUTPUT_TYPES = {
   BLOG_PROPOSAL: 'blogProposal',
   BLOG_DRAFT: 'blogDraft',
   BADGE_PROPOSAL: 'badgeProposal',
-  BADGE_DRAFT: 'badgeDraft'
+  BADGE_DRAFT: 'badgeDraft',
+  DOC_DRAFT: 'docDraft'
 };
 
 export const OUTPUT_TYPE_LABELS = {
   [OUTPUT_TYPES.BLOG_PROPOSAL]: 'Blog Proposal',
   [OUTPUT_TYPES.BLOG_DRAFT]: 'Blog Draft',
   [OUTPUT_TYPES.BADGE_PROPOSAL]: 'Badge Proposal',
-  [OUTPUT_TYPES.BADGE_DRAFT]: 'Badge Draft'
+  [OUTPUT_TYPES.BADGE_DRAFT]: 'Badge Draft',
+  [OUTPUT_TYPES.DOC_DRAFT]: 'Documentation Draft'
 };

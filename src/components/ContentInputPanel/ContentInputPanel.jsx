@@ -18,6 +18,12 @@ export default function ContentInputPanel() {
     setFetchedDocsContent,
     uploadedFiles,
     setUploadedFiles,
+    selectedDocTemplates,
+    setSelectedDocTemplates,
+    figmaUrls,
+    setFigmaUrls,
+    fetchedFigmaContent,
+    setFetchedFigmaContent,
     generatedOutputs,
     setGeneratedOutputs,
     isGenerating,
@@ -33,6 +39,9 @@ export default function ContentInputPanel() {
   const [fetchStats, setFetchStats] = useState(null);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [fileUploadError, setFileUploadError] = useState(null);
+  const [figmaUrlInput, setFigmaUrlInput] = useState('');
+  const [isFetchingFigma, setIsFetchingFigma] = useState(false);
+  const [figmaFetchError, setFigmaFetchError] = useState(null);
 
   const handleAddUrl = async () => {
     const trimmedUrl = urlInput.trim();
@@ -115,11 +124,11 @@ export default function ContentInputPanel() {
     if (!file) return;
 
     // Check file type
-    const allowedExtensions = ['.md', '.markdown', '.pdf', '.txt'];
+    const allowedExtensions = ['.md', '.markdown', '.pdf', '.txt', '.adoc', '.asciidoc'];
     const fileExtension = '.' + file.name.toLowerCase().split('.').pop();
 
     if (!allowedExtensions.includes(fileExtension)) {
-      setFileUploadError('Only markdown (.md) and PDF (.pdf) files are allowed');
+      setFileUploadError('Only markdown (.md), PDF (.pdf), text (.txt), and AsciiDoc (.adoc) files are allowed');
       event.target.value = '';
       return;
     }
@@ -174,6 +183,82 @@ export default function ContentInputPanel() {
   const handleRemoveFile = (filename) => {
     setUploadedFiles(prev => prev.filter(file => file.filename !== filename));
     setFileUploadError(null);
+  };
+
+  const handleAddFigmaUrl = () => {
+    const trimmedUrl = figmaUrlInput.trim();
+    if (!trimmedUrl) return;
+
+    // Basic Figma URL validation
+    if (!trimmedUrl.includes('figma.com/')) {
+      setFigmaFetchError('Please enter a valid Figma URL (e.g., https://figma.com/design/...)');
+      return;
+    }
+
+    // Check if URL is already added
+    if (figmaUrls.includes(trimmedUrl)) {
+      setFigmaFetchError('This Figma URL has already been added');
+      return;
+    }
+
+    setFigmaUrls([...figmaUrls, trimmedUrl]);
+    setFigmaUrlInput('');
+    setFigmaFetchError(null);
+  };
+
+  const handleRemoveFigmaUrl = (urlToRemove) => {
+    setFigmaUrls(figmaUrls.filter(url => url !== urlToRemove));
+    // Clear fetched content when URLs change
+    setFetchedFigmaContent('');
+    setFigmaFetchError(null);
+  };
+
+  const handleFetchFigma = async () => {
+    if (figmaUrls.length === 0) {
+      setFigmaFetchError('Please add at least one Figma URL');
+      return;
+    }
+
+    setIsFetchingFigma(true);
+    setFigmaFetchError(null);
+
+    try {
+      const response = await fetch('http://localhost:3001/api/fetch-figma', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ urls: figmaUrls })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch Figma content');
+      }
+
+      const data = await response.json();
+
+      // Combine all successfully fetched Figma content
+      let combinedContent = '';
+
+      if (data.designs && data.designs.length > 0) {
+        combinedContent = data.designs
+          .map(design => `\n\n--- Figma Design: ${design.url} ---\n\n${design.content}`)
+          .join('\n\n');
+      }
+
+      if (combinedContent.trim().length === 0) {
+        throw new Error('No content could be extracted from the provided Figma URLs');
+      }
+
+      setFetchedFigmaContent(combinedContent);
+      setFigmaFetchError(`✓ Fetched ${data.designs.length} Figma design${data.designs.length > 1 ? 's' : ''} (${combinedContent.length} characters)`);
+    } catch (err) {
+      setFigmaFetchError(err.message);
+      setFetchedFigmaContent('');
+    } finally {
+      setIsFetchingFigma(false);
+    }
   };
 
   const handleFetchDocs = async () => {
@@ -245,10 +330,22 @@ export default function ContentInputPanel() {
     }
   };
 
+  const handleTemplateToggle = (template) => {
+    setSelectedDocTemplates(prev => {
+      if (prev.includes(template)) {
+        // Don't allow deselecting if it's the last one
+        if (prev.length === 1) return prev;
+        return prev.filter(t => t !== template);
+      } else {
+        return [...prev, template];
+      }
+    });
+  };
+
   const handleGenerate = async (outputType) => {
     // Check if we have any source content
-    if (!sourceContent.trim() && !fetchedDocsContent.trim() && uploadedFiles.length === 0) {
-      setError('Please provide source content: paste text, upload files, or fetch documentation URLs');
+    if (!sourceContent.trim() && !fetchedDocsContent.trim() && !fetchedFigmaContent.trim() && uploadedFiles.length === 0) {
+      setError('Please provide source content: paste text, upload files, fetch documentation URLs, or add Figma designs');
       return;
     }
 
@@ -266,6 +363,14 @@ export default function ContentInputPanel() {
         uploadedFiles.forEach(file => {
           combinedContent += `--- File: ${file.filename} (${file.type}) ---\n\n${file.content}\n\n`;
         });
+      }
+
+      // Add fetched Figma content
+      if (fetchedFigmaContent.trim()) {
+        if (combinedContent) {
+          combinedContent += '\n\n';
+        }
+        combinedContent += '=== FIGMA DESIGNS ===\n\n' + fetchedFigmaContent;
       }
 
       // Add fetched documentation
@@ -310,6 +415,16 @@ export default function ContentInputPanel() {
           ...prev,
           badgeProposal: proposalContent,
           badgeDraft: draftContent
+        }));
+      }
+      // If generating Doc Draft, generate documentation with selected templates
+      else if (outputType === 'doc') {
+        // Generate documentation draft with selected templates
+        const docContent = await generateContent(OUTPUT_TYPES.DOC_DRAFT, combinedContent, audience, customPrompt, selectedDocTemplates);
+
+        setGeneratedOutputs(prev => ({
+          ...prev,
+          docDraft: docContent
         }));
       }
 
@@ -445,16 +560,95 @@ export default function ContentInputPanel() {
       </div>
 
       <div className={styles.formSection}>
+        <label htmlFor="figmaUrls" className={styles.label}>
+          Figma Design URLs <span className={styles.optional}>(optional)</span>
+          <span className={styles.hint}>(add Figma design, prototype, or FigJam URLs)</span>
+        </label>
+        <div className={styles.urlInputGroup}>
+          <input
+            type="text"
+            id="figmaUrls"
+            className={styles.urlInput}
+            value={figmaUrlInput}
+            onChange={(e) => setFigmaUrlInput(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleAddFigmaUrl();
+              }
+            }}
+            placeholder="https://figma.com/design/..."
+            disabled={isGenerating || isFetchingFigma}
+          />
+          <button
+            className={styles.addUrlButton}
+            onClick={handleAddFigmaUrl}
+            disabled={isGenerating || isFetchingFigma || !figmaUrlInput.trim()}
+          >
+            Add URL
+          </button>
+        </div>
+
+        {figmaUrls.length > 0 && (
+          <div className={styles.urlList}>
+            <div className={styles.urlListHeader}>
+              <span>Added Figma URLs ({figmaUrls.length}):</span>
+              <button
+                className={styles.fetchDocsButton}
+                onClick={handleFetchFigma}
+                disabled={isGenerating || isFetchingFigma}
+                style={{background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'}}
+              >
+                {isFetchingFigma ? (
+                  <>
+                    <span className={styles.spinner}></span>
+                    Fetching...
+                  </>
+                ) : (
+                  <>
+                    {fetchedFigmaContent ? '✓ Refresh Figma' : 'Fetch Figma Content'}
+                  </>
+                )}
+              </button>
+            </div>
+            <ul className={styles.urlItems}>
+              {figmaUrls.map((url, index) => (
+                <li key={index} className={styles.urlItem}>
+                  <span className={styles.urlText} title={url}>
+                    {url}
+                  </span>
+                  <button
+                    className={styles.removeUrlButton}
+                    onClick={() => handleRemoveFigmaUrl(url)}
+                    disabled={isGenerating || isFetchingFigma}
+                    aria-label="Remove URL"
+                  >
+                    ×
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {figmaFetchError && (
+          <div className={figmaFetchError.startsWith('✓') ? styles.successMessage : styles.error}>
+            {figmaFetchError}
+          </div>
+        )}
+      </div>
+
+      <div className={styles.formSection}>
         <label htmlFor="fileUpload" className={styles.label}>
           Upload Files <span className={styles.optional}>(optional)</span>
-          <span className={styles.hint}>(markdown or PDF files)</span>
+          <span className={styles.hint}>(markdown, PDF, text, or AsciiDoc files)</span>
         </label>
         <div className={styles.fileUploadGroup}>
           <input
             type="file"
             id="fileUpload"
             className={styles.fileInput}
-            accept=".md,.markdown,.pdf,.txt"
+            accept=".md,.markdown,.pdf,.txt,.adoc,.asciidoc"
             onChange={handleFileUpload}
             disabled={isGenerating || isUploadingFile}
           />
@@ -515,7 +709,7 @@ export default function ContentInputPanel() {
       <div className={styles.formSection}>
         <label htmlFor="sourceContent" className={styles.label}>
           Additional Source Content <span className={styles.optional}>(optional)</span>
-          <span className={styles.hint}>(paste markdown or plain text to combine with uploaded files and fetched docs)</span>
+          <span className={styles.hint}>(paste markdown or plain text to combine with uploaded files, Figma designs, and fetched docs)</span>
         </label>
         <textarea
           id="sourceContent"
@@ -629,12 +823,77 @@ export default function ContentInputPanel() {
             )}
           </button>
         </div>
+
+        <div className={styles.docDraftSection}>
+          <h4 className={styles.sectionSubtitle}>Doc Draft</h4>
+          <div className={styles.templateSelector}>
+            <label className={styles.label}>Select Template Types:</label>
+            <div className={styles.checkboxGroup}>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={selectedDocTemplates.includes('simple_task')}
+                  onChange={() => handleTemplateToggle('simple_task')}
+                  disabled={isGenerating}
+                />
+                <span>Simple Task</span>
+              </label>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={selectedDocTemplates.includes('simple_concept')}
+                  onChange={() => handleTemplateToggle('simple_concept')}
+                  disabled={isGenerating}
+                />
+                <span>Simple Concept</span>
+              </label>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={selectedDocTemplates.includes('simple_reference')}
+                  onChange={() => handleTemplateToggle('simple_reference')}
+                  disabled={isGenerating}
+                />
+                <span>Simple Reference</span>
+              </label>
+              <label className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={selectedDocTemplates.includes('multi_topic')}
+                  onChange={() => handleTemplateToggle('multi_topic')}
+                  disabled={isGenerating}
+                />
+                <span>Multi-Topic</span>
+              </label>
+            </div>
+          </div>
+          <button
+            className={styles.generateButton}
+            onClick={() => handleGenerate('doc')}
+            disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && uploadedFiles.length === 0) || selectedDocTemplates.length === 0}
+          >
+            {isGenerating && generatingType === 'doc' ? (
+              <>
+                <span className={styles.spinner}></span>
+                Generating Documentation...
+              </>
+            ) : (
+              <>
+                {generatedOutputs.docDraft && (
+                  <span className={styles.checkmark}>✓</span>
+                )}
+                Doc Draft
+              </>
+            )}
+          </button>
+        </div>
+
         <p className={styles.hint}>
-          Each button generates both a proposal and draft for the selected content type.
+          Blog and Badge buttons generate both a proposal and draft. Doc Draft generates production-ready documentation from your sources.
         </p>
       </div>
 
-      {(generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft) && (
+      {(generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft || generatedOutputs.docDraft) && (
         <div className={styles.successMessage}>
           Generated content is available in Retrieve Content.
         </div>

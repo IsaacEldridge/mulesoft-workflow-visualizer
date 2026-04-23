@@ -605,6 +605,83 @@
   font-size: 0.875rem;
 }
 
+/* Doc Draft Section */
+.docDraftSection {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+  border: 1.5px solid rgba(139, 92, 246, 0.2);
+  border-radius: 10px;
+}
+
+.sectionSubtitle {
+  margin: 0 0 1rem 0;
+  color: #6d28d9;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.templateSelector {
+  margin-bottom: 1rem;
+}
+
+.checkboxGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.checkboxLabel:hover {
+  border-color: #8b5cf6;
+  background: #faf5ff;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #8b5cf6;
+}
+
+.checkboxLabel input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.checkboxLabel:has(input:checked) {
+  background: #f5f3ff;
+  border-color: #8b5cf6;
+  color: #6d28d9;
+}
+
+.docDraftSection .generateButton {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  width: 100%;
+}
+
+.docDraftSection .generateButton:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .buttonGroup {
@@ -617,5 +694,9 @@
 
   .urlInputGroup {
     flex-direction: column;
+  }
+
+  .checkboxGroup {
+    grid-template-columns: 1fr;
   }
 }

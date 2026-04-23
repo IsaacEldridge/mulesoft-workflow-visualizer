@@ -1,0 +1,43 @@
+<!-- The SimpleConcept template covers one concept. Copy this template into a .md file and remove the optional elements you don’t need. -->
+
+# Page Title
+
+<!--
+For concept topic and page titles, use a noun phrase that describes the content, for example:
+
+Schema Element Visibility in Anypoint DataGraph
+OR
+Benefits of Custom Ingress Resource Templates
+OR
+How Ingress Resources Templates Work in Runtime Fabric
+
+Add 1-2 introductory sentences that provide an overview of the topic—what it is and why the reader cares. If relevant, mention
+specific tasks that require this information.
+-->
+
+## Concept Topic 1 (Heading is optional if concept is short)
+
+<!--
+If using heading, add 1-2 sentences to introduce reference
+
+Add 1-2 sentences to introduce concept
+Must contain: paragraphs, list, or concept table
+Must not contain: steps
+Can contain ###
+-->
+
+<!-- ## Conceptual Topic 2 -->
+
+<!-- ## (Optional) See Also -->
+<!--
+Note: Do not change heading
+
+Don’t use this section as filler. Link only to relevant related info and not just any info that is “kinda” related.
+
+Must contain: unordered list
+
+* [link-text](file-name.md)
+* [link text](file-name.md#paragraph-target)
+* [link text](repo-name::filename.md)
+* [link-text](https://www.url.com)
+-->

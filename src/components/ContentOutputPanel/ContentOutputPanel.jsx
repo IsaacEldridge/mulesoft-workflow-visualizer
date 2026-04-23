@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useWorkflow } from '../../context/WorkflowContext';
 import { OUTPUT_TYPES, OUTPUT_TYPE_LABELS } from '../../services/promptTemplates';
+import { generateContent } from '../../services/contentGenerator';
 import styles from './ContentOutputPanel.module.css';
 
 export default function ContentOutputPanel() {
@@ -12,8 +13,10 @@ export default function ContentOutputPanel() {
   const [refinementError, setRefinementError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState('');
+  const [isGeneratingFromDoc, setIsGeneratingFromDoc] = useState(false);
+  const [docGenerationError, setDocGenerationError] = useState(null);
 
-  const hasOutputs = generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft;
+  const hasOutputs = generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft || generatedOutputs.docDraft;
 
   const handleCopy = async (outputType) => {
     const content = generatedOutputs[outputType];
@@ -97,6 +100,54 @@ Please revise the content according to the user's request while maintaining the 
     setIsEditing(false);
   };
 
+  const handleGenerateFromDoc = async (type) => {
+    const docContent = generatedOutputs.docDraft;
+    if (!docContent) return;
+
+    setIsGeneratingFromDoc(true);
+    setDocGenerationError(null);
+
+    try {
+      if (type === 'blog') {
+        // Generate blog proposal from doc draft
+        const blogProposal = await generateContent(
+          OUTPUT_TYPES.BLOG_PROPOSAL,
+          docContent,
+          '', // audience
+          'Generate a blog proposal based on this technical documentation. Extract key features, benefits, and use cases to create compelling blog content.'
+        );
+
+        setGeneratedOutputs(prev => ({
+          ...prev,
+          blogProposal: blogProposal
+        }));
+
+        // Switch to the blog proposal tab
+        setActiveTab(OUTPUT_TYPES.BLOG_PROPOSAL);
+      } else if (type === 'badge') {
+        // Generate badge proposal from doc draft
+        const badgeProposal = await generateContent(
+          OUTPUT_TYPES.BADGE_PROPOSAL,
+          docContent,
+          '', // audience
+          'Generate a Trailhead badge proposal based on this technical documentation. Identify learning objectives, units, and skills that can be taught.'
+        );
+
+        setGeneratedOutputs(prev => ({
+          ...prev,
+          badgeProposal: badgeProposal
+        }));
+
+        // Switch to the badge proposal tab
+        setActiveTab(OUTPUT_TYPES.BADGE_PROPOSAL);
+      }
+    } catch (err) {
+      setDocGenerationError(err.message);
+    } finally {
+      setIsGeneratingFromDoc(false);
+    }
+  };
+
   const handleExport = () => {
     const content = generatedOutputs[activeTab];
     if (!content) return;
@@ -115,6 +166,8 @@ Please revise the content according to the user's request while maintaining the 
       contentTypeName = 'badge-proposal';
     } else if (activeTab === OUTPUT_TYPES.BADGE_DRAFT) {
       contentTypeName = 'badge-draft';
+    } else if (activeTab === OUTPUT_TYPES.DOC_DRAFT) {
+      contentTypeName = 'doc-draft';
     }
     const filename = `${contentTypeName}-${timestamp}.md`;
 
@@ -199,6 +252,15 @@ Please revise the content according to the user's request while maintaining the 
             onClick={() => setActiveTab(OUTPUT_TYPES.BADGE_DRAFT)}
           >
             {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.BADGE_DRAFT]}
+            <span className={styles.badge}>✓</span>
+          </button>
+        )}
+        {generatedOutputs.docDraft && (
+          <button
+            className={`${styles.tab} ${activeTab === OUTPUT_TYPES.DOC_DRAFT ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab(OUTPUT_TYPES.DOC_DRAFT)}
+          >
+            {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.DOC_DRAFT]}
             <span className={styles.badge}>✓</span>
           </button>
         )}
@@ -287,6 +349,54 @@ Please revise the content according to the user's request while maintaining the 
                 {refinementError && (
                   <div className={styles.refinementError}>
                     {refinementError}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {!isEditing && activeTab === OUTPUT_TYPES.DOC_DRAFT && (
+              <div className={styles.docActionsSection}>
+                <div className={styles.docActionsHeader}>
+                  <h3>Generate From Documentation</h3>
+                  <p>Create blog or Trailhead proposals from this documentation</p>
+                </div>
+                <div className={styles.docActionsButtons}>
+                  <button
+                    className={styles.docActionButton}
+                    onClick={() => handleGenerateFromDoc('blog')}
+                    disabled={isGeneratingFromDoc}
+                  >
+                    {isGeneratingFromDoc ? (
+                      <>
+                        <span className={styles.spinner}></span>
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        📝 Generate Blog Proposal
+                      </>
+                    )}
+                  </button>
+                  <button
+                    className={styles.docActionButton}
+                    onClick={() => handleGenerateFromDoc('badge')}
+                    disabled={isGeneratingFromDoc}
+                  >
+                    {isGeneratingFromDoc ? (
+                      <>
+                        <span className={styles.spinner}></span>
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        🎓 Generate Trailhead Proposal
+                      </>
+                    )}
+                  </button>
+                </div>
+                {docGenerationError && (
+                  <div className={styles.refinementError}>
+                    {docGenerationError}
                   </div>
                 )}
               </div>

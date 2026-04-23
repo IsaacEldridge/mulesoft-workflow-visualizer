@@ -19,11 +19,15 @@ export function WorkflowProvider({ children }) {
   const [docUrls, setDocUrls] = useState([]);
   const [fetchedDocsContent, setFetchedDocsContent] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [selectedDocTemplates, setSelectedDocTemplates] = useState(['simple_task', 'simple_concept']); // Default selections
+  const [figmaUrls, setFigmaUrls] = useState([]);
+  const [fetchedFigmaContent, setFetchedFigmaContent] = useState('');
   const [generatedOutputs, setGeneratedOutputs] = useState({
     blogProposal: null,
     blogDraft: null,
     badgeProposal: null,
-    badgeDraft: null
+    badgeDraft: null,
+    docDraft: null
   });
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -85,6 +89,12 @@ export function WorkflowProvider({ children }) {
     setFetchedDocsContent,
     uploadedFiles,
     setUploadedFiles,
+    selectedDocTemplates,
+    setSelectedDocTemplates,
+    figmaUrls,
+    setFigmaUrls,
+    fetchedFigmaContent,
+    setFetchedFigmaContent,
     generatedOutputs,
     setGeneratedOutputs,
     isGenerating,

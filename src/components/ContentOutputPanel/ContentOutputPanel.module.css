@@ -431,6 +431,71 @@
   font-size: 0.875rem;
 }
 
+/* Doc Actions Section (only shown for Doc Draft tab) */
+.docActionsSection {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+  border: 1.5px solid rgba(139, 92, 246, 0.2);
+  border-radius: 10px;
+}
+
+.docActionsHeader {
+  margin-bottom: 1.25rem;
+}
+
+.docActionsHeader h3 {
+  margin: 0 0 0.25rem 0;
+  color: #6d28d9;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.docActionsHeader p {
+  margin: 0;
+  color: #7c3aed;
+  font-size: 0.875rem;
+}
+
+.docActionsButtons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.docActionButton {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.docActionButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.docActionButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.docActionButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .contentOutputPanel {
@@ -471,5 +536,14 @@
   .refineButton {
     width: 100%;
     justify-content: center;
+  }
+
+  .docActionsButtons {
+    flex-direction: column;
+  }
+
+  .docActionButton {
+    width: 100%;
+    min-width: unset;
   }
 }

@@ -846,6 +846,216 @@ Following proper implementation steps ensures your solution is reliable and main
   return 'Mock content generated';
 }
 
+// Fetch Figma design content endpoint
+app.post('/api/fetch-figma', async (req, res) => {
+  const { urls } = req.body;
+
+  if (!urls || !Array.isArray(urls) || urls.length === 0) {
+    return res.status(400).json({ error: 'Please provide an array of Figma URLs' });
+  }
+
+  const figmaToken = process.env.FIGMA_ACCESS_TOKEN;
+  if (!figmaToken) {
+    return res.status(500).json({
+      error: 'Figma access token not configured',
+      details: 'Please add FIGMA_ACCESS_TOKEN to your .env file'
+    });
+  }
+
+  console.log(`\n📐 Fetching Figma content from ${urls.length} URL(s)...`);
+
+  try {
+    const designs = [];
+
+    for (const url of urls) {
+      console.log(`  Fetching: ${url}`);
+
+      try {
+        // Parse Figma URL to extract fileKey and nodeId
+        const figmaUrlPattern = /figma\.com\/(design|file|board|proto)\/([^/]+)/;
+        const match = url.match(figmaUrlPattern);
+
+        if (!match) {
+          console.log(`  ⚠️  Invalid Figma URL format: ${url}`);
+          designs.push({
+            url,
+            success: false,
+            error: 'Invalid Figma URL format'
+          });
+          continue;
+        }
+
+        const fileKey = match[2];
+        let nodeId = null;
+
+        // Extract node-id if present
+        const nodeIdMatch = url.match(/node-id=([^&]+)/);
+        if (nodeIdMatch) {
+          // Convert node-id format from "123-456" to "123:456"
+          nodeId = nodeIdMatch[1].replace(/-/g, ':');
+        }
+
+        // Fetch file data from Figma API
+        const fileResponse = await fetch(`https://api.figma.com/v1/files/${fileKey}`, {
+          headers: {
+            'X-Figma-Token': figmaToken
+          }
+        });
+
+        if (!fileResponse.ok) {
+          throw new Error(`Figma API error: ${fileResponse.status} ${fileResponse.statusText}`);
+        }
+
+        const fileData = await fileResponse.json();
+
+        // Build design content
+        let designContent = `# ${fileData.name}\n\n`;
+        designContent += `**File Key:** ${fileKey}\n`;
+        designContent += `**URL:** ${url}\n`;
+        designContent += `**Last Modified:** ${fileData.lastModified}\n\n`;
+
+        // If specific node requested, find and describe it
+        if (nodeId) {
+          designContent += `## Selected Component\n\n`;
+          designContent += `**Node ID:** ${nodeId}\n\n`;
+
+          // Find the node in the document
+          const node = findNodeById(fileData.document, nodeId);
+          if (node) {
+            designContent += `**Name:** ${node.name}\n`;
+            designContent += `**Type:** ${node.type}\n\n`;
+
+            if (node.type === 'COMPONENT' || node.type === 'COMPONENT_SET') {
+              designContent += `### Component Details\n\n`;
+              if (node.description) {
+                designContent += `**Description:** ${node.description}\n\n`;
+              }
+            }
+
+            // Add layout information
+            if (node.absoluteBoundingBox) {
+              const box = node.absoluteBoundingBox;
+              designContent += `**Dimensions:** ${Math.round(box.width)} × ${Math.round(box.height)}px\n\n`;
+            }
+
+            // Add style information
+            if (node.fills && node.fills.length > 0) {
+              designContent += `### Fills\n\n`;
+              node.fills.forEach((fill, i) => {
+                if (fill.type === 'SOLID') {
+                  const color = fill.color;
+                  designContent += `- Color ${i + 1}: rgba(${Math.round(color.r * 255)}, ${Math.round(color.g * 255)}, ${Math.round(color.b * 255)}, ${color.a})\n`;
+                }
+              });
+              designContent += `\n`;
+            }
+
+            // Add text styles if it's a text node
+            if (node.type === 'TEXT' && node.style) {
+              designContent += `### Typography\n\n`;
+              designContent += `- **Font:** ${node.style.fontFamily} ${node.style.fontWeight}\n`;
+              designContent += `- **Size:** ${node.style.fontSize}px\n`;
+              designContent += `- **Line Height:** ${node.style.lineHeightPx}px\n\n`;
+            }
+          } else {
+            designContent += `_Node not found in file_\n\n`;
+          }
+        } else {
+          // No specific node, describe the file
+          designContent += `## File Overview\n\n`;
+          designContent += `This Figma file contains the following top-level frames:\n\n`;
+
+          if (fileData.document.children) {
+            fileData.document.children.forEach(page => {
+              if (page.children) {
+                designContent += `### ${page.name}\n\n`;
+                page.children.forEach(frame => {
+                  designContent += `- **${frame.name}** (${frame.type})\n`;
+                });
+                designContent += `\n`;
+              }
+            });
+          }
+        }
+
+        // Add components list if available
+        if (fileData.components && Object.keys(fileData.components).length > 0) {
+          designContent += `## Components\n\n`;
+          designContent += `This file contains ${Object.keys(fileData.components).length} component(s):\n\n`;
+
+          Object.entries(fileData.components).slice(0, 10).forEach(([key, component]) => {
+            designContent += `- **${component.name}** (${component.key})\n`;
+            if (component.description) {
+              designContent += `  - ${component.description}\n`;
+            }
+          });
+
+          if (Object.keys(fileData.components).length > 10) {
+            designContent += `\n_...and ${Object.keys(fileData.components).length - 10} more components_\n`;
+          }
+          designContent += `\n`;
+        }
+
+        // Add styles information
+        if (fileData.styles && Object.keys(fileData.styles).length > 0) {
+          designContent += `## Design Styles\n\n`;
+          designContent += `This file contains ${Object.keys(fileData.styles).length} style(s) including colors, text styles, and effects.\n\n`;
+        }
+
+        designs.push({
+          url,
+          success: true,
+          fileKey,
+          nodeId,
+          content: designContent
+        });
+
+        console.log(`  ✓ Successfully fetched ${nodeId ? 'node' : 'file'} data`);
+      } catch (err) {
+        console.error(`  ✗ Error fetching ${url}:`, err.message);
+        designs.push({
+          url,
+          success: false,
+          error: err.message
+        });
+      }
+    }
+
+    const successfulDesigns = designs.filter(d => d.success);
+    console.log(`\n✓ Fetched ${successfulDesigns.length} of ${urls.length} Figma designs\n`);
+
+    res.json({
+      designs: successfulDesigns,
+      total: urls.length,
+      successful: successfulDesigns.length,
+      failed: urls.length - successfulDesigns.length
+    });
+
+  } catch (error) {
+    console.error('Error fetching Figma content:', error);
+    res.status(500).json({
+      error: 'Failed to fetch Figma content',
+      details: error.message
+    });
+  }
+});
+
+// Helper function to find a node by ID in the Figma document tree
+function findNodeById(node, targetId) {
+  if (node.id === targetId) {
+    return node;
+  }
+
+  if (node.children) {
+    for (const child of node.children) {
+      const found = findNodeById(child, targetId);
+      if (found) return found;
+    }
+  }
+
+  return null;
+}
+
 app.listen(PORT, () => {
   console.log(`\n🚀 Backend server running on http://localhost:${PORT}`);
   console.log(`📡 API endpoint: http://localhost:${PORT}/api/generate`);
