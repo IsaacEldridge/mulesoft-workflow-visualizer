@@ -9,7 +9,7 @@ export const WORKFLOW_STAGES = [
     tools: ['Markdown', 'Text Editor', 'PRDs', 'Documentation'],
     owner: 'Content Team',
     location: 'Content Input',
-    description: 'Paste source content (PRDs, technical documentation, drafts) in markdown or plain text format. Select optional target audience (admin, developer, beginner). Generate multiple output types from a single source of truth.',
+    description: 'Paste source content (PRDs, technical documentation, drafts) in markdown or plain text format. Select optional target audience (admin, developer, foundational). Generate multiple output types from a single source of truth.',
     active: true,
     technicalDetails: [
       'Adding AsciiDoc metadata attributes',

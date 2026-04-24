@@ -605,6 +605,73 @@
   font-size: 0.875rem;
 }
 
+/* Badge Section */
+.badgeSection {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%);
+  border: 1.5px solid rgba(16, 185, 129, 0.2);
+  border-radius: 10px;
+}
+
+.badgeTypeSelector {
+  margin-bottom: 1rem;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+  flex: 1;
+}
+
+.radioLabel:hover {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+
+.radioLabel input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #10b981;
+}
+
+.radioLabel input[type="radio"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.radioLabel:has(input:checked) {
+  background: #ecfdf5;
+  border-color: #10b981;
+  color: #059669;
+}
+
+.badgeSection .generateButton {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  width: 100%;
+}
+
+.badgeSection .generateButton:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
 /* Doc Draft Section */
 .docDraftSection {
   margin-top: 1.5rem;
@@ -698,5 +765,9 @@
 
   .checkboxGroup {
     grid-template-columns: 1fr;
+  }
+
+  .radioGroup {
+    flex-direction: column;
   }
 }

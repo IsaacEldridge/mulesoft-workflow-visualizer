@@ -20,6 +20,8 @@ export default function ContentInputPanel() {
     setUploadedFiles,
     selectedDocTemplates,
     setSelectedDocTemplates,
+    badgeType,
+    setBadgeType,
     figmaUrls,
     setFigmaUrls,
     fetchedFigmaContent,
@@ -406,10 +408,10 @@ export default function ContentInputPanel() {
       // If generating Trailhead Badge, generate BOTH badge proposal and badge draft
       else if (outputType === 'badge') {
         // Generate badge proposal first
-        const proposalContent = await generateContent(OUTPUT_TYPES.BADGE_PROPOSAL, combinedContent, audience, customPrompt);
+        const proposalContent = await generateContent(OUTPUT_TYPES.BADGE_PROPOSAL, combinedContent, audience, customPrompt, null, badgeType);
 
         // Generate badge draft
-        const draftContent = await generateContent(OUTPUT_TYPES.BADGE_DRAFT, combinedContent, audience, customPrompt);
+        const draftContent = await generateContent(OUTPUT_TYPES.BADGE_DRAFT, combinedContent, audience, customPrompt, null, badgeType);
 
         setGeneratedOutputs(prev => ({
           ...prev,
@@ -749,7 +751,7 @@ export default function ContentInputPanel() {
           <option value="">Default (general audience)</option>
           <option value="admin">Admin</option>
           <option value="developer">Developer</option>
-          <option value="beginner">Beginner</option>
+          <option value="foundational">Foundational</option>
         </select>
       </div>
 
@@ -802,7 +804,37 @@ export default function ContentInputPanel() {
               </>
             )}
           </button>
+        </div>
 
+        <div className={styles.badgeSection}>
+          <h4 className={styles.sectionSubtitle}>Trailhead Badge</h4>
+          <div className={styles.badgeTypeSelector}>
+            <label className={styles.label}>Badge Type:</label>
+            <div className={styles.radioGroup}>
+              <label className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="badgeType"
+                  value="regular"
+                  checked={badgeType === 'regular'}
+                  onChange={(e) => setBadgeType(e.target.value)}
+                  disabled={isGenerating}
+                />
+                <span>Regular Badge</span>
+              </label>
+              <label className={styles.radioLabel}>
+                <input
+                  type="radio"
+                  name="badgeType"
+                  value="quickLook"
+                  checked={badgeType === 'quickLook'}
+                  onChange={(e) => setBadgeType(e.target.value)}
+                  disabled={isGenerating}
+                />
+                <span>Quick Look Badge</span>
+              </label>
+            </div>
+          </div>
           <button
             className={styles.generateButton}
             onClick={() => handleGenerate('badge')}

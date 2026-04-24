@@ -6,12 +6,13 @@ const API_BASE_URL = 'http://localhost:3001/api';
  * Generate content using Claude API via backend server
  * @param {string} outputType - Type of content to generate (blogProposal, blogDraft, badgeProposal, badgeDraft, or docDraft)
  * @param {string} sourceContent - Source markdown content
- * @param {string} audience - Target audience (admin, developer, beginner, or empty)
+ * @param {string} audience - Target audience (admin, developer, foundational, or empty)
  * @param {string} customPrompt - Additional custom instructions for generation
  * @param {array} templateTypes - Array of template types for docDraft (e.g., ['simple_task', 'simple_concept'])
+ * @param {string} badgeType - Badge type for badge generation ('regular' or 'quickLook')
  * @returns {Promise<string>} Generated content in markdown format
  */
-export async function generateContent(outputType, sourceContent, audience, customPrompt = '', templateTypes = []) {
+export async function generateContent(outputType, sourceContent, audience, customPrompt = '', templateTypes = [], badgeType = 'regular') {
   if (!sourceContent.trim()) {
     throw new Error('Source content is required');
   }
@@ -23,9 +24,9 @@ export async function generateContent(outputType, sourceContent, audience, custo
   } else if (outputType === OUTPUT_TYPES.BLOG_DRAFT) {
     prompt = getBlogDraftPrompt(sourceContent, audience, customPrompt);
   } else if (outputType === OUTPUT_TYPES.BADGE_PROPOSAL) {
-    prompt = getBadgeProposalPrompt(sourceContent, audience, customPrompt);
+    prompt = getBadgeProposalPrompt(sourceContent, audience, customPrompt, badgeType);
   } else if (outputType === OUTPUT_TYPES.BADGE_DRAFT) {
-    prompt = getBadgeDraftPrompt(sourceContent, audience, customPrompt);
+    prompt = getBadgeDraftPrompt(sourceContent, audience, customPrompt, badgeType);
   } else if (outputType === OUTPUT_TYPES.DOC_DRAFT) {
     prompt = getDocDraftPrompt(sourceContent, templateTypes, customPrompt);
   } else {

@@ -241,14 +241,47 @@ Output the complete blog post in markdown format with:
 Remember: This is web content for blogs.mulesoft.com. Write content that is human, clear, inspiring, and valuable—not AI-generated filler. Every claim must be sourced.`;
 }
 
-export function getBadgeDraftPrompt(sourceContent, audience, customPrompt = '') {
+export function getBadgeDraftPrompt(sourceContent, audience, customPrompt = '', badgeType = 'regular') {
   const audienceContext = audience
     ? `\n\nTarget audience: ${audience} (adjust complexity and prerequisites accordingly)`
-    : '\n\nDefault target audience: beginner (assume minimal prior knowledge)';
+    : '\n\nDefault target audience: foundational (assume minimal prior knowledge)';
 
   const customInstructions = customPrompt?.trim()
     ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}\n(Incorporate these instructions into your content generation while maintaining the format requirements below)`
     : '';
+
+  const badgeTypeInfo = badgeType === 'quickLook'
+    ? `\n\n===== BADGE TYPE: QUICK LOOK BADGE =====
+
+This is a QUICK LOOK BADGE - a clear, concise, easily-digested introduction.
+
+QUICK LOOK SPECIFIC REQUIREMENTS:
+- EXACTLY 1 unit (not 2-5)
+- Word count: 500-800 words
+- At least 1 topic title (H2)
+- At least 1 graphic or video reference
+- At least 1 resource link to further information
+- Assessment: EXACTLY 2 quiz questions worth 100 points (NO hands-on challenges)
+- Badge name format: [noun] + : Quick Look
+- Focus on answering ONE key question
+- Pique curiosity and point to where learners can learn more
+- NO step-by-step instructions
+- NO story lines or Salesforcelandians
+- NO embedded videos longer than 2 minutes
+- NO prerequisite badges
+- NO detailed explanations of complex concepts
+
+CRITICAL: Quiz questions MUST directly test the learning objectives stated at the beginning of the unit.`
+    : `\n\n===== BADGE TYPE: REGULAR BADGE =====
+
+This is a REGULAR BADGE - comprehensive learning content.
+
+REGULAR BADGE REQUIREMENTS:
+- 2-5 units
+- Each unit: 500-1500 words (strongly recommend 500-1000)
+- Assessment: Quiz (2 questions) OR hands-on check/challenge per unit
+
+CRITICAL: Quiz questions MUST directly test the learning objectives stated at the beginning of each unit.`;
 
   return `You are a Salesforce Trailhead content author creating badge content (units) for Trailhead.
 
@@ -279,24 +312,19 @@ CRITICAL RULES:
 - All product names and features must be current and accurate per official Salesforce documentation
 
 SOURCE CONTENT:
-${sourceContent}${audienceContext}${customInstructions}
+${sourceContent}${audienceContext}${customInstructions}${badgeTypeInfo}
 
 ===== OFFICIAL TRAILHEAD BADGE STANDARDS =====
 
 BADGE STRUCTURE REQUIREMENTS:
-- Create a complete badge with 2-5 units
-- Each unit: 500-1500 words (strongly recommend 500-1000 for better completion rates)
-- Exclude from word count: image alt text, code snippets, resources, and quiz content
-- Learning objectives: 2-5 per unit (required)
-- Each unit estimated time: 15-35 minutes
-- Total badge completion time: 1-3 hours
+${badgeType === 'quickLook'
+  ? '- Create EXACTLY 1 unit (Quick Look requirement)\n- Unit: 500-800 words\n- Exclude from word count: image alt text, code snippets, resources, and quiz content\n- Learning objectives: 2-5 (required)\n- Estimated time: ~20 minutes\n- Total badge completion time: ~20 minutes'
+  : '- Create a complete badge with 2-5 units\n- Each unit: 500-1500 words (strongly recommend 500-1000 for better completion rates)\n- Exclude from word count: image alt text, code snippets, resources, and quiz content\n- Learning objectives: 2-5 per unit (required)\n- Each unit estimated time: 15-35 minutes\n- Total badge completion time: 1-3 hours'}
 
 BADGE NAMING CONVENTION:
-- Structure: [noun]
-- Maximum: 80 characters
-- Title capitalization
-- Should represent a marketable skill
-- Examples: "Data Modeling", "API Basics", "Service Console Customization"
+${badgeType === 'quickLook'
+  ? '- Structure: [noun] + : Quick Look\n- Maximum: 80 characters\n- Title capitalization\n- Examples: "Agentforce: Quick Look", "Data Cloud: Quick Look"'
+  : '- Structure: [noun]\n- Maximum: 80 characters\n- Title capitalization\n- Should represent a marketable skill\n- Examples: "Data Modeling", "API Basics", "Service Console Customization"'}
 
 UNIT NAMING CONVENTION:
 - Structure: [imperative verb] + [topic]
@@ -348,8 +376,8 @@ QUALITY STANDARDS (aim for "Excellent" rating):
    - Brief overview of what learners will achieve
    - 1-2 sentences
 
-3. **Units (2-5 units required)**:
-   Generate 2-5 complete units following the structure below for EACH unit
+3. **Units (${badgeType === 'quickLook' ? 'EXACTLY 1 unit required' : '2-5 units required'})**:
+   Generate ${badgeType === 'quickLook' ? '1 complete unit' : '2-5 complete units'} following the structure below for EACH unit
 
 **EACH UNIT STRUCTURE:**
 
@@ -388,6 +416,7 @@ QUALITY STANDARDS (aim for "Excellent" rating):
 
 7. **Quiz** (REQUIRED - worth 100 points):
    - Create EXACTLY 2 multiple-choice questions
+   - **CRITICAL**: Each question MUST directly test one of the learning objectives stated at the beginning of this unit
    - Each question format:
      * Clear, unambiguous question text
      * 4 answer options (A, B, C, D)
@@ -396,6 +425,7 @@ QUALITY STANDARDS (aim for "Excellent" rating):
    - Questions should:
      * Test understanding and application, not just recall
      * Be answerable from content in THIS unit
+     * Align with and verify achievement of the stated learning objectives
      * Avoid "all of the above" or "none of the above"
      * Use clear, concise language
 
@@ -413,8 +443,10 @@ Before finalizing content, verify:
 - Content aligns with the Trailhead Content Quality Rubric
 - Grammar is 100% correct
 - Learner objectives align with ALL content in the unit
+- **CRITICAL**: Each quiz question directly tests a stated learning objective
 - Content is appropriate for the target audience level
-- Word count is within 500-1500 words (excluding quiz, resources, and code snippets)
+- Word count is within ${badgeType === 'quickLook' ? '500-800 words' : '500-1500 words'} (excluding quiz, resources, and code snippets)
+${badgeType === 'quickLook' ? '- Quick Look includes at least 1 graphic/video reference and 1 resource link' : ''}
 
 ===== OUTPUT FORMAT =====
 
@@ -425,32 +457,76 @@ Output the complete Trailhead badge in markdown format with:
 - Badge description (1-2 sentences)
 - Line break
 
-**For Each Unit (2-5 units):**
+**For Each Unit (${badgeType === 'quickLook' ? '1 unit' : '2-5 units'}):**
 - Clear heading hierarchy (H1 for unit title, H2 for main sections, H3 for subsections)
 - Follow the unit structure exactly for each unit
 - Include all required sections: learning objectives, introduction, main content, summary, quiz
+- **CRITICAL**: Ensure each quiz question directly tests a learning objective
 - Properly formatted lists (numbered and bulleted)
 - Bold for emphasis on key terms (first mention only)
 - Code formatting for technical elements (if applicable)
 - Proper markdown syntax throughout
+${badgeType === 'quickLook' ? '- Include at least 1 graphic/video reference and 1 resource link' : ''}
 
-**Unit Progression:**
-- Ensure units build on each other logically
-- First unit should introduce core concepts
-- Subsequent units should deepen knowledge and skills
-- Final unit should bring everything together
+${badgeType === 'quickLook'
+  ? '**Quick Look Focus:**\n- Answer ONE key question clearly and concisely\n- Pique curiosity and point to further learning resources\n- Keep it simple and digestible (500-800 words)\n- No step-by-step procedures or complex explanations'
+  : '**Unit Progression:**\n- Ensure units build on each other logically\n- First unit should introduce core concepts\n- Subsequent units should deepen knowledge and skills\n- Final unit should bring everything together'}
 
-Remember: Quality over marketing. Be clear, concise, and educational. Every claim must be supported by the source content. Generate 2-5 complete, production-ready units for this badge.`;
+Remember: Quality over marketing. Be clear, concise, and educational. Every claim must be supported by the source content. ${badgeType === 'quickLook' ? 'Generate 1 complete, production-ready Quick Look unit.' : 'Generate 2-5 complete, production-ready units for this badge.'}`;
 }
 
-export function getBadgeProposalPrompt(sourceContent, audience, customPrompt = '') {
+export function getBadgeProposalPrompt(sourceContent, audience, customPrompt = '', badgeType = 'regular') {
   const audienceContext = audience
     ? `\n\nTarget audience: ${audience} (adjust role and level accordingly)`
-    : '\n\nDefault target audience: beginner to intermediate learners';
+    : '\n\nDefault target audience: foundational to intermediate learners';
 
   const customInstructions = customPrompt?.trim()
     ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}\n(Incorporate these instructions into your badge proposal while maintaining the format requirements below)`
     : '';
+
+  const badgeTypeInfo = badgeType === 'quickLook'
+    ? `\n\n===== BADGE TYPE: QUICK LOOK BADGE =====
+
+This is a QUICK LOOK BADGE - a clear, concise, easily-digested introduction. Its intent is to pique a learner's curiosity and point to where they can learn more.
+
+QUICK LOOK BADGE REQUIREMENTS:
+- Format: EXACTLY 1 unit (not 2-5)
+- Word count: 500-800 words
+- Assessment: 2 quiz questions worth 100 points (NO hands-on challenges)
+- Must include at least 1 graphic or video
+- Must include at least 1 resource link to further information
+- Badge name format: [noun] + : Quick Look (e.g., "Agentforce: Quick Look")
+- Focus on ONE key question (e.g., "What are the core functions of Data Cloud?")
+
+Quick Look badges are maintained over time and should:
+- Describe briefly what a product does or why a strategic initiative is important
+- Point to new, full badges for detailed feature information
+- NOT transition into a full badge later (avoid "lift and shift" into unit 1)
+
+What a Quick Look can be about:
+- Product overview (e.g., Sales Cloud: Quick Look)
+- Soft skills (e.g., Effective Emails: Quick Look)
+- Overview of a doc set
+- Overview of a role (architect, developer, business analyst)
+- Definition of a key term
+- Clarification of an often-misunderstood point
+- Point-and-click how-to for simple, common concept
+
+Quick Look DO NOT include:
+- Step-by-step instructions
+- Story lines or Salesforcelandians
+- Embedded videos longer than 2 minutes
+- Prerequisite badges
+- Detailed explanations of complex concepts`
+    : `\n\n===== BADGE TYPE: REGULAR BADGE =====
+
+This is a REGULAR BADGE - a comprehensive learning experience on a single topic.
+
+REGULAR BADGE REQUIREMENTS:
+- Format: 2-5 units
+- Word count per unit: 500-1500 words (strongly recommend 500-1000)
+- Assessment: Quiz (2 questions) OR hands-on check/challenge per unit
+- Badge name format: [noun] (e.g., "Data Modeling")`;
 
   return `You are a Salesforce Trailhead content strategist creating a Badge Proposal.
 
@@ -462,7 +538,7 @@ CRITICAL RULES:
 - Ensure the badge has a clear learning progression from beginning to end
 
 SOURCE CONTENT:
-${sourceContent}${audienceContext}${customInstructions}
+${sourceContent}${audienceContext}${customInstructions}${badgeTypeInfo}
 
 ===== BADGE PROPOSAL REQUIREMENTS =====
 
@@ -473,28 +549,21 @@ BADGE CRITERIA (must meet all):
 - Badge covers a single, focused learning topic
 - Badge fills a gap in topic, role, or level
 - Badge speaks to ONE audience role (Admin, Developer, Marketer, Architect, etc.)
-- Badge speaks to ONE audience level (Beginner, Intermediate, or Advanced)
+- Badge speaks to ONE audience level (Foundational, Intermediate, or Advanced)
 - Badge content is evergreen (long-lasting)
 - Badge provides a marketable skill
 
 BADGE STRUCTURE:
-- 2-5 units per badge (required)
-- Each unit: 500-1500 words (strongly recommend 500-1000)
-- 2-5 learning objectives per unit
-- Each unit ends with assessment (quiz or hands-on challenge)
-- Total badge completion time: 1-3 hours
+${badgeType === 'quickLook'
+  ? '- EXACTLY 1 unit (Quick Look requirement)\n- Unit: 500-800 words\n- 2-5 learning objectives\n- MUST end with quiz (2 questions, 100 points) - NO hands-on challenges\n- Total completion time: ~20 minutes'
+  : '- 2-5 units per badge (required)\n- Each unit: 500-1500 words (strongly recommend 500-1000)\n- 2-5 learning objectives per unit\n- Each unit ends with assessment (quiz or hands-on challenge)\n- Total badge completion time: 1-3 hours'}
 
 NAMING CONVENTIONS:
 
 **Badge Name:**
-- Structure: [noun]
-- Maximum: 80 characters
-- Title capitalization
-- What marketable skill will the user have after completing the badge?
-- What would a user put on their resume?
-- Append 'Basics' for the first badge in a series on a topic (not '101,' 'Overview,' or 'Intro')
-- If there won't be more badges on that topic, don't append 'Basics'
-- Examples: "Data Modeling", "Screen Flow Distribution", "Service Console Customization"
+${badgeType === 'quickLook'
+  ? '- Structure: [noun] + : Quick Look\n- Maximum: 80 characters\n- Title capitalization\n- What product or features will a learner be familiar with on a high level?\n- Examples: "Agentforce: Quick Look", "Trailblazer Community: Quick Look"'
+  : '- Structure: [noun]\n- Maximum: 80 characters\n- Title capitalization\n- What marketable skill will the user have after completing the badge?\n- What would a user put on their resume?\n- Append \'Basics\' for the first badge in a series on a topic (not \'101,\' \'Overview,\' or \'Intro\')\n- If there won\'t be more badges on that topic, don\'t append \'Basics\'\n- Examples: "Data Modeling", "Screen Flow Distribution", "Service Console Customization"'}
 
 **Badge Description:**
 - Structure: [imperative verb] + [learning objectives]
@@ -523,7 +592,7 @@ ROLES (choose one primary for badge):
 - General (use only if no other applies)
 
 LEVELS (choose one primary for badge):
-- Beginner (foundational knowledge)
+- Foundational (foundational knowledge)
 - Intermediate (some experience required)
 - Advanced (expert-level)
 
@@ -537,22 +606,22 @@ ASSESSMENT TYPES:
 Analyze the source content and create a comprehensive Badge Proposal with:
 
 1. **Badge Overview:**
-   - Badge Name ([noun], ≤80 chars, marketable skill)
+   - Badge Name (${badgeType === 'quickLook' ? '[noun] + : Quick Look' : '[noun]'}, ≤80 chars)
    - Badge Description ([imperative verb] + [learning objectives], ≤90 chars with period)
    - Target Role (one primary role)
-   - Target Level (Beginner/Intermediate/Advanced)
-   - Estimated Total Time (1-3 hours)
+   - Target Level (Foundational/Intermediate/Advanced)
+   - Estimated Total Time (${badgeType === 'quickLook' ? '~20 minutes' : '1-3 hours'})
    - Rationale: Why this badge is needed
 
-2. **Unit Breakdown (2-5 units):**
+2. **Unit Breakdown (${badgeType === 'quickLook' ? 'EXACTLY 1 unit' : '2-5 units'}):**
    For each unit provide:
    - Unit Number
    - Unit Name ([imperative verb] + [topic], ≤80 chars)
    - Unit Description (2-3 sentences: what will learners accomplish?)
-   - Learning Objectives (2-5 specific, measurable outcomes)
+   - Learning Objectives (2-5 specific, measurable outcomes that quiz questions will test)
    - Key Topics Covered (bullet list)
-   - Assessment Type (Quiz/Hands-on check/Hands-on challenge)
-   - Estimated Time (15-35 minutes)
+   - Assessment Type (${badgeType === 'quickLook' ? 'Quiz ONLY (2 questions, 100 points)' : 'Quiz/Hands-on check/Hands-on challenge'})
+   - Estimated Time (${badgeType === 'quickLook' ? '~20 minutes' : '15-35 minutes'})
 
 3. **Learning Progression:**
    - Explain how units build on each other

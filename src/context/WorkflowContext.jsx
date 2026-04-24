@@ -20,6 +20,7 @@ export function WorkflowProvider({ children }) {
   const [fetchedDocsContent, setFetchedDocsContent] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [selectedDocTemplates, setSelectedDocTemplates] = useState(['simple_task', 'simple_concept']); // Default selections
+  const [badgeType, setBadgeType] = useState('regular'); // 'regular' or 'quickLook'
   const [figmaUrls, setFigmaUrls] = useState([]);
   const [fetchedFigmaContent, setFetchedFigmaContent] = useState('');
   const [generatedOutputs, setGeneratedOutputs] = useState({
@@ -91,6 +92,8 @@ export function WorkflowProvider({ children }) {
     setUploadedFiles,
     selectedDocTemplates,
     setSelectedDocTemplates,
+    badgeType,
+    setBadgeType,
     figmaUrls,
     setFigmaUrls,
     fetchedFigmaContent,
