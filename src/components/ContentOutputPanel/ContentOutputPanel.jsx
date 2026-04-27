@@ -16,7 +16,7 @@ export default function ContentOutputPanel() {
   const [isGeneratingFromDoc, setIsGeneratingFromDoc] = useState(false);
   const [docGenerationError, setDocGenerationError] = useState(null);
 
-  const hasOutputs = generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft || generatedOutputs.docDraft;
+  const hasOutputs = generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft || generatedOutputs.docDraft || generatedOutputs.jtbdDraft;
 
   const handleCopy = async (outputType) => {
     const content = generatedOutputs[outputType];
@@ -168,6 +168,8 @@ Please revise the content according to the user's request while maintaining the 
       contentTypeName = 'badge-draft';
     } else if (activeTab === OUTPUT_TYPES.DOC_DRAFT) {
       contentTypeName = 'doc-draft';
+    } else if (activeTab === OUTPUT_TYPES.JTBD_DRAFT) {
+      contentTypeName = 'jobs-to-be-done';
     }
     const filename = `${contentTypeName}-${timestamp}.md`;
 
@@ -261,6 +263,15 @@ Please revise the content according to the user's request while maintaining the 
             onClick={() => setActiveTab(OUTPUT_TYPES.DOC_DRAFT)}
           >
             {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.DOC_DRAFT]}
+            <span className={styles.badge}>✓</span>
+          </button>
+        )}
+        {generatedOutputs.jtbdDraft && (
+          <button
+            className={`${styles.tab} ${activeTab === OUTPUT_TYPES.JTBD_DRAFT ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab(OUTPUT_TYPES.JTBD_DRAFT)}
+          >
+            {OUTPUT_TYPE_LABELS[OUTPUT_TYPES.JTBD_DRAFT]}
             <span className={styles.badge}>✓</span>
           </button>
         )}

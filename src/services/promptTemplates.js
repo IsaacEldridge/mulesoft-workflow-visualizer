@@ -889,12 +889,203 @@ Before getting started, ensure that you have:
 Remember: Execute all 4 stages internally, but output ONLY the Stage 1 blueprint, Stage 4 final documents, and the audit report. Do not output Stage 2 or Stage 3 intermediate drafts.`;
 }
 
+export function getJtbdPrompt(websiteContent, customPrompt = '') {
+  const customInstructions = customPrompt?.trim()
+    ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}`
+    : '';
+
+  return `You are a UX researcher and product strategist analyzing a website or product prototype to identify Jobs to Be Done (JTBD).
+
+CRITICAL RULES:
+- Base your analysis ONLY on the website content provided below
+- Do NOT invent features, flows, or functionality not present in the source
+- Focus on the user's perspective: what they are trying to accomplish, not what the product does
+- Use the JTBD framework: "When I [situation], I want to [motivation], so I can [outcome]"
+
+WEBSITE CONTENT:
+${websiteContent}${customInstructions}
+
+===== YOUR TASK =====
+
+Analyze the website content and produce a user-centric Jobs to Be Done analysis.
+
+For each job identified:
+1. **Job Statement** — "When I [situation], I want to [motivation], so I can [outcome]"
+2. **Job Type** — Functional, Emotional, or Social
+3. **Description** — 2-3 sentences explaining the job in context of this product
+4. **Success Criteria** — What does "done" look like for the user? (2-4 bullet points)
+5. **Pain Points Addressed** — What friction or problem does this job solve? (2-3 bullet points)
+
+===== FORMAT =====
+
+Output as a well-structured markdown document:
+- H1: Jobs to Be Done Analysis
+- Brief intro paragraph describing the product/website based on its content
+- H2 for each job (use a short, descriptive label e.g. "## Job 1: Manage API Credentials")
+- Follow the five-point structure above for each job
+- End with an H2 "## Summary" section listing all jobs as a prioritized bullet list
+
+Identify as many distinct, meaningful jobs as the content supports — typically 4–8 for a product website.`;
+}
+
+export function getWebsiteDocDraftPrompt(websiteContent, templateTypes, customPrompt = '') {
+  const customInstructions = customPrompt?.trim()
+    ? `\n\nADDITIONAL INSTRUCTIONS FROM USER:\n${customPrompt.trim()}\n(Incorporate these instructions while maintaining the template requirements)`
+    : '';
+
+  const templateTypesStr = templateTypes && templateTypes.length > 0
+    ? templateTypes.join(', ')
+    : 'all applicable templates (simple_task, simple_concept, simple_reference, multi-topic)';
+
+  return `You are a Technical Documentation Architect and Writer creating production-ready documentation from a website or product prototype.
+
+CRITICAL RULES:
+- Use ONLY information from the website content provided below
+- Do NOT invent features, UI flows, or product behavior not visible in the source
+- Follow the 4-stage workflow EXACTLY
+- Return ONLY Stage 4 final output (final verified docs + audit report)
+- All content must be traceable to the website content
+
+WEBSITE CONTENT:
+${websiteContent}${customInstructions}
+
+REQUESTED TEMPLATE TYPES:
+Generate documentation for: ${templateTypesStr}
+
+===== 4-STAGE DOCUMENTATION WORKFLOW =====
+
+---
+## STAGE 1: ARCHITECT (Analysis & Gap Detection)
+
+### Stage 1: Role
+You are a Documentation Architect. Analyze the website content and map it against the documentation templates.
+
+### Stage 1: Objectives
+1. **Feature/Flow Identification:** Identify all distinct features, user flows, and UI sections described or visible in the website
+2. **Audience Filtering:** Flag any content that appears internal or not intended for end users
+3. **Template Mapping:** Determine which templates fit each identified topic:
+   - **simple_task.md** — User-facing procedures (e.g., "How to connect an API", "Setting up credentials")
+   - **simple_reference.md** — Fields, parameters, configuration options, limits
+   - **simple_concept.md** — Explanations of how something works, architectural overviews
+   - **multi-topic.md** — Topics that combine concept + task + reference in one page
+
+### Stage 1: Output Format
+For every topic identified:
+- **Topic Name:**
+- **Classification:** [User-facing / Internal]
+- **Status:** [Ready / Partially Ready / Insufficient Info]
+- **Template Map:** Which template(s) apply
+- **Gap Report:** Missing information needed to complete the doc
+
+---
+## STAGE 2: WRITER (Drafting)
+
+### Stage 2: Objectives
+1. **Template Adherence:** Use the exact structure for each template type
+2. **Truth Preservation:** Match UI labels, field names, and flows exactly as shown in the website content
+3. **Handling Gaps:** Insert **[REQUIRED: INSERT X]** for any missing information
+
+---
+## STAGE 3: EDITOR (Style & Best Practice)
+
+### Stage 3: Objectives
+Apply documentation style standards:
+- Active voice and imperative mood for task docs
+- Second-person POV (you, your)
+- Short paragraphs (2-4 sentences)
+- Title case for headings, sentence case for list items
+- Bold UI element names on first mention
+- No marketing language — instructional only
+
+---
+## STAGE 4: AUDITOR (Truth Check)
+
+### Stage 4: Objectives
+1. Cross-reference every step, field name, and UI label against the original website content
+2. Remove or flag anything not directly evidenced in the source
+3. Produce a brief audit report confirming accuracy
+
+---
+
+===== TEMPLATE STRUCTURES =====
+
+**simple_task.md:**
+\`\`\`markdown
+# [Gerund + plural noun]
+[1-2 intro sentences]
+
+## Before You Begin
+* [Prerequisite]
+
+## [Imperative verb + singular noun]
+1. Navigate to **X** > **Y**.
+2. [Step]
+\`\`\`
+
+**simple_concept.md:**
+\`\`\`markdown
+# [Noun phrase]
+[1-2 intro sentences]
+
+## [Concept section]
+[Explanation — no steps]
+\`\`\`
+
+**simple_reference.md:**
+\`\`\`markdown
+# [Noun phrase]
+[1-2 intro sentences]
+
+## [Reference section]
+| Column | Column | Column |
+| ------ | ------ | ------ |
+| entry  | entry  | entry  |
+\`\`\`
+
+**multi-topic.md:**
+\`\`\`markdown
+# [Gerund + plural noun]
+[Intro]
+
+## [Concept section]
+## Before You Begin
+## [Task section]
+## [Reference section]
+\`\`\`
+
+===== FINAL OUTPUT =====
+
+Include:
+1. **Documentation Blueprint** — topics found, readiness, template mapping, gaps
+2. **Final Documentation Suite** — complete production-ready markdown files
+3. **Audit Report** — verification summary
+
+Format:
+\`\`\`
+# DOCUMENTATION BLUEPRINT
+[Stage 1 analysis]
+
+---
+
+# FINAL DOCUMENTATION SUITE
+
+## Document 1: [Template] - [Topic]
+[Complete doc]
+
+---
+
+# AUDIT REPORT
+[Verification summary]
+\`\`\``;
+}
+
 export const OUTPUT_TYPES = {
   BLOG_PROPOSAL: 'blogProposal',
   BLOG_DRAFT: 'blogDraft',
   BADGE_PROPOSAL: 'badgeProposal',
   BADGE_DRAFT: 'badgeDraft',
-  DOC_DRAFT: 'docDraft'
+  DOC_DRAFT: 'docDraft',
+  JTBD_DRAFT: 'jtbdDraft'
 };
 
 export const OUTPUT_TYPE_LABELS = {
@@ -902,5 +1093,6 @@ export const OUTPUT_TYPE_LABELS = {
   [OUTPUT_TYPES.BLOG_DRAFT]: 'Blog Draft',
   [OUTPUT_TYPES.BADGE_PROPOSAL]: 'Badge Proposal',
   [OUTPUT_TYPES.BADGE_DRAFT]: 'Badge Draft',
-  [OUTPUT_TYPES.DOC_DRAFT]: 'Documentation Draft'
+  [OUTPUT_TYPES.DOC_DRAFT]: 'Documentation Draft',
+  [OUTPUT_TYPES.JTBD_DRAFT]: 'Jobs to Be Done'
 };

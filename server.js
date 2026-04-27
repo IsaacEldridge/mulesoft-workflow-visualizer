@@ -6,6 +6,7 @@ import * as cheerio from 'cheerio';
 import multer from 'multer';
 import { createRequire } from 'module';
 import { XMLParser } from 'fast-xml-parser';
+import puppeteer from 'puppeteer';
 
 const require = createRequire(import.meta.url);
 const pdfParse = require('pdf-parse');
@@ -38,14 +39,15 @@ const upload = multer({
     fileSize: 10 * 1024 * 1024 // 10MB limit
   },
   fileFilter: (req, file, cb) => {
-    // Accept markdown and PDF files
     const allowedTypes = [
       'text/markdown',
       'text/x-markdown',
       'text/plain',
-      'application/pdf'
+      'application/pdf',
+      'text/html',
+      'application/xhtml+xml'
     ];
-    const allowedExtensions = ['.md', '.markdown', '.pdf', '.txt'];
+    const allowedExtensions = ['.md', '.markdown', '.pdf', '.txt', '.adoc', '.asciidoc', '.html', '.htm'];
 
     const hasAllowedType = allowedTypes.includes(file.mimetype);
     const hasAllowedExtension = allowedExtensions.some(ext =>
@@ -55,7 +57,7 @@ const upload = multer({
     if (hasAllowedType || hasAllowedExtension) {
       cb(null, true);
     } else {
-      cb(new Error('Only markdown (.md) and PDF (.pdf) files are allowed'));
+      cb(new Error('Only markdown, PDF, text, AsciiDoc, and HTML files are allowed'));
     }
   }
 });
@@ -116,6 +118,23 @@ app.post('/api/upload-file', upload.single('file'), async (req, res) => {
         });
       }
     }
+    // Handle HTML files
+    else if (fileExtension === 'html' || fileExtension === 'htm') {
+      const html = file.buffer.toString('utf-8');
+      const $ = cheerio.load(html);
+      $('script, style, noscript, nav, header, footer').remove();
+      const candidates = ['main', 'article', '[role="main"]', '.content', '.main-content', '#content', '#app', '#root'];
+      let extracted = '';
+      for (const sel of candidates) {
+        const el = $(sel);
+        if (el.length > 0 && el.text().trim().length > 200) {
+          extracted = el.text();
+          break;
+        }
+      }
+      content = (extracted || $('body').text()).replace(/\s+/g, ' ').trim();
+      console.log(`  ✓ Extracted ${content.length} characters from HTML file`);
+    }
     // Handle markdown/text files
     else {
       content = file.buffer.toString('utf-8');
@@ -136,7 +155,7 @@ app.post('/api/upload-file', upload.single('file'), async (req, res) => {
       filename: file.originalname,
       content,
       length: content.length,
-      type: fileExtension === 'pdf' ? 'pdf' : 'markdown'
+      type: fileExtension === 'pdf' ? 'pdf' : ['html', 'htm'].includes(fileExtension) ? 'html' : 'markdown'
     });
   } catch (error) {
     console.error('File upload error:', error);
@@ -562,6 +581,124 @@ app.post('/api/fetch-docs', async (req, res) => {
   }
 });
 
+// Website fetch endpoint — uses Puppeteer to handle JS-rendered pages
+app.post('/api/fetch-website', async (req, res) => {
+  const { urls, cookie } = req.body;
+
+  if (!urls || !Array.isArray(urls) || urls.length === 0) {
+    return res.status(400).json({ error: 'URLs array is required' });
+  }
+
+  console.log(`\n🌐 Fetching ${urls.length} website URL(s) with Puppeteer...`);
+
+  let browser;
+  try {
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--ignore-certificate-errors']
+    });
+
+    const pages = [];
+
+    for (const url of urls) {
+      const page = await browser.newPage();
+      try {
+        console.log(`  Opening browser for: ${url}`);
+
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+        await new Promise(r => setTimeout(r, 1500));
+
+        // Detect a login page by the presence of a password field
+        let isLoginPage = false;
+        try {
+          isLoginPage = await page.evaluate(() => !!document.querySelector('input[type="password"]'));
+        } catch (e) {}
+
+        if (isLoginPage) {
+          console.log(`  🔐 Login page detected — please authenticate in the Chrome window.`);
+
+          const deadline = Date.now() + 120000;
+          let authenticated = false;
+
+          while (Date.now() < deadline) {
+            await new Promise(r => setTimeout(r, 1500));
+            try {
+              const stillOnLoginPage = await page.evaluate(
+                () => !!document.querySelector('input[type="password"]')
+              );
+              if (!stillOnLoginPage) {
+                console.log(`  ✓ Login form gone — waiting for app to finish loading...`);
+                // Wait for the app to fully render after auth
+                await new Promise(r => setTimeout(r, 3000));
+                try {
+                  await page.waitForNetworkIdle({ idleTime: 1000, timeout: 20000 });
+                } catch (e) {}
+                authenticated = true;
+                break;
+              }
+            } catch (e) {
+              // Page is mid-navigation — keep waiting
+            }
+          }
+
+          if (!authenticated) {
+            throw new Error('Authentication timed out after 2 minutes');
+          }
+        } else {
+          // No login page — just wait for the page to settle
+          try {
+            await page.waitForNetworkIdle({ idleTime: 500, timeout: 10000 });
+          } catch (e) {}
+        }
+
+        const content = await page.evaluate(() => {
+          // Remove noise elements
+          ['script', 'style', 'noscript', 'nav', 'header', 'footer',
+           '[aria-hidden="true"]', '.sr-only'].forEach(sel => {
+            document.querySelectorAll(sel).forEach(el => el.remove());
+          });
+
+          // Prefer semantic content containers
+          const candidates = [
+            'main', 'article', '[role="main"]', '.content', '.main-content',
+            '#content', '.app', '#app', '#root', '.container'
+          ];
+          for (const sel of candidates) {
+            const el = document.querySelector(sel);
+            if (el && el.innerText.trim().length > 200) {
+              return el.innerText.trim();
+            }
+          }
+          return document.body.innerText.trim();
+        });
+
+        if (content && content.length > 0) {
+          console.log(`  ✓ Extracted ${content.length} characters from ${url}`);
+          pages.push({ url, success: true, content });
+        } else {
+          console.error(`  No content extracted from ${url}`);
+          pages.push({ url, success: false, error: 'No content could be extracted from the page' });
+        }
+      } catch (err) {
+        console.error(`  Error fetching ${url}:`, err.message);
+        pages.push({ url, success: false, error: err.message });
+      } finally {
+        await page.close();
+      }
+    }
+
+    const successful = pages.filter(p => p.success);
+    console.log(`\n✅ Website fetch complete: ${successful.length}/${urls.length} successful`);
+
+    res.json({ pages, successCount: successful.length });
+  } catch (err) {
+    console.error('Puppeteer error:', err.message);
+    res.status(500).json({ error: err.message || 'Failed to fetch website content' });
+  } finally {
+    if (browser) await browser.close();
+  }
+});
+
 // Content generation endpoint
 app.post('/api/generate', async (req, res) => {
   try {
@@ -595,7 +732,7 @@ app.post('/api/generate', async (req, res) => {
                 content: prompt
               }
             ],
-            max_tokens: 4096
+            max_tokens: 16000
           })
         });
 

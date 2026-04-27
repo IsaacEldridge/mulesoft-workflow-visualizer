@@ -1,4 +1,4 @@
-import { getBlogProposalPrompt, getBlogDraftPrompt, getBadgeDraftPrompt, getBadgeProposalPrompt, getDocDraftPrompt, OUTPUT_TYPES } from './promptTemplates';
+import { getBlogProposalPrompt, getBlogDraftPrompt, getBadgeDraftPrompt, getBadgeProposalPrompt, getDocDraftPrompt, getJtbdPrompt, OUTPUT_TYPES } from './promptTemplates';
 
 const API_BASE_URL = 'http://localhost:3001/api';
 
@@ -29,6 +29,8 @@ export async function generateContent(outputType, sourceContent, audience, custo
     prompt = getBadgeDraftPrompt(sourceContent, audience, customPrompt, badgeType);
   } else if (outputType === OUTPUT_TYPES.DOC_DRAFT) {
     prompt = getDocDraftPrompt(sourceContent, templateTypes, customPrompt);
+  } else if (outputType === OUTPUT_TYPES.JTBD_DRAFT) {
+    prompt = getJtbdPrompt(sourceContent, customPrompt);
   } else {
     throw new Error(`Unknown output type: ${outputType}`);
   }

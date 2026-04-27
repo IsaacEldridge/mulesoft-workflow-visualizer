@@ -22,6 +22,10 @@ export default function ContentInputPanel() {
     setSelectedDocTemplates,
     badgeType,
     setBadgeType,
+    websiteUrls,
+    setWebsiteUrls,
+    fetchedWebsiteContent,
+    setFetchedWebsiteContent,
     figmaUrls,
     setFigmaUrls,
     fetchedFigmaContent,
@@ -38,6 +42,10 @@ export default function ContentInputPanel() {
   const [urlInput, setUrlInput] = useState('');
   const [isFetchingDocs, setIsFetchingDocs] = useState(false);
   const [fetchError, setFetchError] = useState(null);
+  const [websiteUrlInput, setWebsiteUrlInput] = useState('');
+  const [isFetchingWebsite, setIsFetchingWebsite] = useState(false);
+  const [websiteFetchError, setWebsiteFetchError] = useState(null);
+
   const [fetchStats, setFetchStats] = useState(null);
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [fileUploadError, setFileUploadError] = useState(null);
@@ -126,11 +134,11 @@ export default function ContentInputPanel() {
     if (!file) return;
 
     // Check file type
-    const allowedExtensions = ['.md', '.markdown', '.pdf', '.txt', '.adoc', '.asciidoc'];
+    const allowedExtensions = ['.md', '.markdown', '.pdf', '.txt', '.adoc', '.asciidoc', '.html', '.htm'];
     const fileExtension = '.' + file.name.toLowerCase().split('.').pop();
 
     if (!allowedExtensions.includes(fileExtension)) {
-      setFileUploadError('Only markdown (.md), PDF (.pdf), text (.txt), and AsciiDoc (.adoc) files are allowed');
+      setFileUploadError('Only markdown (.md), PDF (.pdf), text (.txt), AsciiDoc (.adoc), and HTML (.html) files are allowed');
       event.target.value = '';
       return;
     }
@@ -185,6 +193,75 @@ export default function ContentInputPanel() {
   const handleRemoveFile = (filename) => {
     setUploadedFiles(prev => prev.filter(file => file.filename !== filename));
     setFileUploadError(null);
+  };
+
+  const handleAddWebsiteUrl = () => {
+    const trimmedUrl = websiteUrlInput.trim();
+    if (!trimmedUrl) return;
+
+    try {
+      new URL(trimmedUrl);
+    } catch (e) {
+      setWebsiteFetchError('Please enter a valid URL (e.g., https://example.com)');
+      return;
+    }
+
+    if (websiteUrls.includes(trimmedUrl)) {
+      setWebsiteFetchError('This URL has already been added');
+      return;
+    }
+
+    setWebsiteUrls([...websiteUrls, trimmedUrl]);
+    setWebsiteUrlInput('');
+    setWebsiteFetchError(null);
+  };
+
+  const handleRemoveWebsiteUrl = (urlToRemove) => {
+    setWebsiteUrls(websiteUrls.filter(url => url !== urlToRemove));
+    setFetchedWebsiteContent('');
+    setWebsiteFetchError(null);
+  };
+
+  const handleFetchWebsite = async () => {
+    if (websiteUrls.length === 0) {
+      setWebsiteFetchError('Please add at least one URL');
+      return;
+    }
+
+    setIsFetchingWebsite(true);
+    setWebsiteFetchError(null);
+
+    try {
+      const response = await fetch('http://localhost:3001/api/fetch-website', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls: websiteUrls })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch website content');
+      }
+
+      const data = await response.json();
+      const successPages = data.pages.filter(p => p.success);
+
+      if (successPages.length === 0) {
+        throw new Error('No content could be extracted from the provided URLs');
+      }
+
+      const combinedContent = successPages
+        .map(p => `--- Page: ${p.url} ---\n\n${p.content}`)
+        .join('\n\n');
+
+      setFetchedWebsiteContent(combinedContent);
+      setWebsiteFetchError(`✓ Fetched ${successPages.length} page${successPages.length > 1 ? 's' : ''} (${combinedContent.length} characters)`);
+    } catch (err) {
+      setWebsiteFetchError(err.message);
+      setFetchedWebsiteContent('');
+    } finally {
+      setIsFetchingWebsite(false);
+    }
   };
 
   const handleAddFigmaUrl = () => {
@@ -421,12 +498,20 @@ export default function ContentInputPanel() {
       }
       // If generating Doc Draft, generate documentation with selected templates
       else if (outputType === 'doc') {
-        // Generate documentation draft with selected templates
         const docContent = await generateContent(OUTPUT_TYPES.DOC_DRAFT, combinedContent, audience, customPrompt, selectedDocTemplates);
 
         setGeneratedOutputs(prev => ({
           ...prev,
           docDraft: docContent
+        }));
+      }
+      // If generating JTBD
+      else if (outputType === 'jtbd') {
+        const jtbdContent = await generateContent(OUTPUT_TYPES.JTBD_DRAFT, combinedContent, audience, customPrompt);
+
+        setGeneratedOutputs(prev => ({
+          ...prev,
+          jtbdDraft: jtbdContent
         }));
       }
 
@@ -459,7 +544,6 @@ export default function ContentInputPanel() {
         <div className={styles.formSection}>
         <label htmlFor="docUrls" className={styles.label}>
           MuleSoft Documentation URLs <span className={styles.optional}>(optional)</span>
-          <span className={styles.hint}>(add a folder URL to get all nested pages, or use * for wildcards)</span>
         </label>
         <div className={styles.urlInputGroup}>
           <input
@@ -564,7 +648,6 @@ export default function ContentInputPanel() {
       <div className={styles.formSection}>
         <label htmlFor="figmaUrls" className={styles.label}>
           Figma Design URLs <span className={styles.optional}>(optional)</span>
-          <span className={styles.hint}>(add Figma design, prototype, or FigJam URLs)</span>
         </label>
         <div className={styles.urlInputGroup}>
           <input
@@ -641,16 +724,94 @@ export default function ContentInputPanel() {
       </div>
 
       <div className={styles.formSection}>
+        <label htmlFor="websiteUrls" className={styles.label}>
+          Website or Prototype URLs <span className={styles.optional}>(optional)</span>
+        </label>
+        <div className={styles.urlInputGroup}>
+          <input
+            type="text"
+            id="websiteUrls"
+            className={styles.urlInput}
+            value={websiteUrlInput}
+            onChange={(e) => setWebsiteUrlInput(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleAddWebsiteUrl();
+              }
+            }}
+            placeholder="https://example.com"
+            disabled={isGenerating || isFetchingWebsite}
+          />
+          <button
+            className={styles.addUrlButton}
+            onClick={handleAddWebsiteUrl}
+            disabled={isGenerating || isFetchingWebsite || !websiteUrlInput.trim()}
+          >
+            Add URL
+          </button>
+        </div>
+
+        {websiteUrls.length > 0 && (
+          <div className={styles.urlList}>
+            <div className={styles.urlListHeader}>
+              <span>Added URLs ({websiteUrls.length}):</span>
+              <button
+                className={styles.fetchDocsButton}
+                onClick={handleFetchWebsite}
+                disabled={isGenerating || isFetchingWebsite}
+                style={{background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'}}
+              >
+                {isFetchingWebsite ? (
+                  <>
+                    <span className={styles.spinner}></span>
+                    Fetching...
+                  </>
+                ) : (
+                  <>
+                    {fetchedWebsiteContent ? '✓ Refresh Content' : 'Fetch Website Content'}
+                  </>
+                )}
+              </button>
+            </div>
+            <ul className={styles.urlItems}>
+              {websiteUrls.map((url, index) => (
+                <li key={index} className={styles.urlItem}>
+                  <span className={styles.urlText} title={url}>
+                    {url}
+                  </span>
+                  <button
+                    className={styles.removeUrlButton}
+                    onClick={() => handleRemoveWebsiteUrl(url)}
+                    disabled={isGenerating || isFetchingWebsite}
+                    aria-label="Remove URL"
+                  >
+                    ×
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {websiteFetchError && (
+          <div className={websiteFetchError.startsWith('✓') ? styles.successMessage : styles.error}>
+            {websiteFetchError}
+          </div>
+        )}
+      </div>
+
+      <div className={styles.formSection}>
         <label htmlFor="fileUpload" className={styles.label}>
           Upload Files <span className={styles.optional}>(optional)</span>
-          <span className={styles.hint}>(markdown, PDF, text, or AsciiDoc files)</span>
+          <span className={styles.hint}>(markdown, PDF, text, AsciiDoc, or HTML files)</span>
         </label>
         <div className={styles.fileUploadGroup}>
           <input
             type="file"
             id="fileUpload"
             className={styles.fileInput}
-            accept=".md,.markdown,.pdf,.txt,.adoc,.asciidoc"
+            accept=".md,.markdown,.pdf,.txt,.adoc,.asciidoc,.html,.htm"
             onChange={handleFileUpload}
             disabled={isGenerating || isUploadingFile}
           />
@@ -678,7 +839,7 @@ export default function ContentInputPanel() {
                 <li key={index} className={styles.fileItem}>
                   <div className={styles.fileInfo}>
                     <span className={styles.fileIcon}>
-                      {file.type === 'pdf' ? '📄' : '📝'}
+                      {file.type === 'pdf' ? '📄' : file.type === 'html' ? '🌐' : '📝'}
                     </span>
                     <div className={styles.fileDetails}>
                       <span className={styles.fileName}>{file.filename}</span>
@@ -788,7 +949,7 @@ export default function ContentInputPanel() {
           <button
             className={styles.generateButton}
             onClick={() => handleGenerate('blog')}
-            disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && uploadedFiles.length === 0)}
+            disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && !fetchedFigmaContent.trim() && !fetchedWebsiteContent.trim() && uploadedFiles.length === 0)}
           >
             {isGenerating && generatingType === 'blog' ? (
               <>
@@ -804,6 +965,7 @@ export default function ContentInputPanel() {
               </>
             )}
           </button>
+
         </div>
 
         <div className={styles.badgeSection}>
@@ -838,7 +1000,7 @@ export default function ContentInputPanel() {
           <button
             className={styles.generateButton}
             onClick={() => handleGenerate('badge')}
-            disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && uploadedFiles.length === 0)}
+            disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && !fetchedFigmaContent.trim() && !fetchedWebsiteContent.trim() && uploadedFiles.length === 0)}
           >
             {isGenerating && generatingType === 'badge' ? (
               <>
@@ -857,7 +1019,7 @@ export default function ContentInputPanel() {
         </div>
 
         <div className={styles.docDraftSection}>
-          <h4 className={styles.sectionSubtitle}>Doc Draft</h4>
+          <h4 className={styles.sectionSubtitle}>Docs</h4>
           <div className={styles.templateSelector}>
             <label className={styles.label}>Select Template Types:</label>
             <div className={styles.checkboxGroup}>
@@ -899,25 +1061,48 @@ export default function ContentInputPanel() {
               </label>
             </div>
           </div>
-          <button
-            className={styles.generateButton}
-            onClick={() => handleGenerate('doc')}
-            disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && uploadedFiles.length === 0) || selectedDocTemplates.length === 0}
-          >
-            {isGenerating && generatingType === 'doc' ? (
-              <>
-                <span className={styles.spinner}></span>
-                Generating Documentation...
-              </>
-            ) : (
-              <>
-                {generatedOutputs.docDraft && (
-                  <span className={styles.checkmark}>✓</span>
-                )}
-                Doc Draft
-              </>
-            )}
-          </button>
+          <div className={styles.docButtonRow}>
+            <button
+              className={styles.generateButton}
+              onClick={() => handleGenerate('doc')}
+              disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && !fetchedFigmaContent.trim() && !fetchedWebsiteContent.trim() && uploadedFiles.length === 0) || selectedDocTemplates.length === 0}
+            >
+              {isGenerating && generatingType === 'doc' ? (
+                <>
+                  <span className={styles.spinner}></span>
+                  Generating Documentation...
+                </>
+              ) : (
+                <>
+                  {generatedOutputs.docDraft && (
+                    <span className={styles.checkmark}>✓</span>
+                  )}
+                  Doc Draft
+                </>
+              )}
+            </button>
+
+            <button
+              className={styles.generateButton}
+              onClick={() => handleGenerate('jtbd')}
+              disabled={isGenerating || (!sourceContent.trim() && !fetchedDocsContent.trim() && !fetchedFigmaContent.trim() && !fetchedWebsiteContent.trim() && uploadedFiles.length === 0)}
+            >
+              {isGenerating && generatingType === 'jtbd' ? (
+                <>
+                  <span className={styles.spinner}></span>
+                  Generating JTBD...
+                </>
+              ) : (
+                <>
+                  {generatedOutputs.jtbdDraft && (
+                    <span className={styles.checkmark}>✓</span>
+                  )}
+                  Jobs to Be Done
+                </>
+              )}
+            </button>
+          </div>
+
         </div>
 
         <p className={styles.hint}>
@@ -925,7 +1110,7 @@ export default function ContentInputPanel() {
         </p>
       </div>
 
-      {(generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft || generatedOutputs.docDraft) && (
+      {(generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft || generatedOutputs.docDraft || generatedOutputs.jtbdDraft) && (
         <div className={styles.successMessage}>
           Generated content is available in Retrieve Content.
         </div>

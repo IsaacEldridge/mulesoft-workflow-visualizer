@@ -21,6 +21,8 @@ export function WorkflowProvider({ children }) {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [selectedDocTemplates, setSelectedDocTemplates] = useState(['simple_task', 'simple_concept']); // Default selections
   const [badgeType, setBadgeType] = useState('regular'); // 'regular' or 'quickLook'
+  const [websiteUrls, setWebsiteUrls] = useState([]);
+  const [fetchedWebsiteContent, setFetchedWebsiteContent] = useState('');
   const [figmaUrls, setFigmaUrls] = useState([]);
   const [fetchedFigmaContent, setFetchedFigmaContent] = useState('');
   const [generatedOutputs, setGeneratedOutputs] = useState({
@@ -28,7 +30,8 @@ export function WorkflowProvider({ children }) {
     blogDraft: null,
     badgeProposal: null,
     badgeDraft: null,
-    docDraft: null
+    docDraft: null,
+    jtbdDraft: null
   });
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -94,6 +97,10 @@ export function WorkflowProvider({ children }) {
     setSelectedDocTemplates,
     badgeType,
     setBadgeType,
+    websiteUrls,
+    setWebsiteUrls,
+    fetchedWebsiteContent,
+    setFetchedWebsiteContent,
     figmaUrls,
     setFigmaUrls,
     fetchedFigmaContent,
