@@ -257,7 +257,7 @@ This is a QUICK LOOK BADGE - a clear, concise, easily-digested introduction.
 
 QUICK LOOK SPECIFIC REQUIREMENTS:
 - EXACTLY 1 unit (not 2-5)
-- Word count: 500-800 words
+- Word count: 600-800 words
 - At least 1 topic title (H2)
 - At least 1 graphic or video reference
 - At least 1 resource link to further information
@@ -318,7 +318,7 @@ ${sourceContent}${audienceContext}${customInstructions}${badgeTypeInfo}
 
 BADGE STRUCTURE REQUIREMENTS:
 ${badgeType === 'quickLook'
-  ? '- Create EXACTLY 1 unit (Quick Look requirement)\n- Unit: 500-800 words\n- Exclude from word count: image alt text, code snippets, resources, and quiz content\n- Learning objectives: 2-5 (required)\n- Estimated time: ~20 minutes\n- Total badge completion time: ~20 minutes'
+  ? '- Create EXACTLY 1 unit (Quick Look requirement)\n- Unit: 600-800 words\n- Exclude from word count: image alt text, code snippets, resources, and quiz content\n- Learning objectives: 2-5 (required)\n- Estimated time: ~20 minutes\n- Total badge completion time: ~20 minutes'
   : '- Create a complete badge with 2-5 units\n- Each unit: 500-1500 words (strongly recommend 500-1000 for better completion rates)\n- Exclude from word count: image alt text, code snippets, resources, and quiz content\n- Learning objectives: 2-5 per unit (required)\n- Each unit estimated time: 15-35 minutes\n- Total badge completion time: 1-3 hours'}
 
 BADGE NAMING CONVENTION:
@@ -445,7 +445,7 @@ Before finalizing content, verify:
 - Learner objectives align with ALL content in the unit
 - **CRITICAL**: Each quiz question directly tests a stated learning objective
 - Content is appropriate for the target audience level
-- Word count is within ${badgeType === 'quickLook' ? '500-800 words' : '500-1500 words'} (excluding quiz, resources, and code snippets)
+- Word count is within ${badgeType === 'quickLook' ? '600-800 words' : '500-1500 words'} (excluding quiz, resources, and code snippets)
 ${badgeType === 'quickLook' ? '- Quick Look includes at least 1 graphic/video reference and 1 resource link' : ''}
 
 ===== OUTPUT FORMAT =====
@@ -469,7 +469,7 @@ Output the complete Trailhead badge in markdown format with:
 ${badgeType === 'quickLook' ? '- Include at least 1 graphic/video reference and 1 resource link' : ''}
 
 ${badgeType === 'quickLook'
-  ? '**Quick Look Focus:**\n- Answer ONE key question clearly and concisely\n- Pique curiosity and point to further learning resources\n- Keep it simple and digestible (500-800 words)\n- No step-by-step procedures or complex explanations'
+  ? '**Quick Look Focus:**\n- Answer ONE key question clearly and concisely\n- Pique curiosity and point to further learning resources\n- Keep it simple and digestible (600-800 words)\n- No step-by-step procedures or complex explanations'
   : '**Unit Progression:**\n- Ensure units build on each other logically\n- First unit should introduce core concepts\n- Subsequent units should deepen knowledge and skills\n- Final unit should bring everything together'}
 
 Remember: Quality over marketing. Be clear, concise, and educational. Every claim must be supported by the source content. ${badgeType === 'quickLook' ? 'Generate 1 complete, production-ready Quick Look unit.' : 'Generate 2-5 complete, production-ready units for this badge.'}`;
@@ -491,7 +491,7 @@ This is a QUICK LOOK BADGE - a clear, concise, easily-digested introduction. Its
 
 QUICK LOOK BADGE REQUIREMENTS:
 - Format: EXACTLY 1 unit (not 2-5)
-- Word count: 500-800 words
+- Word count: 600-800 words
 - Assessment: 2 quiz questions worth 100 points (NO hands-on challenges)
 - Must include at least 1 graphic or video
 - Must include at least 1 resource link to further information
@@ -555,7 +555,7 @@ BADGE CRITERIA (must meet all):
 
 BADGE STRUCTURE:
 ${badgeType === 'quickLook'
-  ? '- EXACTLY 1 unit (Quick Look requirement)\n- Unit: 500-800 words\n- 2-5 learning objectives\n- MUST end with quiz (2 questions, 100 points) - NO hands-on challenges\n- Total completion time: ~20 minutes'
+  ? '- EXACTLY 1 unit (Quick Look requirement)\n- Unit: 600-800 words\n- 2-5 learning objectives\n- MUST end with quiz (2 questions, 100 points) - NO hands-on challenges\n- Total completion time: ~20 minutes'
   : '- 2-5 units per badge (required)\n- Each unit: 500-1500 words (strongly recommend 500-1000)\n- 2-5 learning objectives per unit\n- Each unit ends with assessment (quiz or hands-on challenge)\n- Total badge completion time: 1-3 hours'}
 
 NAMING CONVENTIONS:
