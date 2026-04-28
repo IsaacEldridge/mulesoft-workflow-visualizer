@@ -543,7 +543,7 @@ export default function ContentInputPanel() {
 
         <div className={styles.formSection}>
         <label htmlFor="docUrls" className={styles.label}>
-          MuleSoft Documentation URLs <span className={styles.optional}>(optional)</span>
+          MuleSoft Docs, Blogs, and External Sources <span className={styles.optional}>(optional)</span>
         </label>
         <div className={styles.urlInputGroup}>
           <input
