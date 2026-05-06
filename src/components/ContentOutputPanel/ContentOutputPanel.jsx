@@ -21,6 +21,8 @@ export default function ContentOutputPanel() {
   const [qualityCheckError, setQualityCheckError] = useState(null);
 
   const isTrailheadTab = activeTab === OUTPUT_TYPES.BADGE_PROPOSAL || activeTab === OUTPUT_TYPES.BADGE_DRAFT;
+  const isBlogTab = activeTab === OUTPUT_TYPES.BLOG_PROPOSAL || activeTab === OUTPUT_TYPES.BLOG_DRAFT;
+  const supportsQualityCheck = isTrailheadTab || isBlogTab;
 
   const hasOutputs = generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft || generatedOutputs.docDraft || generatedOutputs.jtbdDraft;
 
@@ -366,7 +368,7 @@ Please revise the content according to the user's request while maintaining the 
                     >
                       ✏️ Edit
                     </button>
-                    {isTrailheadTab && (
+                    {supportsQualityCheck && (
                       <button
                         className={styles.qualityCheckButton}
                         onClick={handleQualityCheck}
@@ -450,7 +452,7 @@ Please revise the content according to the user's request while maintaining the 
               </div>
             )}
 
-            {!isEditing && isTrailheadTab && (qualityCheckResult || qualityCheckError) && (
+            {!isEditing && supportsQualityCheck && (qualityCheckResult || qualityCheckError) && (
               <div className={styles.qualityCheckSection}>
                 <div className={styles.qualityCheckHeader}>
                   <h3>Quality Check Results</h3>

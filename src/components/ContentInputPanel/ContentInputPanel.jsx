@@ -468,7 +468,8 @@ export default function ContentInputPanel() {
         combinedContent += sourceContent;
       }
 
-      // If generating Blog, generate BOTH blog proposal and blog draft
+      // If generating Blog, generate BOTH blog proposal and blog draft.
+      // Clear the opposite content type (badge) so only the chosen type is shown.
       if (outputType === 'blog') {
         // Generate blog proposal first
         const proposalContent = await generateContent(OUTPUT_TYPES.BLOG_PROPOSAL, combinedContent, audience, customPrompt);
@@ -479,10 +480,13 @@ export default function ContentInputPanel() {
         setGeneratedOutputs(prev => ({
           ...prev,
           blogProposal: proposalContent,
-          blogDraft: draftContent
+          blogDraft: draftContent,
+          badgeProposal: null,
+          badgeDraft: null
         }));
       }
-      // If generating Trailhead Badge, generate BOTH badge proposal and badge draft
+      // If generating Trailhead Badge, generate BOTH badge proposal and badge draft.
+      // Clear the opposite content type (blog) so only the chosen type is shown.
       else if (outputType === 'badge') {
         // Generate badge proposal first
         const proposalContent = await generateContent(OUTPUT_TYPES.BADGE_PROPOSAL, combinedContent, audience, customPrompt, null, badgeType);
@@ -493,7 +497,9 @@ export default function ContentInputPanel() {
         setGeneratedOutputs(prev => ({
           ...prev,
           badgeProposal: proposalContent,
-          badgeDraft: draftContent
+          badgeDraft: draftContent,
+          blogProposal: null,
+          blogDraft: null
         }));
       }
       // If generating Doc Draft, generate documentation with selected templates

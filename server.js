@@ -7,11 +7,31 @@ import multer from 'multer';
 import { createRequire } from 'module';
 import { XMLParser } from 'fast-xml-parser';
 import puppeteer from 'puppeteer';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const require = createRequire(import.meta.url);
 const pdfParse = require('pdf-parse');
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 dotenv.config();
+
+// Load MuleSoft Blog Guidelines once at startup for the blog quality check.
+// Falls back to a brief inline summary if the file is missing so the endpoint
+// never silently returns a guideline-less review.
+let blogGuidelinesText = '';
+try {
+  blogGuidelinesText = fs.readFileSync(
+    path.join(__dirname, 'trailhead_prompt_etc', 'MuleSoft Blog Guidelines and Style Guide – 2025.md'),
+    'utf-8'
+  );
+  console.log(`📘 Loaded MuleSoft Blog Guidelines (${blogGuidelinesText.length} chars)`);
+} catch (err) {
+  console.warn('⚠️  Could not load MuleSoft Blog Guidelines file:', err.message);
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -787,7 +807,7 @@ app.post('/api/generate', async (req, res) => {
   }
 });
 
-// Quality check endpoint for Trailhead badge content
+// Quality check endpoint for Trailhead badge and MuleSoft blog content
 app.post('/api/quality-check', async (req, res) => {
   try {
     const { content, contentType } = req.body;
@@ -796,7 +816,71 @@ app.post('/api/quality-check', async (req, res) => {
       return res.status(400).json({ error: 'Content is required' });
     }
 
-    const systemPrompt = `You're a content companion tasked with supporting Trailhead learning designers, writers, and editors during the content creation process. You use the most recent official Salesforce release notes, online Salesforce Help documentation, and Trailhead to review and provide feedback on created content.
+    const isBlogContent = contentType === 'blogProposal' || contentType === 'blogDraft';
+
+    let systemPrompt;
+    let userPrompt;
+    let contentLabel;
+
+    if (isBlogContent) {
+      contentLabel = contentType === 'blogProposal' ? 'Blog Proposal' : 'Blog Draft';
+
+      const guidelinesSection = blogGuidelinesText
+        ? `\n\n===== OFFICIAL MULESOFT BLOG GUIDELINES =====\n\n${blogGuidelinesText}\n\n===== END GUIDELINES =====\n`
+        : '';
+
+      systemPrompt = `You are a MuleSoft blog content reviewer. You apply the official MuleSoft Blog Guidelines and Style Guide (2025) to review submitted blog content and provide structured, actionable feedback.
+
+When reviewing:
+- Parse the source material thoroughly, checking every section against the guidelines below
+- Verify voice, tone, formatting, headline length, accessibility, and citation rules
+- Identify use of competitor names that are explicitly disallowed in external links
+- Flag passive voice, first-person POV, and headlines over 60 characters
+- Apply the rubric below to score the content out of 30 (10 areas × 3 points)
+- Do not modify the rubric, score, nor percentage — accuracy is critical
+- If a rubric area cannot be evaluated from the content, score it 1 and explain why
+
+The MuleSoft Blog Quality Rubric has 10 areas (each scored 1–3 points, 30 points total):
+
+| Rule | Excellent (3) | Good (2) | Not Approved (1) |
+|------|---------------|----------|-----------------|
+| Headline | ≤60 chars, primary keyword near start, sets clear expectations | 1 minor issue (length, keyword placement, clarity) | Misses 2+ requirements or is clickbait |
+| Voice & tone | Consistently human, clear, inspiring; second-person POV; active voice | Mostly aligned with 1–2 lapses | Passive voice, first-person, or off-brand tone throughout |
+| Originality | Clearly original, narrative thread, not opinion-only | Mostly original with minor self-serving sections | Reads as syndicated, AI-only, or self-promotional |
+| Themes & objectives | Aligned with priority themes (Agentforce, APIs, AI, Automation, Integration, etc.) and drives awareness/education/engagement | Tangentially aligned | Off-theme or no clear objective |
+| Citations & sourcing | All claims backlinked to credible non-competitor sources; keyword-anchored hyperlinks | Some claims unsourced or links over-long | Statements of truth without sources, or competitor links |
+| Formatting | Title case for title, sentence case for headers; H2/H3 hierarchy; scannable | Minor case or hierarchy issues | Major formatting violations |
+| Accessibility & readability | ≤25 words/sentence, 3–4 sentences/paragraph, 8–9th grade level, descriptive link CTAs | Mostly meets but a few long sentences/paragraphs | Dense paragraphs, "click here" links, or jargon-heavy |
+| Image & media compliance | Captions present, alt text described, no animated GIFs, no text in feature image | Minor media gaps | Missing captions/alt text or disallowed media |
+| Word count & structure | 1000–1200 words preferred (up to 3000 max), clear intro/body/conclusion | Slightly over/under or weak structure | Far outside range or missing sections |
+| Brand alignment | No competitor mentions in external links; approved Salesforce/MuleSoft terminology | Minor terminology drift | Competitor links or off-brand terminology |
+
+Disallowed competitor list (external links MUST NOT come from or mention): Amazon, Axway, Boomi, CA Tech, Google (Apigee), IBM, Informatica, Jitterbit, Kong, Microsoft, Oracle, Red Hat (incl. 3scale), SAP, SnapLogic, Software AG, Talend, TIBCO, Workato, UiPath, AutomationAnywhere.
+
+Publishability Score Scale (out of 30):
+- 26–30: ⭐ Excellent — Ready for editorial review
+- 21–25: ✅ Good — Solid but needs refinements
+- 11–20: ⚠️ Needs Improvement — Requires moderate to deep updates
+- ≤10: ❌ Not Approved — Requires significant revision
+
+Feedback response format:
+1. Critical analysis highlighting strengths, weaknesses, and areas for improvement
+2. A markdown table with: Rubric Area | Score | Issues Found
+3. Blog Quality Rating
+4. Publishability Score (total out of 30)
+5. Publishability Percentage: (Total Score / 30) × 100
+6. Up to 10 actionable improvements, each referencing a specific landmark (paragraph text, heading, sentence, or link)${guidelinesSection}`;
+
+      userPrompt = `Please review the following MuleSoft ${contentLabel} and apply the rubric:
+
+---
+${content}
+---
+
+Provide your quality review in the format specified.`;
+    } else {
+      contentLabel = contentType === 'badgeProposal' ? 'Badge Proposal' : 'Badge Draft';
+      systemPrompt = `You're a content companion tasked with supporting Trailhead learning designers, writers, and editors during the content creation process. You use the most recent official Salesforce release notes, online Salesforce Help documentation, and Trailhead to review and provide feedback on created content.
 
 When providing feedback:
 - Parse the source material thoroughly, checking every line and section against guidelines and standards
@@ -836,13 +920,14 @@ Feedback response format:
 5. Publishability Score (total out of 42)
 6. Up to 10 actionable improvements, consistently framed, referencing specific landmarks (unit number, heading, paragraph text, bullet number)`;
 
-    const userPrompt = `Please review the following Trailhead ${contentType === 'badgeProposal' ? 'Badge Proposal' : 'Badge Draft'} and apply the quality rubric:
+      userPrompt = `Please review the following Trailhead ${contentLabel} and apply the quality rubric:
 
 ---
 ${content}
 ---
 
 Provide your quality review in the format specified.`;
+    }
 
     if (process.env.ANTHROPIC_API_KEY && process.env.ANTHROPIC_API_KEY !== 'your_api_key_here') {
       try {
@@ -886,11 +971,36 @@ Provide your quality review in the format specified.`;
     }
 
     // Mock quality check response
-    const mockReview = `## Quality Review: ${contentType === 'badgeProposal' ? 'Badge Proposal' : 'Badge Draft'}
+    const mockRubricRows = isBlogContent
+      ? `| Headline | 2 | Requires manual review |
+| Voice & tone | 2 | Requires manual review |
+| Originality | 2 | Requires manual review |
+| Themes & objectives | 2 | Requires manual review |
+| Citations & sourcing | 2 | Requires manual review |
+| Formatting | 2 | Requires manual review |
+| Accessibility & readability | 2 | Requires manual review |
+| Image & media compliance | 2 | Requires manual review |
+| Word count & structure | 2 | Requires manual review |
+| Brand alignment | 2 | Requires manual review |`
+      : `| Template | 2 | Unable to verify template compliance in mock mode |
+| Learner objective | 2 | Requires manual review |
+| Role | 2 | Requires manual review |
+| Level | 2 | Requires manual review |
+| Links | 2 | Requires manual review |
+| Content length | 2 | Requires manual review |
+| Names and descriptions | 2 | Requires manual review |
+| Appropriate trail content | 2 | Requires manual review |
+| Grammar | 2 | Requires manual review |
+| Brand Alignment | 2 | Requires manual review |`;
+
+    const mockTotal = isBlogContent ? '20 / 30' : '20 / 42';
+    const mockPercent = isBlogContent ? '66.7%' : '47.6%';
+
+    const mockReview = `## Quality Review: ${contentLabel}
 
 ### Critical Analysis
 
-**Strengths:** The content addresses a clear learning goal and follows the general structure expected for Trailhead badge content.
+**Strengths:** The content addresses a clear topic and follows the general structure expected for ${isBlogContent ? 'a MuleSoft blog article' : 'Trailhead badge content'}.
 
 **Weaknesses:** This is a mock quality review generated because no API key is configured. Connect a valid API key to receive a real rubric-based analysis.
 
@@ -902,26 +1012,17 @@ Provide your quality review in the format specified.`;
 
 | Rubric Area | Score | Issues Found |
 |---|---|---|
-| Template | 2 | Unable to verify template compliance in mock mode |
-| Learner objective | 2 | Requires manual review |
-| Role | 2 | Requires manual review |
-| Level | 2 | Requires manual review |
-| Links | 2 | Requires manual review |
-| Content length | 2 | Requires manual review |
-| Names and descriptions | 2 | Requires manual review |
-| Appropriate trail content | 2 | Requires manual review |
-| Grammar | 2 | Requires manual review |
-| Brand Alignment | 2 | Requires manual review |
+${mockRubricRows}
 
 ---
 
-### Badge Quality Rating
+### ${isBlogContent ? 'Blog' : 'Badge'} Quality Rating
 
 ✅ **Good** — Mock score only. Connect an API key for real analysis.
 
-### Publishability Score: 20 / 42 (mock)
+### Publishability Score: ${mockTotal} (mock)
 
-### Publishability Percentage: 47.6% (mock)
+### Publishability Percentage: ${mockPercent} (mock)
 
 ---
 
