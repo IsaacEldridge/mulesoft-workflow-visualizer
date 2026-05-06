@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useWorkflow } from '../../context/WorkflowContext';
 import { OUTPUT_TYPES, OUTPUT_TYPE_LABELS } from '../../services/promptTemplates';
 import { generateContent } from '../../services/contentGenerator';
+import { buildBadgeTemplateMarkdown } from '../../services/badgeTemplateExporter';
 import styles from './ContentOutputPanel.module.css';
 
 export default function ContentOutputPanel() {
@@ -179,6 +180,27 @@ Please revise the content according to the user's request while maintaining the 
     const filename = `${contentTypeName}-${timestamp}.md`;
 
     // Create download link and trigger download
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportBadgeTemplate = () => {
+    const content = generatedOutputs[activeTab];
+    if (!content) return;
+
+    const badgeType = activeTab === OUTPUT_TYPES.BADGE_DRAFT ? 'regular' : 'regular';
+    const templateMarkdown = buildBadgeTemplateMarkdown(content, { badgeType });
+
+    const blob = new Blob([templateMarkdown], { type: 'text/markdown;charset=utf-8' });
+    const timestamp = new Date().toISOString().slice(0, 10);
+    const filename = `badge-template-${timestamp}.md`;
+
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -374,6 +396,15 @@ Please revise the content according to the user's request while maintaining the 
                     >
                       💾 Export to Markdown
                     </button>
+                    {isTrailheadTab && (
+                      <button
+                        className={styles.exportButton}
+                        onClick={handleExportBadgeTemplate}
+                        title="Export structured to match the official Trailhead Badge Template"
+                      >
+                        🎓 Export to Badge Template
+                      </button>
+                    )}
                   </>
                 )}
               </div>
