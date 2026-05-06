@@ -15,6 +15,11 @@ export default function ContentOutputPanel() {
   const [editedContent, setEditedContent] = useState('');
   const [isGeneratingFromDoc, setIsGeneratingFromDoc] = useState(false);
   const [docGenerationError, setDocGenerationError] = useState(null);
+  const [isRunningQualityCheck, setIsRunningQualityCheck] = useState(false);
+  const [qualityCheckResult, setQualityCheckResult] = useState(null);
+  const [qualityCheckError, setQualityCheckError] = useState(null);
+
+  const isTrailheadTab = activeTab === OUTPUT_TYPES.BADGE_PROPOSAL || activeTab === OUTPUT_TYPES.BADGE_DRAFT;
 
   const hasOutputs = generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft || generatedOutputs.docDraft || generatedOutputs.jtbdDraft;
 
@@ -184,10 +189,41 @@ Please revise the content according to the user's request while maintaining the 
     URL.revokeObjectURL(url);
   };
 
-  // Reset edit mode when switching tabs
+  const handleQualityCheck = async () => {
+    const content = generatedOutputs[activeTab];
+    if (!content) return;
+
+    setIsRunningQualityCheck(true);
+    setQualityCheckResult(null);
+    setQualityCheckError(null);
+
+    try {
+      const response = await fetch('http://localhost:3001/api/quality-check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content, contentType: activeTab })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to run quality check');
+      }
+
+      const data = await response.json();
+      setQualityCheckResult(data.review);
+    } catch (err) {
+      setQualityCheckError(err.message);
+    } finally {
+      setIsRunningQualityCheck(false);
+    }
+  };
+
+  // Reset edit mode and quality check when switching tabs
   useEffect(() => {
     setIsEditing(false);
     setEditedContent('');
+    setQualityCheckResult(null);
+    setQualityCheckError(null);
   }, [activeTab]);
 
   if (!hasOutputs) {
@@ -308,6 +344,24 @@ Please revise the content according to the user's request while maintaining the 
                     >
                       ✏️ Edit
                     </button>
+                    {isTrailheadTab && (
+                      <button
+                        className={styles.qualityCheckButton}
+                        onClick={handleQualityCheck}
+                        disabled={isRunningQualityCheck}
+                      >
+                        {isRunningQualityCheck ? (
+                          <>
+                            <span className={styles.spinner}></span>
+                            Checking...
+                          </>
+                        ) : (
+                          <>
+                            ✅ Quality Check
+                          </>
+                        )}
+                      </button>
+                    )}
                     <button
                       className={styles.copyButton}
                       onClick={() => handleCopy(activeTab)}
@@ -361,6 +415,25 @@ Please revise the content according to the user's request while maintaining the 
                   <div className={styles.refinementError}>
                     {refinementError}
                   </div>
+                )}
+              </div>
+            )}
+
+            {!isEditing && isTrailheadTab && (qualityCheckResult || qualityCheckError) && (
+              <div className={styles.qualityCheckSection}>
+                <div className={styles.qualityCheckHeader}>
+                  <h3>Quality Check Results</h3>
+                  <button
+                    className={styles.qualityCheckDismiss}
+                    onClick={() => { setQualityCheckResult(null); setQualityCheckError(null); }}
+                  >
+                    ✕ Dismiss
+                  </button>
+                </div>
+                {qualityCheckError ? (
+                  <div className={styles.refinementError}>{qualityCheckError}</div>
+                ) : (
+                  <pre className={styles.qualityCheckResult}>{qualityCheckResult}</pre>
                 )}
               </div>
             )}

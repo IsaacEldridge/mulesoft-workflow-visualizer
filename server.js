@@ -787,6 +787,156 @@ app.post('/api/generate', async (req, res) => {
   }
 });
 
+// Quality check endpoint for Trailhead badge content
+app.post('/api/quality-check', async (req, res) => {
+  try {
+    const { content, contentType } = req.body;
+
+    if (!content) {
+      return res.status(400).json({ error: 'Content is required' });
+    }
+
+    const systemPrompt = `You're a content companion tasked with supporting Trailhead learning designers, writers, and editors during the content creation process. You use the most recent official Salesforce release notes, online Salesforce Help documentation, and Trailhead to review and provide feedback on created content.
+
+When providing feedback:
+- Parse the source material thoroughly, checking every line and section against guidelines and standards
+- Capture formatting such as headings, bulleted or numbered lists, and inline images with alt text
+- Apply the Trailhead Content Quality Rubric to score the content and calculate a Total Score (out of 42)
+- Verify all features, product names, and functionality against official Salesforce sources
+- Identify deprecated features, outdated product names, or terminology that no longer aligns with current Salesforce nomenclature
+- Do not modify the rubric, score, nor percentage — accuracy is critical for analytics
+- If any rubric area is missing from the content, score it as "Not Approved / Needs Significant Improvement" (1 point)
+
+The Trailhead Content Quality Rubric has 14 areas (each scored 1–3 points, 42 points total):
+
+| Rule | Excellent (3) | Good (2) | Not Approved (1) |
+|------|---------------|----------|-----------------|
+| Template | Uses current template with correct formatting and metadata | N/A | Does not use current template |
+| Learner objective | Selected and fully aligns with content | Selected and mostly aligns | Not selected or does not align |
+| Role | 90%+ of steps focus on a single role | Several steps have different roles but audience still has focus | Multiple roles make audience unclear |
+| Level | 90%+ are at same learning level | Steps vary but progress logically | Steps vary illogically |
+| Links | All non-badge steps have URLs | N/A | Non-badge steps missing URLs |
+| Content length | 1–7 milestones, 2–7 steps per milestone | N/A | Does not meet content length standards |
+| Names and descriptions | Meets Trailhead standards for name and description structures | N/A | Does not meet name/description standards |
+| Appropriate trail content | All content types are approved | N/A | Non-approved content types used |
+| Grammar | Grammatically correct | Grammar can be improved but >90% correct | Grammar needs significant improvement |
+| Brand Alignment | Aligned with approved terms and existing Salesforce content | Minor discrepancies | Significant discrepancies |
+
+Publishability Score Scale:
+- 25–30: ⭐ Excellent — May be published after final stakeholder review
+- 21–24: ✅ Good — Solid but needs refinements
+- 11–20: ⚠️ Needs Improvement — Requires moderate to deep updates
+- 10: ❌ Not Approved — Requires significant revision
+
+Feedback response format:
+1. Critical analysis highlighting strengths, weaknesses, and areas for improvement
+2. A markdown table with: Rubric Area | Score | Issues Found
+3. Badge Quality Rating and Action Required
+4. Publishability Percentage: (Total Score / 42) × 100
+5. Publishability Score (total out of 42)
+6. Up to 10 actionable improvements, consistently framed, referencing specific landmarks (unit number, heading, paragraph text, bullet number)`;
+
+    const userPrompt = `Please review the following Trailhead ${contentType === 'badgeProposal' ? 'Badge Proposal' : 'Badge Draft'} and apply the quality rubric:
+
+---
+${content}
+---
+
+Provide your quality review in the format specified.`;
+
+    if (process.env.ANTHROPIC_API_KEY && process.env.ANTHROPIC_API_KEY !== 'your_api_key_here') {
+      try {
+        const baseUrl = 'https://eng-ai-model-gateway.sfproxy.devx-preprod.aws-esvc1-useast2.aws.sfdc.cl';
+
+        const response = await fetch(`${baseUrl}/v1/chat/completions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`,
+            'x-api-key': process.env.ANTHROPIC_API_KEY
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            messages: [
+              { role: 'user', content: `${systemPrompt}\n\n${userPrompt}` }
+            ],
+            max_tokens: 8000
+          })
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`API Error ${response.status}: ${errorText}`);
+        }
+
+        const data = await response.json();
+        let reviewContent;
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+          reviewContent = data.choices[0].message.content;
+        } else if (data.content && Array.isArray(data.content) && data.content[0]) {
+          reviewContent = data.content[0].text;
+        } else {
+          throw new Error('Unexpected response format from API');
+        }
+
+        return res.json({ review: reviewContent, mode: 'ai' });
+      } catch (error) {
+        console.error('Quality check API call failed, falling back to mock:', error.message);
+      }
+    }
+
+    // Mock quality check response
+    const mockReview = `## Quality Review: ${contentType === 'badgeProposal' ? 'Badge Proposal' : 'Badge Draft'}
+
+### Critical Analysis
+
+**Strengths:** The content addresses a clear learning goal and follows the general structure expected for Trailhead badge content.
+
+**Weaknesses:** This is a mock quality review generated because no API key is configured. Connect a valid API key to receive a real rubric-based analysis.
+
+**Areas for Improvement:** Configure your \`ANTHROPIC_API_KEY\` in the \`.env\` file to enable live quality checks.
+
+---
+
+### Rubric Scores
+
+| Rubric Area | Score | Issues Found |
+|---|---|---|
+| Template | 2 | Unable to verify template compliance in mock mode |
+| Learner objective | 2 | Requires manual review |
+| Role | 2 | Requires manual review |
+| Level | 2 | Requires manual review |
+| Links | 2 | Requires manual review |
+| Content length | 2 | Requires manual review |
+| Names and descriptions | 2 | Requires manual review |
+| Appropriate trail content | 2 | Requires manual review |
+| Grammar | 2 | Requires manual review |
+| Brand Alignment | 2 | Requires manual review |
+
+---
+
+### Badge Quality Rating
+
+✅ **Good** — Mock score only. Connect an API key for real analysis.
+
+### Publishability Score: 20 / 42 (mock)
+
+### Publishability Percentage: 47.6% (mock)
+
+---
+
+### Recommendations
+
+1. Configure a valid \`ANTHROPIC_API_KEY\` in your \`.env\` file to enable live AI-powered quality checks.
+2. Once the API is connected, re-run this quality check to receive rubric-based scores and actionable feedback.`;
+
+    res.json({ review: mockReview, mode: 'mock' });
+  } catch (error) {
+    console.error('Quality check error:', error);
+    res.status(500).json({ error: error.message || 'Failed to run quality check' });
+  }
+});
+
 // Mock content generator
 function generateMockContent(prompt) {
   const isBlogPost = prompt.includes('MuleSoft blog post') || prompt.includes('blogs.mulesoft.com');
