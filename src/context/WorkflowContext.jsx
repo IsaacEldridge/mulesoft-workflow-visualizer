@@ -35,6 +35,24 @@ export function WorkflowProvider({ children }) {
   });
   const [isGenerating, setIsGenerating] = useState(false);
 
+  // Editor view state — populated when the user clicks "Move to Editing"
+  // from a Retrieve Content tab. outputType identifies which entry in
+  // generatedOutputs the editor is bound to.
+  const [editorContext, setEditorContext] = useState(null); // { outputType: 'blogDraft' }
+  const openEditor = (outputType) => {
+    setEditorContext({ outputType });
+    setCurrentView('editor');
+  };
+  const closeEditor = () => {
+    setEditorContext(null);
+    setCurrentView('distribution');
+  };
+
+  // Import Draft modal
+  const [isImportOpen, setIsImportOpen] = useState(false);
+  const openImport = () => setIsImportOpen(true);
+  const closeImport = () => setIsImportOpen(false);
+
   const selectStage = (stageId) => {
     setSelectedStage(stageId);
   };
@@ -109,6 +127,12 @@ export function WorkflowProvider({ children }) {
     setGeneratedOutputs,
     isGenerating,
     setIsGenerating,
+    editorContext,
+    openEditor,
+    closeEditor,
+    isImportOpen,
+    openImport,
+    closeImport,
   };
 
   return (

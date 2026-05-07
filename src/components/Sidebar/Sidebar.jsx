@@ -2,7 +2,7 @@ import { useWorkflow } from '../../context/WorkflowContext';
 import styles from './Sidebar.module.css';
 
 export default function Sidebar() {
-  const { currentView, setCurrentView } = useWorkflow();
+  const { currentView, setCurrentView, editorContext, openImport } = useWorkflow();
 
   return (
     <aside className={styles.sidebar}>
@@ -38,17 +38,36 @@ export default function Sidebar() {
               <span className={styles.navIcon}>📤</span>
               <span className={styles.navLabel}>Retrieve Content</span>
             </button>
+
+            <button
+              className={styles.navItem}
+              onClick={openImport}
+              title="Import an existing draft to run a quality check"
+            >
+              <span className={styles.navIcon}>📥</span>
+              <span className={styles.navLabel}>Import Draft</span>
+            </button>
           </div>
         </div>
 
         <div className={styles.navSection}>
           <div className={styles.navGroup}>
             <span className={styles.navGroupLabel}>Governance</span>
-            <button className={`${styles.navItem} ${styles.disabled}`} disabled>
-              <span className={styles.navIcon}>✓</span>
-              <span className={styles.navLabel}>Validation</span>
-              <span className={styles.badge}>Coming Soon</span>
-            </button>
+            {editorContext ? (
+              <button
+                className={`${styles.navItem} ${currentView === 'editor' ? styles.active : ''}`}
+                onClick={() => setCurrentView('editor')}
+              >
+                <span className={styles.navIcon}>✓</span>
+                <span className={styles.navLabel}>Edit Content</span>
+              </button>
+            ) : (
+              <button className={`${styles.navItem} ${styles.disabled}`} disabled>
+                <span className={styles.navIcon}>✓</span>
+                <span className={styles.navLabel}>Edit Content</span>
+                <span className={styles.badge}>Open from Retrieve</span>
+              </button>
+            )}
             <button className={`${styles.navItem} ${styles.disabled}`} disabled>
               <span className={styles.navIcon}>🚀</span>
               <span className={styles.navLabel}>Publishing</span>

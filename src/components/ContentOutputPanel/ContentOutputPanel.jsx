@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useWorkflow } from '../../context/WorkflowContext';
 import { OUTPUT_TYPES, OUTPUT_TYPE_LABELS } from '../../services/promptTemplates';
 import { generateContent } from '../../services/contentGenerator';
@@ -6,23 +6,16 @@ import { buildBadgeTemplateMarkdown } from '../../services/badgeTemplateExporter
 import styles from './ContentOutputPanel.module.css';
 
 export default function ContentOutputPanel() {
-  const { generatedOutputs, setGeneratedOutputs } = useWorkflow();
+  const { generatedOutputs, setGeneratedOutputs, openEditor, openImport } = useWorkflow();
   const [activeTab, setActiveTab] = useState(OUTPUT_TYPES.BLOG_POST);
   const [copySuccess, setCopySuccess] = useState(null);
   const [refinementPrompt, setRefinementPrompt] = useState('');
   const [isRefining, setIsRefining] = useState(false);
   const [refinementError, setRefinementError] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedContent, setEditedContent] = useState('');
   const [isGeneratingFromDoc, setIsGeneratingFromDoc] = useState(false);
   const [docGenerationError, setDocGenerationError] = useState(null);
-  const [isRunningQualityCheck, setIsRunningQualityCheck] = useState(false);
-  const [qualityCheckResult, setQualityCheckResult] = useState(null);
-  const [qualityCheckError, setQualityCheckError] = useState(null);
 
   const isTrailheadTab = activeTab === OUTPUT_TYPES.BADGE_PROPOSAL || activeTab === OUTPUT_TYPES.BADGE_DRAFT;
-  const isBlogTab = activeTab === OUTPUT_TYPES.BLOG_PROPOSAL || activeTab === OUTPUT_TYPES.BLOG_DRAFT;
-  const supportsQualityCheck = isTrailheadTab || isBlogTab;
 
   const hasOutputs = generatedOutputs.blogProposal || generatedOutputs.blogDraft || generatedOutputs.badgeProposal || generatedOutputs.badgeDraft || generatedOutputs.docDraft || generatedOutputs.jtbdDraft;
 
@@ -88,24 +81,6 @@ Please revise the content according to the user's request while maintaining the 
     } finally {
       setIsRefining(false);
     }
-  };
-
-  const handleEdit = () => {
-    setEditedContent(generatedOutputs[activeTab]);
-    setIsEditing(true);
-  };
-
-  const handleSave = () => {
-    setGeneratedOutputs(prev => ({
-      ...prev,
-      [activeTab]: editedContent
-    }));
-    setIsEditing(false);
-  };
-
-  const handleCancel = () => {
-    setEditedContent('');
-    setIsEditing(false);
   };
 
   const handleGenerateFromDoc = async (type) => {
@@ -213,43 +188,6 @@ Please revise the content according to the user's request while maintaining the 
     URL.revokeObjectURL(url);
   };
 
-  const handleQualityCheck = async () => {
-    const content = generatedOutputs[activeTab];
-    if (!content) return;
-
-    setIsRunningQualityCheck(true);
-    setQualityCheckResult(null);
-    setQualityCheckError(null);
-
-    try {
-      const response = await fetch('http://localhost:3001/api/quality-check', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content, contentType: activeTab })
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to run quality check');
-      }
-
-      const data = await response.json();
-      setQualityCheckResult(data.review);
-    } catch (err) {
-      setQualityCheckError(err.message);
-    } finally {
-      setIsRunningQualityCheck(false);
-    }
-  };
-
-  // Reset edit mode and quality check when switching tabs
-  useEffect(() => {
-    setIsEditing(false);
-    setEditedContent('');
-    setQualityCheckResult(null);
-    setQualityCheckError(null);
-  }, [activeTab]);
-
   if (!hasOutputs) {
     return (
       <div className={styles.contentOutputPanel}>
@@ -268,6 +206,15 @@ Please revise the content according to the user's request while maintaining the 
               <li>Click a generation button</li>
             </ol>
           </div>
+          <p style={{ marginTop: 16 }}>
+            Already have a draft? <button
+              type="button"
+              onClick={openImport}
+              style={{ background: 'none', border: 'none', color: '#00a1e0', cursor: 'pointer', textDecoration: 'underline', padding: 0, font: 'inherit' }}
+            >
+              Import it for quality check
+            </button>.
+          </p>
         </div>
       </div>
     );
@@ -345,133 +292,76 @@ Please revise the content according to the user's request while maintaining the 
                 {OUTPUT_TYPE_LABELS[activeTab]}
               </div>
               <div className={styles.toolbarActions}>
-                {isEditing ? (
-                  <>
-                    <button
-                      className={styles.saveButton}
-                      onClick={handleSave}
-                    >
-                      ✓ Save Changes
-                    </button>
-                    <button
-                      className={styles.cancelButton}
-                      onClick={handleCancel}
-                    >
-                      ✕ Cancel
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      className={styles.editButton}
-                      onClick={handleEdit}
-                    >
-                      ✏️ Edit
-                    </button>
-                    {supportsQualityCheck && (
-                      <button
-                        className={styles.qualityCheckButton}
-                        onClick={handleQualityCheck}
-                        disabled={isRunningQualityCheck}
-                      >
-                        {isRunningQualityCheck ? (
-                          <>
-                            <span className={styles.spinner}></span>
-                            Checking...
-                          </>
-                        ) : (
-                          <>
-                            ✅ Quality Check
-                          </>
-                        )}
-                      </button>
-                    )}
-                    <button
-                      className={styles.copyButton}
-                      onClick={() => handleCopy(activeTab)}
-                    >
-                      {copySuccess === activeTab ? '✓ Copied!' : '📋 Copy Markdown'}
-                    </button>
-                    <button
-                      className={styles.exportButton}
-                      onClick={handleExport}
-                    >
-                      💾 Export to Markdown
-                    </button>
-                    {isTrailheadTab && (
-                      <button
-                        className={styles.exportButton}
-                        onClick={handleExportBadgeTemplate}
-                        title="Export structured to match the official Trailhead Badge Template"
-                      >
-                        🎓 Export to Badge Template
-                      </button>
-                    )}
-                  </>
+                <button
+                  className={styles.editButton}
+                  onClick={() => openEditor(activeTab)}
+                  title="Open this content in the dedicated editor"
+                >
+                  ✏️ Edit
+                </button>
+                <button
+                  className={styles.copyButton}
+                  onClick={() => handleCopy(activeTab)}
+                >
+                  {copySuccess === activeTab ? '✓ Copied!' : '📋 Copy Markdown'}
+                </button>
+                <button
+                  className={styles.exportButton}
+                  onClick={handleExport}
+                >
+                  💾 Export to Markdown
+                </button>
+                {isTrailheadTab && (
+                  <button
+                    className={styles.exportButton}
+                    onClick={handleExportBadgeTemplate}
+                    title="Export structured to match the official Trailhead Badge Template"
+                  >
+                    🎓 Export to Badge Template
+                  </button>
                 )}
               </div>
             </div>
 
-            {!isEditing && (
-              <div className={styles.refinementSection}>
-                <div className={styles.refinementHeader}>
-                  <h3>Refine Content</h3>
-                  <p>Provide additional instructions to improve the generated content</p>
-                </div>
-                <div className={styles.refinementInputGroup}>
-                  <textarea
-                    className={styles.refinementInput}
-                    value={refinementPrompt}
-                    onChange={(e) => setRefinementPrompt(e.target.value)}
-                    placeholder="E.g., 'Make it more concise', 'Add more technical details', 'Simplify the language', 'Focus more on benefits'..."
-                    rows={3}
-                    disabled={isRefining}
-                  />
-                  <button
-                    className={styles.refineButton}
-                    onClick={handleRefine}
-                    disabled={isRefining || !refinementPrompt.trim()}
-                  >
-                    {isRefining ? (
-                      <>
-                        <span className={styles.spinner}></span>
-                        Refining...
-                      </>
-                    ) : (
-                      <>
-                        ✨ Refine Content
-                      </>
-                    )}
-                  </button>
-                </div>
-                {refinementError && (
-                  <div className={styles.refinementError}>
-                    {refinementError}
-                  </div>
-                )}
+            <div className={styles.refinementSection}>
+              <div className={styles.refinementHeader}>
+                <h3>Refine Content</h3>
+                <p>Provide additional instructions to improve the generated content</p>
               </div>
-            )}
-
-            {!isEditing && supportsQualityCheck && (qualityCheckResult || qualityCheckError) && (
-              <div className={styles.qualityCheckSection}>
-                <div className={styles.qualityCheckHeader}>
-                  <h3>Quality Check Results</h3>
-                  <button
-                    className={styles.qualityCheckDismiss}
-                    onClick={() => { setQualityCheckResult(null); setQualityCheckError(null); }}
-                  >
-                    ✕ Dismiss
-                  </button>
-                </div>
-                {qualityCheckError ? (
-                  <div className={styles.refinementError}>{qualityCheckError}</div>
-                ) : (
-                  <pre className={styles.qualityCheckResult}>{qualityCheckResult}</pre>
-                )}
+              <div className={styles.refinementInputGroup}>
+                <textarea
+                  className={styles.refinementInput}
+                  value={refinementPrompt}
+                  onChange={(e) => setRefinementPrompt(e.target.value)}
+                  placeholder="E.g., 'Make it more concise', 'Add more technical details', 'Simplify the language', 'Focus more on benefits'..."
+                  rows={3}
+                  disabled={isRefining}
+                />
+                <button
+                  className={styles.refineButton}
+                  onClick={handleRefine}
+                  disabled={isRefining || !refinementPrompt.trim()}
+                >
+                  {isRefining ? (
+                    <>
+                      <span className={styles.spinner}></span>
+                      Refining...
+                    </>
+                  ) : (
+                    <>
+                      ✨ Refine Content
+                    </>
+                  )}
+                </button>
               </div>
-            )}
+              {refinementError && (
+                <div className={styles.refinementError}>
+                  {refinementError}
+                </div>
+              )}
+            </div>
 
-            {!isEditing && activeTab === OUTPUT_TYPES.DOC_DRAFT && (
+            {activeTab === OUTPUT_TYPES.DOC_DRAFT && (
               <div className={styles.docActionsSection}>
                 <div className={styles.docActionsHeader}>
                   <h3>Generate From Documentation</h3>
@@ -520,18 +410,9 @@ Please revise the content according to the user's request while maintaining the 
             )}
 
             <div className={styles.markdownOutput}>
-              {isEditing ? (
-                <textarea
-                  className={styles.editTextarea}
-                  value={editedContent}
-                  onChange={(e) => setEditedContent(e.target.value)}
-                  rows={20}
-                />
-              ) : (
-                <pre className={styles.pre}>
-                  <code>{generatedOutputs[activeTab]}</code>
-                </pre>
-              )}
+              <pre className={styles.pre}>
+                <code>{generatedOutputs[activeTab]}</code>
+              </pre>
             </div>
           </>
         ) : (

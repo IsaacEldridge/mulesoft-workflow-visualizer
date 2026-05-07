@@ -1038,6 +1038,132 @@ ${mockRubricRows}
   }
 });
 
+// Extract structured suggestions from a free-form quality review
+// so the editor can present them as selectable items.
+//
+// Request:  { review: <markdown>, contentType: <string> }
+// Response: { suggestions: [{ id, title, rationale, locator, replacement, kind }] }
+//   - id:          stable identifier ("s1", "s2", ...)
+//   - title:       short summary (≤80 chars)
+//   - rationale:   why this change is being suggested
+//   - locator:     a verbatim substring of the original content marking the change site
+//                  (used for selective application). May be empty if not localized.
+//   - replacement: proposed replacement text. May be empty for "remove" suggestions.
+//   - kind:        'replace' | 'insert' | 'remove' | 'rewrite' | 'note'
+app.post('/api/extract-suggestions', async (req, res) => {
+  try {
+    const { review, contentType, content } = req.body;
+    if (!review) return res.status(400).json({ error: 'review is required' });
+
+    const systemPrompt = `You convert a free-form content quality review into a JSON array of actionable, atomic suggestions a writer can accept or reject one at a time.
+
+Rules:
+- Output ONLY valid JSON. No prose before or after. No markdown code fences.
+- Each suggestion is atomic — one change, one fix.
+- Prefer suggestions tied to a specific verbatim substring (locator) so an editor can find and apply them automatically.
+- locator MUST be an exact substring (verbatim, case-sensitive) of the ORIGINAL CONTENT when localizable. Use "" if the suggestion applies globally.
+- replacement is the new text to substitute. Use "" for pure removals or for global notes.
+- kind values:
+    "replace"  — swap locator for replacement
+    "insert"   — insert replacement immediately after locator
+    "remove"   — delete locator
+    "rewrite"  — large rewrite of a section, replacement may be a multi-line block
+    "note"     — guidance only; no automatic edit possible (e.g. "add a Google Drive image folder")
+- Limit to at most 12 suggestions, prioritized by impact.
+- title is ≤80 chars.
+- rationale ≤220 chars and references the rubric area when applicable.
+
+Output schema:
+{ "suggestions": [ { "id": "s1", "title": "...", "rationale": "...", "locator": "...", "replacement": "...", "kind": "replace" } ] }`;
+
+    const userPrompt = `CONTENT TYPE: ${contentType || 'unknown'}
+
+ORIGINAL CONTENT:
+"""
+${content || ''}
+"""
+
+QUALITY REVIEW:
+"""
+${review}
+"""
+
+Return JSON only.`;
+
+    if (process.env.ANTHROPIC_API_KEY && process.env.ANTHROPIC_API_KEY !== 'your_api_key_here') {
+      try {
+        const baseUrl = 'https://eng-ai-model-gateway.sfproxy.devx-preprod.aws-esvc1-useast2.aws.sfdc.cl';
+        const response = await fetch(`${baseUrl}/v1/chat/completions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${process.env.ANTHROPIC_API_KEY}`,
+            'x-api-key': process.env.ANTHROPIC_API_KEY
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            messages: [{ role: 'user', content: `${systemPrompt}\n\n${userPrompt}` }],
+            max_tokens: 4000
+          })
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`API Error ${response.status}: ${errorText}`);
+        }
+
+        const data = await response.json();
+        let raw;
+        if (data.choices?.[0]?.message) {
+          raw = data.choices[0].message.content;
+        } else if (data.content?.[0]) {
+          raw = data.content[0].text;
+        } else {
+          throw new Error('Unexpected response format from API');
+        }
+
+        // Strip code fences if the model added them despite instructions.
+        const cleaned = raw.trim().replace(/^```(?:json)?\s*/, '').replace(/```\s*$/, '');
+        let parsed;
+        try {
+          parsed = JSON.parse(cleaned);
+        } catch (parseErr) {
+          // Try to extract the first JSON object if surrounded by stray text.
+          const match = cleaned.match(/\{[\s\S]*\}/);
+          if (match) {
+            parsed = JSON.parse(match[0]);
+          } else {
+            throw parseErr;
+          }
+        }
+
+        const suggestions = Array.isArray(parsed.suggestions) ? parsed.suggestions : [];
+        return res.json({ suggestions, mode: 'ai' });
+      } catch (error) {
+        console.error('Extract suggestions API call failed, falling back to mock:', error.message);
+      }
+    }
+
+    // Mock fallback
+    res.json({
+      suggestions: [
+        {
+          id: 's1',
+          title: 'Connect a valid API key to extract real suggestions',
+          rationale: 'Suggestions extraction requires the LLM. Configure ANTHROPIC_API_KEY to enable.',
+          locator: '',
+          replacement: '',
+          kind: 'note'
+        }
+      ],
+      mode: 'mock'
+    });
+  } catch (error) {
+    console.error('Extract suggestions error:', error);
+    res.status(500).json({ error: error.message || 'Failed to extract suggestions' });
+  }
+});
+
 // Mock content generator
 function generateMockContent(prompt) {
   const isBlogPost = prompt.includes('MuleSoft blog post') || prompt.includes('blogs.mulesoft.com');
